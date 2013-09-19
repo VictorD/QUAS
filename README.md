@@ -1,2 +1,5 @@
 QUAS
 ====
+WEX
+====
+EXORT
