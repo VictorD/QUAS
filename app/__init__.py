@@ -10,8 +10,10 @@ db = SQLAlchemy(app)
 def not_found(error):
    return make_response(jsonify( {'error':'Not Found'} ), 404)
 
+@app.errorhandler(400)
+def bad_request(error):
+   return make_response(jsonify( {'error':'Bad Request'} ), 400)
+
 from questions.views import qmod as QuestionModule
 app.register_blueprint(QuestionModule)
-
-
 
