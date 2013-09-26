@@ -7,7 +7,7 @@
 <script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js"></script>
 
 <title>QUAS - Your LTU knowledge database !</title>
-<!-- <link rel="stylesheet" type="text/css" href="main.css"></link> -->
+<link rel="stylesheet" type="text/css" href="main.css"></link> 
 </head>
 <body id="main">
 <div id="wrapper">
@@ -63,8 +63,8 @@
 <script type="text/javascript">
 function QViewModel(){
 	
-	this.qURI = 'http://130.240.5.168:5000/questions';
-	this.questions = ko.observableArray();
+	this.qURI = 'http://130.240.5.168:5000/questions/';
+	window.questions = ko.observableArray();
 	
 	/*
 	this.questions([
@@ -74,6 +74,9 @@ function QViewModel(){
 		}
 	]);
 	*/
+
+	
+
 	
 	this.ajax = function(uri, method, data){
 		var request = {
@@ -82,24 +85,35 @@ function QViewModel(){
 			contentType: "application/json",
 			accepts: "application/json",
 			cache: false,
-			dataType: 'json',
-			data: JSON.stringify(data),
+			dataType: 'jsonp',
+			data: JSON.stringify(data)
 		};
 		return $.ajax(request);
 	}
+	
+	
+	
 	// data.questions.length
 	this.ajax(this.qURI, 'GET').done(function(data) {
-		for (var i = 0; i < data.questions.length; i++) {
-			this.questions.push({
-				uri: ko.observable(data.questions[i].uri),
-				title: ko.observable(data.questions[i].body),
-				timestamp: ko.observable(data.questions[i].timestamp)
+		console.log("We are in ajax();");
+		
+		var ql = data.QuestionList;
+		
+		for (var i = 0; i < ql.length; i++) {
+			console.log("In the loop #"+i);
+			window.questions.push({
+				uri: ko.observable(ql[i].uri),
+				title: ko.observable(ql[i].title),
+				body: ko.observable(ql[i].body),
+				timestamp: ko.observable(ql[i].timestamp),
+				done: ko.observable(ql[i].done)
 			});
 		} 
 	});
 	
 }
-ko.applyBindings(new QViewModel(), $('#main')[0]);
+
+ko.applyBindings(new QViewModel(), $('#content')[0]);
 </script>
 </body>
 </html>
