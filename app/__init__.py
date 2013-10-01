@@ -17,3 +17,5 @@ def bad_request(error):
 from questions.views import qmod as QuestionModule
 app.register_blueprint(QuestionModule)
 
+from replies.views import rmod as ReplyModule
+app.register_blueprint(ReplyModule)
