@@ -33,26 +33,18 @@
 	</div>
 </div>
 <div id="content">
-	<div id="question-header">
-		<h3>Filter: Recent | Unanswered | By Tags | Subscriptions</h3>
-	</div>
 	<!-- ko foreach: questions -->
 	<div class="question">
-		<div class="question-content">
-			<H1 data-bind="text: title">Question Title</H1>
+		<div class="postQuestion" id="add">
+		<form data-bind="submit: add">
+		Title: <input data-bind="text: title" type="text" id="inputTitle" style="width: 100px;" ><br>
+		Body: <textarea data-bind="value: body" rows="10" width="200"></textarea>
+		<button data-bind="click:addQuestion" class="button" style="> Submit</button>
+		</form>
 
-				<p data-bind="text: body"></p>
-
-		</div>
-		<ul class="question-right">
-			<li>0 answers</li>
-			<li>35 score</li>
-		</ul>
-		<div class="question-tags">
-			#HERE #BE #TAGS
-		</div>
-		
 	</div>
+	</div>
+	<div style="clear:both;">&nbsp;</div>
 	<!-- /ko -->
 </div>
 

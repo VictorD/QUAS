@@ -97,8 +97,8 @@ body {
 	width: 530px;
 	color: rgb(13,37,50);
 	background-color: rgb(193,223,239);
-	margin: 0 auto;
-	padding: 10px 0 20px 10px;
+	margin: 5px auto;
+	padding: 10px 0 10px 10px;
 	border: 1px solid rgb(25,73,99);
 }
 
@@ -127,5 +127,7 @@ body {
 }
 
 .question-tags {
+	float:left;
+	clear:both;
 	color: rgb(47,139,189);
 }

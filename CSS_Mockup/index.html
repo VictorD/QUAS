@@ -1,7 +1,7 @@
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet" />
+ <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
+<!-- <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet" /> -->
 <script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.js"></script>
 <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
 <script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js"></script>
@@ -51,7 +51,7 @@
 		<div class="question-tags">
 			#HERE #BE #TAGS
 		</div>
-		
+		<div style="clear:both;">&nbsp;</div>
 	</div>
 	<!-- /ko -->
 </div>
@@ -65,17 +65,6 @@ function QViewModel(){
 	
 	this.qURI = 'http://130.240.5.168:5000/questions/';
 	window.questions = ko.observableArray();
-	
-	/*
-	this.questions([
-		{
-			title: ko.observable('title test'),
-			body: ko.observable('derpderpderp')
-		}
-	]);
-	*/
-
-	
 
 	
 	this.ajax = function(uri, method, data){
@@ -97,6 +86,7 @@ function QViewModel(){
 	this.ajax(this.qURI, 'GET').done(function(data) {
 		console.log("We are in ajax();");
 		
+		
 		var ql = data.QuestionList;
 		
 		for (var i = 0; i < ql.length; i++) {
@@ -111,9 +101,42 @@ function QViewModel(){
 		} 
 	});
 	
+	//adds add to TVM
+	self.add = function(question){
+		self.ajax(self.qURI, 'POST', question).done(function(data){
+			
+			// Kommer data.QL behövas här igen, eller räcker det med data.question. Den som lever får se.
+			window.questions.push({
+				uri:ko.observable(data.question.uri),
+				title:ko.observable(data.question.title),
+				body:ko.observable(data.task.body),
+				// testa, behövs done.
+				done:ko.observable(data.task.done)
+			});
+		});
+	}
+	
+}
+
+// ******* WIP ********
+function AddQViewModel(){
+	self.title = ko.observable();
+	self.body = ko.observable();
+	
+	self.addQuestion = function(){
+		$('#add').modal('show');
+		QViewModel.add({
+			title: self.title(),
+			body: self.body()
+		});
+		self.title("");
+		self.body("");
+	}
 }
 
 ko.applyBindings(new QViewModel(), $('#content')[0]);
+// Need "add" ko-tag in html
+//ko.applyBindings(new AddQViewModel(), $('#add')[0]);
 </script>
 </body>
 </html>
