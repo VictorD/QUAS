@@ -1,9 +1,9 @@
-from flask import Flask, jsonify, Blueprint, request, abort, make_response
+from flask import Flask, jsonify, Blueprint, request, abort
 from models import Question
 from app.decorators import jsonp
-#from app.replies.models import Reply
 from app import db
 import datetime
+from app.tags.views import get_tag
 
 qmod = Blueprint('questions', __name__, url_prefix='/questions')
 
@@ -35,6 +35,12 @@ def create_question():
       abort(400)
    
    q = Question(title=request.json['title'], body=request.json['body'], timestamp=datetime.datetime.utcnow())
+
+   if request.json['tags']:
+      for tagName in request.json['tags']:
+         t = get_tag(tagName)
+         q.tags.append(t)
+
    db.session.add(q)
    db.session.commit()
    q_dict = q.to_dict()

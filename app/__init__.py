@@ -19,3 +19,6 @@ app.register_blueprint(QuestionModule)
 
 from replies.views import rmod as ReplyModule
 app.register_blueprint(ReplyModule)
+
+from tags.views import tmod as TagModule
+app.register_blueprint(TagModule)

@@ -1,0 +1,26 @@
+#!/bin/bash
+
+for i in {1..25}
+do
+	TITLE=$(./quasTitle.py)
+	#echo $TITLE
+
+	BODY=$(./quasBody.py)
+	#echo $BODY
+
+   REPLY=$(./quasReply.py)
+   #echo $REPLY
+
+   TAGS=$(./quasTag.py)
+   #echo $TAG   
+   
+   STR='{"title": "'$TITLE'", "body" : "'$BODY'", "tags":["'$TAGS'"]}'
+   STR2='{"body": "'$REPLY'", "question_id" : "'$i'"}'
+
+	curl -i -H "Content-Type: application/json" -X POST -d "$STR" http://localhost:5000/questions/
+
+   curl -i -H "Content-Type: application/json" -X POST -d "$STR2" http://localhost:5000/replies/
+
+   echo $STR2
+
+done
