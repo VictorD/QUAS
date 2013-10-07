@@ -35,7 +35,7 @@
 	<div class="row">
 		<div class="col-lg-10 col-lg-offset-1">
 				
-			<form id="search" class="form-horizontal " role="form" method="POST" target="#">
+			<form id="search" class="form-horizontal" role="form" method="POST" target="#">
 				<div class="form-group">
 						<div class="col-lg-7 col-lg-offset-2 ">
 							<input id="search-bar" type="text" class="form-control"/>
@@ -50,23 +50,26 @@
 	<div class="row">
 		<div class="col-lg-6 col-lg-offset-3" id="add">
 		<h1>Ask Question</h1>
-			<form id="addQuestion" class="form-horizontal" role="form" data-bind="submit: add">
+			<form data-bind="submit: addQuestion" class="form-horizontal" role="form">
 				<div class="form-group">
 					<label class="col-lg-2 control-label" for="inputTitle">Title</label>
 					<div class="col-lg-10">
-					  <input data-bind="text: title" class="form-control" type="text" id="inputTitle" />
+					  <input data-bind="value: title" class="form-control" type="text"/>
 					</div>
 				</div>
 				<div class="form-group">
 					<label class="col-lg-2 control-label" for="inputBody">Body</label>
 					<div class="col-lg-10">
-						<textarea data-bind="value: body" class="form-control" rows="10" id="inputBody"></textarea>				
+						<textarea data-bind="value: body" class="form-control" rows="10"></textarea>				
 					</div>
 				</div>
-				<button data-bind="click:addQuestion" class="button">Submit</button>
+				<input type="submit" class="button" text="Submit"/>
 			</form>
 		</div>
 	</div>
+	<div class="row">  
+        <span data-bind="text: responseJSON"></span>
+    </div>
 </div>
 </div>
 
@@ -77,82 +80,24 @@
 </div>
 
 <script type="text/javascript">
-function QViewModel(){
-	
-	this.qURI = 'http://130.240.5.168:5000/questions/';
-	window.questions = ko.observableArray();
-
-	
-	this.ajax = function(uri, method, data){
-		var request = {
-			url: uri,
-			type: method,
-			contentType: "application/json",
-			accepts: "application/json",
-			cache: false,
-			dataType: 'jsonp',
-			data: JSON.stringify(data)
-		};
-		return $.ajax(request);
-	}
-	
-	
-	
-	// data.questions.length
-	this.ajax(this.qURI, 'GET').done(function(data) {
-		console.log("We are in ajax();");
-		
-		
-		var ql = data.QuestionList;
-		
-		for (var i = 0; i < ql.length; i++) {
-			console.log("In the loop #"+i);
-			window.questions.push({
-				uri: ko.observable(ql[i].uri),
-				title: ko.observable(ql[i].title),
-				body: ko.observable(ql[i].body),
-				timestamp: ko.observable(ql[i].timestamp),
-				done: ko.observable(ql[i].done)
-			});
-		} 
-	});
-	
-	//adds add to TVM
-	self.add = function(question){
-		self.ajax(self.qURI, 'POST', question).done(function(data){
-			
-			// Kommer data.QL behövas här igen, eller räcker det med data.question. Den som lever får se.
-			window.questions.push({
-				uri:ko.observable(data.question.uri),
-				title:ko.observable(data.question.title),
-				body:ko.observable(data.task.body),
-				// testa, behövs done.
-				done:ko.observable(data.task.done)
-			});
-		});
-	}
-	
-}
-
-// ******* WIP ********
-function AddQViewModel(){
-	self.title = ko.observable();
-	self.body = ko.observable();
-	
-	self.addQuestion = function(){
-		$('#add').modal('show');
-		QViewModel.add({
-			title: self.title(),
-			body: self.body()
-		});
-		self.title("");
-		self.body("");
+var viewModel = new function() {
+    var self = this;
+	self.title = ko.observable("Write Question Here");
+	self.body = ko.observable("Describe Question Here");
+    self.responseJSON = ko.observable(null);
+	self.addQuestion = function() {
+		var data = JSON.stringify( 
+            {
+                title: self.title(), body: self.body()
+            });
+        $.post("http://130.240.5.168:5000/questions/", data, function(response) {
+            console.log("POSTED BAD REQUETS?");
+            self.responseJSON(response);
+        })  
 	}
 }
 
-ko.applyBindings(new QViewModel(), $('#content')[0]);
-// Need "add" ko-tag in html
-//ko.applyBindings(new AddQViewModel(), $('#add')[0]);
+ko.applyBindings(viewModel);
 </script>
 </body>
 </html>

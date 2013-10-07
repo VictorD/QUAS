@@ -74,7 +74,7 @@ function QViewModel(){
 			contentType: "application/json",
 			accepts: "application/json",
 			cache: false,
-			dataType: 'jsonp',
+			dataType: 'json',
 			data: JSON.stringify(data)
 		};
 		return $.ajax(request);
@@ -100,43 +100,12 @@ function QViewModel(){
 			});
 		} 
 	});
-	
-	//adds add to TVM
-	self.add = function(question){
-		self.ajax(self.qURI, 'POST', question).done(function(data){
-			
-			// Kommer data.QL behövas här igen, eller räcker det med data.question. Den som lever får se.
-			window.questions.push({
-				uri:ko.observable(data.question.uri),
-				title:ko.observable(data.question.title),
-				body:ko.observable(data.task.body),
-				// testa, behövs done.
-				done:ko.observable(data.task.done)
-			});
-		});
-	}
-	
+
 }
 
-// ******* WIP ********
-function AddQViewModel(){
-	self.title = ko.observable();
-	self.body = ko.observable();
-	
-	self.addQuestion = function(){
-		$('#add').modal('show');
-		QViewModel.add({
-			title: self.title(),
-			body: self.body()
-		});
-		self.title("");
-		self.body("");
-	}
-}
 
-ko.applyBindings(new QViewModel(), $('#content')[0]);
 // Need "add" ko-tag in html
-//ko.applyBindings(new AddQViewModel(), $('#add')[0]);
+ko.applyBindings(new QViewModel());
 </script>
 </body>
 </html>
