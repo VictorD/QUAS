@@ -1,52 +1,76 @@
 <html>
 <head>
- <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
-<!-- <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet" /> -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
 <script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.js"></script>
 <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
 <script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js"></script>
 
 <title>QUAS - Your LTU knowledge database !</title>
-<link rel="stylesheet" type="text/css" href="main.css"></link> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body id="main">
-<div id="wrapper">
-
-<div id="header">
-	<div id="header-logo">
-		QUAS
-	</div>
-	<div id="header-login">
-		<a href="#">Login</a>
-	</div>
-</div>
-
-<div id="search">
-	<div id="search-logo">
-		
-	</div>
-	<div id="search-wrapper">
-		<form method="POST" target="#">
-			<input id="search-bar" type="text" size="60"/>
-			<input id="submit-button" type="submit" value="Search"/>
-		</form>
+<body>
+<div class="navbar navbar-inverse">
+	<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="#">QUAS</a>
+		</div>
+		<div class="navbar-collapse collapse">
+			<form class="navbar-form navbar-right">
+				<button type="submit" class="btn btn-primary">Login</button>
+			</form>
+		</div>
 	</div>
 </div>
-<div id="content">
-	<!-- ko foreach: questions -->
-	<div class="question">
-		<div class="postQuestion" id="add">
-		<form data-bind="submit: add">
-		Title: <input data-bind="text: title" type="text" id="inputTitle" style="width: 100px;" ><br>
-		Body: <textarea data-bind="value: body" rows="10" width="200"></textarea>
-		<button data-bind="click:addQuestion" class="button" style="> Submit</button>
-		</form>
 
+<div class="container">
+	<div class="row text-center">
+		<img src="logo.png" width="359px" height="220px"/>
 	</div>
+	<div class="row">
+		<div class="col-lg-10 col-lg-offset-1">
+				
+			<form id="search" class="form-horizontal " role="form" method="POST" target="#">
+				<div class="form-group">
+						<div class="col-lg-7 col-lg-offset-2 ">
+							<input id="search-bar" type="text" class="form-control"/>
+						</div>
+						<div class="col-lg-1">
+							<input id="submit-button" type="submit" value="Search" class="btn btn-primary"/>
+						</div>
+				</div>
+			</form>
+		</div>
 	</div>
-	<div style="clear:both;">&nbsp;</div>
-	<!-- /ko -->
+	<div class="row">
+		<div class="col-lg-6 col-lg-offset-3" id="add">
+		<h1>Ask Question</h1>
+			<form id="addQuestion" class="form-horizontal" role="form" data-bind="submit: add">
+				<div class="form-group">
+					<label class="col-lg-2 control-label" for="inputTitle">Title</label>
+					<div class="col-lg-10">
+					  <input data-bind="text: title" class="form-control" type="text" id="inputTitle" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-lg-2 control-label" for="inputBody">Body</label>
+					<div class="col-lg-10">
+						<textarea data-bind="value: body" class="form-control" rows="10" id="inputBody"></textarea>				
+					</div>
+				</div>
+				<button data-bind="click:addQuestion" class="button">Submit</button>
+			</form>
+		</div>
+	</div>
 </div>
+</div>
+
+
 
 <div id="footer">
 </div>

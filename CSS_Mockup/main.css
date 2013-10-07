@@ -32,49 +32,6 @@ body {
 	text-decoration: none;
 }
 
-#search {
-	width: 800px;
-	padding: 10px;
-	margin: 0 auto;
-}
-
-#search-wrapper {
-	margin: 0 0 0 20px;
-}
-#search-logo {
-	width: 359px;
-	height: 220px;
-	margin: 0px auto;
-	background: url('logo.png') no-repeat;
-
-}
-#search form {
-	width: 650px;
-	height: 60px;
-	margin: 0 auto;
-}
-#search input {
-	padding: 5px 10px;
-
-	font-size: 120%;
-}
-
-#search-bar {
-	float: left;
-	background-color:	rgb(239, 247, 251);
-	border: 2px solid rgb(108,146,175);
-	border-radius: 12px;
-}
-#search #submit-button {
-	float: left;
-	margin: 2px 0 0 -20px;
-	background-color: rgb(108,146,175);
-	border: 2px solid rgb(108,146,175);
-	border-radius: 12px;
-	color: rgb(239, 247, 251);
-
-}
-
 #content {
 	margin: 10px auto;
 }
