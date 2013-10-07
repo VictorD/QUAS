@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, Blueprint, request, abort
-from app.decorators import jsonp
+from app.decorators import crossdomain
 from models import Tag
 from app import db
 import datetime
@@ -8,7 +8,7 @@ tmod = Blueprint('tags', __name__, url_prefix='/tags')
 
 
 @tmod.route('/', methods = ['GET'])
-@jsonp
+@crossdomain
 def list_all_tags():
    t_all = Tag.query.all()
    t_all_dict = []

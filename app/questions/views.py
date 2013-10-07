@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, Blueprint, request, abort
 from models import Question
-from app.decorators import jsonp
+from app.tags.models import Tag
+from app.decorators import crossdomain
 from app import db
 import datetime
 from app.tags.views import get_tag
@@ -8,7 +9,7 @@ from app.tags.views import get_tag
 qmod = Blueprint('questions', __name__, url_prefix='/questions')
 
 @qmod.route('/', methods = ['GET'])
-@jsonp
+@crossdomain
 def get_all_questions():
    all_q = Question.query.all()
    all_q_dict = []
@@ -18,7 +19,7 @@ def get_all_questions():
 
 
 @qmod.route('/<int:qid>/', methods = ['GET'])
-@jsonp
+@crossdomain
 def get_questions(qid):
    q = Question.query.get(qid)
    if q is not None:   
@@ -28,12 +29,13 @@ def get_questions(qid):
       abort(404)
       
 @qmod.route('/', methods = ['POST'])
-@jsonp
+@crossdomain
 #TODO: requires login
 def create_question():
    if not request.json or not 'title' in request.json or not 'body' in request.json:
       abort(400)
-   
+
+  
    q = Question(title=request.json['title'], body=request.json['body'], timestamp=datetime.datetime.utcnow())
 
    if request.json['tags']:
@@ -47,7 +49,7 @@ def create_question():
    return jsonify( {'Question': q_dict} ), 201
 
 @qmod.route('/<int:qid>/', methods = ['DELETE'])
-@jsonp
+@crossdomain
 #TODO: require author or admin
 def delete_question(qid):
    q = Question.query.get(qid)
@@ -58,7 +60,7 @@ def delete_question(qid):
    return jsonify( {'Deleted id': qid} ), 200
 
 @qmod.route('/<int:qid>/', methods = ['PUT'])
-@jsonp
+@crossdomain
 #TODO: require author or admin
 def modify_question(qid):
    if not request.json:
@@ -74,7 +76,7 @@ def modify_question(qid):
    return jsonify( {'Modified id':qid} ), 200
 
 @qmod.route('/<int:qid>/replies/', methods = ['GET'])
-@jsonp
+@crossdomain
 def get_question_replies(qid):
    reply_list = Question.query.get(qid).replies
    reply_dict = []
@@ -82,4 +84,17 @@ def get_question_replies(qid):
       reply_dict.append(r.to_dict())
 
    return jsonify( {'ReplyToID':qid,'ReplyList':reply_dict} )
+
+@qmod.route('/<tagName>/', methods = ['GET'])
+@crossdomain
+def get_tagged_questions(tagName):
+   qs = db.session.query(Question).filter(Question.tags.any(Tag.title == tagName)).all()
+   qs_dict = []
+   if not qs:
+      abort(400)
+   else:
+      for q in qs:
+         qs_dict.append(q.to_dict())
+
+   return jsonify( {'QuestionList': qs_dict } )
 

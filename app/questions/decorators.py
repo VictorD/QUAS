@@ -1,20 +1,19 @@
-"""
-Taken from:  https://gist.github.com/1094140
-"""
-
+from flask import make_response
 from functools import wraps
-from flask import request, current_app
 
-def jsonp(func):
-    """Wraps JSONified output for JSONP requests."""
+def crossdomain(func)
     @wraps(func)
-    def decorated_function(*args, **kwargs):
-        callback = request.args.get('callback', False)
-        if callback:
-            data = str(func(*args, **kwargs).data)
-            content = str(callback) + '(' + data + ')'
-            mimetype = 'application/javascript'
-            return current_app.response_class(content, mimetype=mimetype)
-        else:
-            return func(*args, **kwargs)
-    return decorated_function
+    def wrapped_function(*args, **kwargs):
+         resp = make_response(func(*args, **kwargs))
+
+         h = resp.headers
+         h['Access-Control-Allow-Origin'] = 'http://www.student.ltu.se'
+         h['Access-Control-Allow-Methods'] = "GET, POST, PUT, DELETE"
+         h['Access-Control-Max-Age'] = '10000'
+         h['Access-Control-Allow-Credentials'] = 'true'
+         h['Access-Control-Allow-Headers'] = \
+             "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+         return resp
+
+     return wrapped_function
+
