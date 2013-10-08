@@ -5,8 +5,14 @@ from app.decorators import crossdomain
 from app import db
 import datetime
 from app.tags.views import get_tag
+from pprint import pprint
 
 qmod = Blueprint('questions', __name__, url_prefix='/questions')
+
+@qmod.route('/', methods = ['OPTIONS'])
+@crossdomain
+def tellThemEverythingWillBeOk():
+   return jsonify ( {'Allowed Methods':''} ), 200
 
 @qmod.route('/', methods = ['GET'])
 @crossdomain
@@ -35,10 +41,14 @@ def create_question():
    if not request.json or not 'title' in request.json or not 'body' in request.json:
       abort(400)
 
-  
+   pprint ("===========================")
+   pprint ("title:" + request.json['title'])
+   pprint ("body:" + request.json['body'])
+   pprint ("===========================")
+
    q = Question(title=request.json['title'], body=request.json['body'], timestamp=datetime.datetime.utcnow())
 
-   if request.json['tags']:
+   if request.json.get('tags'):
       for tagName in request.json['tags']:
          t = get_tag(tagName)
          q.tags.append(t)

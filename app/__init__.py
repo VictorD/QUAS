@@ -22,3 +22,6 @@ app.register_blueprint(ReplyModule)
 
 from tags.views import tmod as TagModule
 app.register_blueprint(TagModule)
+
+from votes.views import vmod as VotesModule
+app.register_blueprint(VotesModule)
