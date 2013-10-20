@@ -1,0 +1,50 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+<link type="text/css" rel="stylesheet" href="../static/css/openid.css" />
+	
+<script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.js"></script>
+<script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js"></script>
+<script type="text/javascript" src="../static/js/openid-jquery.js"></script>
+<script type="text/javascript" src="../static/js/openid-en.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			openid.init('openid_identifier');
+		});
+</script>
+<title>QUAS - Your LTU knowledge database !</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+	<div class="row">
+		<div class="col-lg-6 col-lg-offset-3" id="add">
+		<h1>Login</h1>
+		<form action="backend/openid-login" method="get" id="openid_form">
+			<input type="hidden" name="action" value="verify" />
+			<fieldset>
+				<legend>Login with your student account</legend>
+				<div id="openid_choice">
+					<div id="openid_btns"></div>
+				</div>
+				<div id="openid_input_area">
+					<input id="openid_identifier" name="openid_identifier" type="text" value="http://" />
+					<input id="openid_submit" type="submit" value="Sign-In"/>
+				</div>
+				<noscript>
+					<p>OpenID is service that allows you to log-on to many different websites using a single indentity.
+					Find out <a href="http://openid.net/what/">more about OpenID</a> and <a href="http://openid.net/get/">how to get an OpenID enabled account</a>.</p>
+				</noscript>
+			</fieldset>
+		</form>
+		</div>
+	</div>
+	<div class="row">  
+        <span data-bind="text: responseJSON"></span>
+    </div>
+</div>
+</div>
+
+</body>
+</html>
