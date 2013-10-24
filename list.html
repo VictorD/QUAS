@@ -20,56 +20,13 @@
    <tbody>
    <!-- ko foreach: questions -->
    <tr class="question">
-      <td><a href="#" data-bind="text: title"></a></td>
+      <td><a data-bind="attr: {href: question_href}, text: title"></a></td>
       <td data-bind="text: body"></td>
       <td class="text-center"><span class="badge">42</span></td>
       <td class="text-center"><span class="badge">13</span></td>
-      <td>#tag1 #tag2</td>
+      <td><a href="#" data-bind="text: tags"></a></td>
    </tr>
    <!-- /ko -->
    </tbody>
    </table>
 </div>
-
-<script type="text/javascript">
-function QViewModel(){
-	
-	this.qURI = 'http://130.240.5.168:5000/questions/';
-   this.questions = ko.observableArray();
-	window.questionList = this.questions;
-
-	this.ajax = function(uri, method, data){
-		var request = {
-			url: uri,
-			type: method,
-			contentType: "application/json",
-			accepts: "application/json",
-			cache: false,
-			dataType: 'json',
-			data: JSON.stringify(data)
-		};
-		return $.ajax(request);
-	}
-
-	// data.questions.length
-	this.ajax(this.qURI, 'GET').done(function(data) {
-		console.log("We are in ajax();");
-		
-		var ql = data.QuestionList;
-		
-		for (var i = 0; i < ql.length; i++) {
-			console.log("In the loop #"+i);
-			window.questionList.push({
-				uri: ko.observable(ql[i].uri),
-				title: ko.observable(ql[i].title),
-				body: ko.observable(ql[i].body),
-				timestamp: ko.observable(ql[i].timestamp),
-				done: ko.observable(ql[i].done)
-			});
-		} 
-	});
-
-}
-
-ko.applyBindings(new QViewModel(), $("#questionTable").get(0));
-</script>

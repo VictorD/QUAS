@@ -5,7 +5,8 @@
 <script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.js"></script>
 <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
 <script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js"></script>
-<script src="js/pager.js"></script><style type="text/css"></style>
+<script src="js/pager.js"></script>
+<script src="js/models.js"></script>
 <title>QUAS - Your LTU knowledge database !</title>
 </head>
 <body id="main">
@@ -20,11 +21,12 @@
 			<a class="navbar-brand" href="#">QUAS</a>
 		</div>
 		<div class="navbar-collapse collapse">
-         <ul class="menu">
+         <ul class="nav navbar-nav">
 			  <li><a data-bind="page-href: 'listQuestions'">Questions</a></li>
 			  <li><a data-bind="page-href: 'addQuestion'">Write Question</a></li>
+			  <li><a href="#">My Profile</a></li>
 			</ul>
-			<form action="examples/consumer/try_auth.php" method="get" class="navbar-form navbar-right">
+			<form action="http://130.240.5.168:5000/u/login" method="get" class="navbar-form navbar-right">
 				<button type="submit" class="btn btn-primary">Student Login</button>
 			</form>
 		</div>
@@ -37,7 +39,6 @@
 	</div>
 	<div class="row">
 		<div class="col-lg-10 col-lg-offset-1">
-				
 			<form id="search" class="form-horizontal" role="form" method="POST" target="#">
 				<div class="form-group">
 						<div class="col-lg-7 col-lg-offset-2 ">
@@ -52,18 +53,34 @@
 	</div>
 </div>
 <div class="container">
-	<div data-bind="page: {
-		id: 'listQuestions',
-		role:'start',
-		loader: spinnerLoader,
-		sourceOnShow: 'list.html'}">
+	<div data-bind="
+		page: {
+			id: 'listQuestions',
+			role:'start',
+			loader: spinnerLoader,
+			sourceOnShow: 'list.html',
+            with: new ListQuestionsModel()
+		}">
 		Loading files...
 	</div>
 
 	<div data-bind="page: {
 		id: 'addQuestion',
 		loader: spinnerLoader,
-		sourceOnShow: 'add.html'}">
+		sourceOnShow: 'edit.html'}">
+	</div>
+    <div data-bind="page: {
+		id: 'editQuestion',
+		loader: spinnerLoader,
+		sourceOnShow: 'edit.html'}">
+	</div>
+
+
+	<div data-bind="page: {
+		id: 'view',
+		params: ['question_id'],
+		loader: spinnerLoader,
+		sourceOnShow: 'view.html'}">
 	</div>
 </div>
 
