@@ -1,0 +1,53 @@
+<div id="questionView" class="row">
+   <div class="col-lg-6 col-lg-offset-3" id="add">
+   <h1 data-bind="text:title">Viewing Question <span data-bind="text: question_id"></span></h1>
+   <p data-bind="text: timestamp"></p>
+   <p id="question-body" data-bind="text: body"></p>
+   <p>Tags: <span data-bind="text: tags"></span></p>   
+   <h3>Replies: </h3>
+   <table>
+   <tbody>
+   <!-- ko foreach: replies -->
+   <tr class="replyList">
+     <td data-bind="text: timestamp"></td>
+     <td data-bind="text: body"></td>
+   </tr>
+   <!-- /ko -->
+   </tbody> 
+   </table>
+   <br/>
+   <p>
+       <button id="deleteQuestion" href="#">Delete question</button>
+   </p>
+</div>
+<h3>Do you have an answer for this question?</h3>
+<div class="form-group">
+<div class="col-lg-10">
+<textarea data-bind="value: body" class="form-control" rows="4">
+</textarea>				
+</div>
+   <p>
+       <button id="deleteQuestion" href="#">Add reply</button>
+   </p>
+
+</div>
+<script type="text/javascript">
+
+$(document).ready(function() { 
+    var question_id = pager.getActivePage().pageRoute.params.question_id;
+
+    $("#deleteQuestion").click(function( event ) {
+        $.ajax({
+        url: 'http://130.240.5.168:5000/questions/' + question_id + '/',
+        type: 'DELETE',
+        success: function(result) {
+            // Do something with the result
+            alert("deleted question");
+        }
+        });
+        event.preventDefault();
+    });
+});
+
+ko.applyBindings(new ViewQuestionModel(), $("#questionView").get(0));
+</script>
