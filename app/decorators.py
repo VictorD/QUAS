@@ -1,4 +1,5 @@
-from flask import make_response
+from flask import make_response, g, request, abort
+from app.users.models import User
 from functools import wraps
 
 def crossdomain(func):
@@ -15,4 +16,18 @@ def crossdomain(func):
       return resp
 
    return wrapped_function
+
+
+def requires_login(f):
+   @wraps(f)
+   def decorated_function(*args, **kwargs):
+      if 'user' in request.json:
+         token = request.json['token']
+         #user = User.query.get(request.json['user'])
+         if token != "peteristheman": #token:    
+            abort(403)
+      else:
+            abort(400)
+      return f(*args, **kwargs)
+   return decorated_function
 

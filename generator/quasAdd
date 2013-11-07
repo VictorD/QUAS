@@ -14,7 +14,7 @@ do
    TAGS=$(./quasTag.py)
    #echo $TAG   
    
-   STR='{"title": "'$TITLE'", "body" : "'$BODY'", "tags":["'$TAGS'"]}'
+   STR='{"title": "'$TITLE'", "body" : "'$BODY'", "tags": '$TAGS'}'
    STR2='{"body": "'$REPLY'", "question_id" : "'$i'"}'
 
 	curl -i -H "Content-Type: application/json" -X POST -d "$STR" http://localhost:5000/questions/

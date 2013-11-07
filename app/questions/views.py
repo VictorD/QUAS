@@ -9,9 +9,10 @@ from pprint import pprint
 
 qmod = Blueprint('questions', __name__, url_prefix='/questions')
 
+@qmod.route('/<int:qid>/', methods = ['OPTIONS'])
 @qmod.route('/', methods = ['OPTIONS'])
 @crossdomain
-def tellThemEverythingWillBeOk():
+def tellThemEverythingWillBeOk(qid=0):
    return jsonify ( {'Allowed Methods':''} ), 200
 
 @qmod.route('/', methods = ['GET'])
@@ -19,7 +20,8 @@ def tellThemEverythingWillBeOk():
 def get_all_questions():
    all_q = Question.query.all()
    all_q_dict = []
-   for q in all_q:
+   tag_dict = []
+   for q in all_q:   
       all_q_dict.append(q.to_dict())
    return jsonify( {'QuestionList':all_q_dict} )
 
@@ -41,15 +43,11 @@ def create_question():
    if not request.json or not 'title' in request.json or not 'body' in request.json:
       abort(400)
 
-   pprint ("===========================")
-   pprint ("title:" + request.json['title'])
-   pprint ("body:" + request.json['body'])
-   pprint ("===========================")
-
    q = Question(title=request.json['title'], body=request.json['body'], timestamp=datetime.datetime.utcnow())
 
    if request.json.get('tags'):
-      for tagName in request.json['tags']:
+      tagList = request.json['tags']
+      for tagName in tagList:
          t = get_tag(tagName)
          q.tags.append(t)
 

@@ -33,7 +33,7 @@ class RVote(db.Model):
       return dict(
          id = self.id,
          value = self.value,
-         question_id = self.question_id,
+         reply_id = self.reply_id,
          timestamp = self.timestamp
       )
    

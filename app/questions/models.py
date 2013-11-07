@@ -13,12 +13,15 @@ class Question(db.Model):
    #TODO User author and tags list
 
    def to_dict(self):
+      tag_list = []
+      for t in self.tags:
+         tag_list.append(t.title)
       return dict(
          id=self.id,
          title=self.title,
          body=self.body,
          timestamp=self.timestamp,
-         tags = str(self.tags)
+         tags = tag_list
       )
 
    def __repr__(self):

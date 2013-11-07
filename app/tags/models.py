@@ -10,7 +10,6 @@ class Tag(db.Model):
          title = self.title
       )
 
-   
    def __repr__(self):
       return '%s' % (self.title)
 
