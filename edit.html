@@ -32,26 +32,30 @@ var viewModel = new function() {
 	    $.support.cors = true;
 
 	    var data = JSON.stringify({
-                title: self.title(), body: self.body()
-            });
+          title: self.title(), body: self.body()
+      });
 
 	    this.ajax = function(uri, method, data){
-		var request = {
-			url: uri,
-			type: method,
-			contentType: "application/json",
-			accepts: "application/json",
-			cache: false,
-			dataType: 'json',
-			data: data
-		};
-		return $.ajax(request);
+    		var request = {
+          url: uri,
+          type: method,
+          contentType: "application/json",
+          accepts: "application/json",
+          cache: false,
+          dataType: 'json',
+          xhrFields: {
+                withCredentials: true
+             },
+          data: data
+		    };
+
+		    return $.ajax(request);
 	    }
 
-            this.ajax("http://130.240.5.168:5000/questions/", 'POST', data).done(function(response) {
-	            console.log("POSTED BAD REQUETS?");
-        	    self.responseJSON(response);
-            }); 
+      this.ajax("http://130.240.5.168:5000/questions/", 'POST', data).done(function(response) {
+          console.log("POSTED BAD REQUETS?");
+    	    self.responseJSON(response);
+      }); 
 	}
 }
 
