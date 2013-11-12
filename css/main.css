@@ -1,0 +1,31 @@
+
+body { 
+   margin: 0; 
+   padding: 0;
+   font-family: tahoma; 
+}
+
+#header { 
+   height: 70px;
+   background-color: #333; 
+}
+
+#nav-menu a:link, #nav-menu a:active, #nav-menu a:visited {
+   color: #FFF;
+   text-decoration: none;
+}
+
+#nav-menu li {
+   display: inline-block;
+   width: 120px;
+   height: 70px;
+   line-height: 70px;
+   text-align: center;
+   font-size: 120%;
+   background-color: #82cce7; 
+   color: #FFF; 
+}
+
+#nav-menu li a.blue{
+   background-color: #82cce7; 
+}
