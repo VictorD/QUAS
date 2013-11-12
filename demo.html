@@ -5,8 +5,8 @@
 <link rel="stylesheet" href="css/main.css">
 
 <script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.js"></script>
-<script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js"></script>
 <script src="js/jquery.history.js"></script>
+<script src="js/knockout-3.0.0.js"></script>
 <script src="js/pager.js"></script>
 
 <title>QUAS - Your LTU knowledge database !</title>
@@ -16,47 +16,67 @@
 <div class="row">
 <div id="header" class="col-md-12 column">
 <ul id="nav-menu">
-   <li>QUAS</li>
-   <li><a class="blue">Questions</a></li>
-   <li><a>Sign in</a></li>
+   <li style="width: 80px;text-align: left;">QUAS</li>
+   
+   <li class="blue"><a href="#!questions">
+      <span class="glyphicon glyphicon-question-sign"></span> Questions</a>
+      <span class="glyphicon glyphicon-arrow-down" style="position:absolute;top:61px;left: 205px;z-index:999;"></span>
+   </li>
+   <li class="orange"><span class="glyphicon glyphicon-search"></span><span> Search</span></li>
+   <li style="float: right;"><a href="http://130.240.5.168:5000/u/login">Sign in</a></li>
+  
 </ul>   
 </div>
-<!--<textarea id="log" style="width:100%;height:400px"></textarea>-->
-
-<ul data-bind="foreach: questions">
-    <li class="question">
-      <a href="#" data-bind="click: $parent.viewQuestion, text: title"></a>
-      <span data-bind="text: title"></span>
-      <span data-bind="text: body"></span>
-      <a href="#" data-bind="text: tags"></a>
-   </li>
-</ul>
-
-<hr/>
-<div id="questionView" class="row" data-bind="with: viewedQuestion">
-   <div class="col-lg-6 col-lg-offset-3" id="add">
-   <h1>Viewing Question <span data-bind="text: id"></span></h1>
-   <span  data-bind="text:title"></span>
-   <p data-bind="text: timestamp"></p>
-   <p id="question-body" data-bind="text: body"></p>
-   <p>Tags: <span data-bind="text: tags"></span></p>   
-   <h3>Replies: </h3>
-   <table>
-   <tbody>
-   <!-- ko foreach: replies -->
-   <tr class="replyList">
-     <td data-bind="text: timestamp"></td>
-     <td data-bind="text: body"></td>
-   </tr>
-   <!-- /ko -->
-   </tbody> 
-   </table>
-   <br/>
-   <p>
-       <button id="deleteQuestion" href="#">Delete question</button>
-   </p>
 </div>
+<div class="row">
+   <div class="col-md-6" style="padding-left: 0;">
+   <div id="nav-filter-menu">
+      <span class="glyphicon glyphicon-list-alt"></span>&nbsp;<span>Filter questions</span>
+   </div>
+   <ul id="question-list" data-bind="foreach: questions">
+       <li class="question-block clearfix" data-bind="style: isQuestionSelected(id) ? { background: '#b9ecff' } : { background: '#eee'}">
+         <!--<img src=""/>-->
+         <div style="background-color: #aaa;width:64px;height:64px;float: left;margin-top: 10px;margin-right: 15px;"></div>
+         <ul>
+            <li class="question-header">
+               <span class="author">AuthorName asked at <span class="timestamp" data-bind="text:timestamp"></span></span>:
+            </li>
+            <li class="question-body">
+               <a href="#" data-bind="click: $parent.viewQuestion, text: title"></a>
+            </li>
+            <li class="question-tags">
+               <a href="#" data-bind="text: tags"></a>
+            </li>
+         </ul>
+      </li>
+   </ul>
+   
+   </div>
 
+   <div id="questionView" class="col-md-6 column" data-bind="with: viewedQuestion, fadeVisible: isViewingQuestion()">
+         <h1>Viewing Question <span data-bind="text: id"></span></h1>
+         <span  data-bind="text:title"></span>
+         <p data-bind="text: timestamp"></p>
+         <p id="question-body" data-bind="text: body"></p>
+         <p>Tags: <span data-bind="text: tags"></span></p>   
+         <h3>Replies: </h3>
+         <table>
+         <tbody>
+         <!-- ko foreach: replies -->
+         <tr class="replyList">
+           <td data-bind="text: timestamp"></td>
+           <td data-bind="text: body"></td>
+         </tr>
+         <!-- /ko -->
+         </tbody> 
+         </table>
+         <br/>
+         <p>
+             <button id="deleteQuestion" href="#">Delete question</button>
+         </p>
+      </div>
+   </div>
+</div>
 <script>
 window.backendURL = 'http://130.240.5.168:5000';
 
@@ -66,14 +86,11 @@ var Question = function(data) {
    this.title     = ko.observable("Title placeholder");
    this.id        = ko.observable();
    this.tags      = ko.observable();
-   this.timestamp = ko.observable();
+   this.timestamp = ko.observable("undefined time");
    this.replies   = ko.observableArray();
-
-   // Populate our model with the initial data
    this.update(data);
 };
 
-//can pass fresh data to this function at anytime to apply updates or revert to a prior version
 Question.prototype.update = function(data) {
    this.id(data.id);
    this.body(data.body);
@@ -86,22 +103,25 @@ Question.prototype.update = function(data) {
 var ViewModel = function() {
    this.questions = ko.observableArray();
    
+   this.isViewingQuestion = function() { return (vm.viewedQuestion() != undefined); }
    this.viewedQuestion = ko.observable();
     
    this.viewQuestion = this.viewQuestion.bind(this);
-   //this.acceptItem = this.acceptItem.bind(this);
-   //this.revertItem = this.revertItem.bind(this);
 
-   var q = {id:1, body: "look at that body", title: "Dummy question", tags: "tags", timestamp: "timestamp 2013"};
-   
-   this.questions.push(new Question(q));
-   /*$.getJSON(window.backendURL + '/questions/').done(function(data) {
+   for (var i=0;i<5;i++)
+   { 
+      var q = {id:i, body: "look at that body", title: "Is this dummy question #" + i + "?", tags: "#demo #2013 #notreallyaquestion", timestamp: 'timestamp 2013'};
+      this.questions.push(new Question(q));
+   }
+
+   self = this;
+   $.getJSON(window.backendURL + '/questions/').done(function(data) {
       console.log("We are in ajax();");
       var ql = data.QuestionList;
       for (var i = 0; i < ql.length; i++) {
-         window.questions.push(new Question(ql[i]));
+         self.questions.push(new Question(ql[i]));
       }
-   });*/
+   });
 
 };
 
@@ -113,7 +133,7 @@ ko.utils.extend(ViewModel.prototype, {
    
       question.replies([]);
       question.replies.push({body: 'random reply', id: Math.random(), timestamp: "TIMESTAMP"});
-      /*$.getJSON(window.backendURL + "/questions/" + questionId + "/replies/").done(function(data) {
+      $.getJSON(window.backendURL + "/questions/" + questionId + "/replies/").done(function(data) {
          question.replies([]);
          console.log("Loading replies for question: " + questionId);
          var rl = data.ReplyList;
@@ -124,32 +144,48 @@ ko.utils.extend(ViewModel.prototype, {
             timestamp: ko.observable(rl[i].timestamp)
            });
          } 
-      });*/
+      });
 
-      History.pushState({questionId:questionId}, null, "?question=" + questionId);
+      History.pushState({state:questionId, rnd:Math.random()}, null, "?question=" + questionId);
    }
 });
+
+// Here's a custom Knockout binding that makes elements shown/hidden via jQuery's fadeIn()/fadeOut() methods
+// Could be stored in a separate utility library
+ko.bindingHandlers.fadeVisible = {
+    init: function(element, valueAccessor) {
+        $(element).hide();
+         
+        var value = valueAccessor();
+        ko.unwrap(value) ? $(element).fadeIn() : $(element).fadeOut();
+    },
+    update: function(element, valueAccessor) {
+        $(element).hide();
+        // Whenever the value subsequently changes, slowly fade the element in or out
+        var value = valueAccessor();
+        ko.unwrap(value) ? $(element).fadeIn() : $(element).fadeOut();
+    }
+};
 
 function getQuestionById(id) {
    return $.grep(vm.questions(), function(q) { return q.id() == id; });
 }
 
+function isQuestionSelected(id) {
+
+   return (vm.viewedQuestion() != undefined && vm.viewedQuestion().id() == id());
+}
+
 // Establish Variables
 var State = History.getState();
 
-
-// Log Initial State
-//var $log = $('#log');
-History.log('initial:', State.data, State.title, State.url);
-
 // Bind to State Change
 History.Adapter.bind(window,'statechange',function(){ // Note: We are using statechange instead of popstate
-   // Log the State
    var State = History.getState(); // Note: We are using History.getState() instead of event.state
-   History.log('statechange:', State.data, State.title, State.url);
-   History.log('questionId: ', State.data.questionId);
+   //History.log('statechange:', State.data, State.title, State.url);
+   //History.log('questionId: ', State.data.state);
 
-   vm.viewedQuestion(getQuestionById(State.data.questionId)[0]);
+   vm.viewedQuestion(getQuestionById(State.data.state)[0]);
 });
 
 // use HTML5 history
