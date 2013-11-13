@@ -5,6 +5,10 @@ body {
    font-family: tahoma, verdana, sans-serif; 
 }
 
+#wrapper {
+	margin: 0;
+}
+
 #header {
    position:fixed;
    z-index: 999;
@@ -19,7 +23,7 @@ body {
 }
 
 #nav-menu li {
-
+   margin: 0 0 0 10px;
    display: inline-block;
    height: 70px;
    line-height: 70px;
@@ -29,7 +33,7 @@ body {
 }
 
 #nav-menu li.blue, #nav-menu li.orange{
-   margin: 0 0 0 10px;
+
    width: 130px;
 }
 
@@ -58,7 +62,7 @@ body {
    color: #444;
    text-transform: uppercase;
    padding: 10px;
-   margin: 72px 0 2px 0;
+   margin: 70px 0 2px 0;
 }
 
 #nav-filter-menu:hover {

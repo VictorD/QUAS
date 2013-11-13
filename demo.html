@@ -12,18 +12,18 @@
 <title>QUAS - Your LTU knowledge database !</title>
 </head>
 <body>
-<div class="container">
+<div id="wrapper" class="container">
 <div class="row">
-<div id="header" class="col-md-12 column">
+<div id="header" class="col-xs-12 column">
 <ul id="nav-menu">
    <li style="width: 80px;text-align: left;">QUAS</li>
    
    <li class="blue">
       <span style="color: #eee;" class="glyphicon glyphicon-question-sign"></span>
       <span style="color: #eee;">Questions</span>
-      <span class="glyphicon glyphicon-arrow-down" style="position:absolute;top:60px;left: 205px;z-index:999;"></span>
+      <span class="glyphicon glyphicon-arrow-down" style="position:absolute;top:60px;left: 220px;z-index:999;"></span>
    </li>
-   <li class="orange"><span class="glyphicon glyphicon-search"></span><span> Search</span></li>
+   <li><span class="glyphicon glyphicon-search"></span><span> Search</span></li>
    <li style="float: right;"><a href="http://130.240.5.168:5000/u/login">Sign in</a></li>
   
 </ul>   
@@ -85,7 +85,6 @@ var Question = function(data) {
    this.id        = ko.observable();
    this.body      = ko.observable("Loading question...");
    this.title     = ko.observable("Title placeholder");
-   this.id        = ko.observable();
    this.tags      = ko.observable();
    this.timestamp = ko.observable("undefined time");
    this.replies   = ko.observableArray();
@@ -96,9 +95,9 @@ Question.prototype.update = function(data) {
    this.id(data.id);
    this.body(data.body);
    this.title(data.title);
-   this.id(data.id);
    this.tags(data.tags);
    this.timestamp(data.timestamp);
+   this.replies(data.replies);
 };
 
 var ViewModel = function() {
