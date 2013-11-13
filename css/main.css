@@ -1,3 +1,4 @@
+html {overflow-y: scroll;}
 
 body { 
    margin: 0; 
@@ -12,9 +13,30 @@ body {
 #header {
    position:fixed;
    z-index: 999;
-   height: 70px;
-
    background-color: #333; 
+   color: #EEE;
+   line-height: 70px;
+}
+
+#header div.button {
+      float: left;
+      width: 115px;
+      margin-right: 10px;
+}
+
+#search-bar {
+   margin-left: 20px;
+}
+
+#header div.button a {
+   display: block;
+   width: 120px;
+   height: 70px;
+   line-height: 70px;
+   text-align: center;
+   font-size: 100%;
+   color: #FFF; 
+   text-decoration: none;
 }
 
 #nav-menu a {
@@ -25,35 +47,37 @@ body {
 #nav-menu li {
    margin: 0 0 0 10px;
    display: inline-block;
+}
+
+#nav-menu li a {
+   display: block;
    height: 70px;
    line-height: 70px;
    text-align: center;
-   font-size: 120%;
+   font-size: 100%;
    color: #FFF; 
 }
 
 #nav-menu li.blue, #nav-menu li.orange{
-
    width: 130px;
 }
 
-#nav-menu li.blue {
+.brand {
+      width: 120px;
+}
+.blue {
    background-color: #82cce7; 
    color: #82cce7; 
 }
 
-#nav-menu li.blue:hover {
+.orange {
+  background-color: #e7a382; 
+}
+
+.blue:hover, .orange:hover {
    background-color: #ccc; 
    color: #ccc;
    cursor: pointer;
-}
-
-#nav-menu li.blue:hover a {
-   color: #444;
-}
-
-#nav-menu li.orange {
-  background-color: #e7a382; 
 }
 
 #nav-filter-menu {

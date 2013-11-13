@@ -1,6 +1,7 @@
 <html>
 <head>
- <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
+<base href="/"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
 <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="css/main.css">
 
@@ -13,31 +14,32 @@
 <title>QUAS - Your LTU knowledge database !</title>
 </head>
 <body>
-<div id="wrapper" class="container">
+	<div id="wrapper" class="container">
 <div class="row">
-	<div id="header" class="col-xs-12 column">
-		<ul id="nav-menu">
-		   <li style="width: 80px;text-align: left;">QUAS</li>
-		   
-		   <li class="blue">
-		      <span style="color: #eee;" class="glyphicon glyphicon-question-sign"></span>
-		      <!--<span style="color: #eee;">Questions</span>-->
-		      <a data-bind="page-href: 'questionPage'">Questions</a>
-		      <span class="glyphicon glyphicon-arrow-down" style="position:absolute;top:60px;left: 220px;z-index:999;"></span>
-		   </li>
-		<li class="blue">
-		      <span style="color: #eee;" class="glyphicon glyphicon-question-profile"></span>
-		      <span style="color: #eee;">Profile</span>
-		      <span class="glyphicon glyphicon-arrow-down" style="position:absolute;top:60px;left: 220px;z-index:999;"></span>
-		   </li>
-		   <li><span class="glyphicon glyphicon-search"></span><span> Search</span></li>
-		   <li style="float: right;"><a href="http://130.240.5.168:5000/u/login">Sign in</a></li>
-		  
-		</ul>   
+	<div id="header" class="col-xs-12">
+		<div class="brand col-xs-1">MY BRAND</div>
+		<div class="button col-xs-1">
+			<a data-bind="page-href: 'questions'" class="blue">
+				<span style="color: #eee;" class="glyphicon glyphicon-question-sign"></span>
+				Questions
+			</a>
+		</div>
+		<div class="button col-xs-1">
+			<a data-bind="page-href: 'profile'" class="orange">
+				<span style="color: #eee;" class="glyphicon glyphicon-question-sign"></span>
+				Profile
+			</a>
+		</div>
+		<div id="search-bar" class="col-xs-5">
+			<span class="glyphicon glyphicon-search"></span><span> Search</span>
+		</div>
+		<div class="button col-xs-1">
+			<a href="http://130.240.5.168:5000/u/login">Sign in</a>
+		</div>
 	</div>
 </div>
-<div id="pages" class="container">
-	<div data-bind="page: { id: 'questionPage',
+<div id="pages" class="row">
+	<div data-bind="page: { id: 'questions',
 			role:'start',
 			loader: spinnerLoader,
 			source: 'questions.html',
@@ -55,18 +57,8 @@
 		loader: spinnerLoader,
 		sourceOnShow: 'edit.html'}">
 	</div>
-
-
-	<div data-bind="page: {
-		id: 'view',
-		params: ['question_id'],
-		loader: spinnerLoader,
-		sourceOnShow: 'view.html'}">
-	</div>
 </div>
 
-<div id="footer">
-</div>
 </div>
 <script type="text/javascript">
 	function spinnerLoader(page, element) {
