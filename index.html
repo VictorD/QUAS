@@ -9,7 +9,10 @@
 <script src="js/jquery.history.js"></script>
 <script src="js/knockout-2.3.0.js"></script>
 <script src="js/pager.js"></script>
+<script src="js/ajax.js"></script>
 <script src="js/questions.js"></script>
+<script src="js/profile.js"></script>
+
 
 <title>QUAS - Your LTU knowledge database !</title>
 </head>
@@ -44,6 +47,12 @@
 			loader: spinnerLoader,
 			source: 'questions.html',
             		with: questionViewModel }">
+		Loading files...
+	</div>
+	<div data-bind="page: { id: 'profile',
+			loader: spinnerLoader,
+			sourceOnShow: 'profile.html',
+            		with: new ProfileModel() }">
 		Loading files...
 	</div>
 
