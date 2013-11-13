@@ -2,65 +2,46 @@
 <head>
  <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
 <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="css/main.css">
+
 <script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.js"></script>
-<script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
-<script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js"></script>
+<script src="js/jquery.history.js"></script>
+<script src="js/knockout-2.3.0.js"></script>
 <script src="js/pager.js"></script>
-<script src="js/models.js"></script>
+<script src="js/questions.js"></script>
+
 <title>QUAS - Your LTU knowledge database !</title>
 </head>
-<body id="main">
-<div class="navbar navbar-inverse">
-	<div class="container">
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" href="#">QUAS</a>
-		</div>
-		<div class="navbar-collapse collapse">
-         <ul class="nav navbar-nav">
-			  <li><a data-bind="page-href: 'listQuestions'">Questions</a></li>
-			  <li><a data-bind="page-href: 'addQuestion'">Write Question</a></li>
-			  <li><a href="#">My Profile</a></li>
-			</ul>
-			<form action="http://130.240.5.168:5000/u/login" method="get" class="navbar-form navbar-right">
-				<button type="submit" class="btn btn-primary">Student Login</button>
-			</form>
-		</div>
+<body>
+<div id="wrapper" class="container">
+<div class="row">
+	<div id="header" class="col-xs-12 column">
+		<ul id="nav-menu">
+		   <li style="width: 80px;text-align: left;">QUAS</li>
+		   
+		   <li class="blue">
+		      <span style="color: #eee;" class="glyphicon glyphicon-question-sign"></span>
+		      <!--<span style="color: #eee;">Questions</span>-->
+		      <a data-bind="page-href: 'questionPage'">Questions</a>
+		      <span class="glyphicon glyphicon-arrow-down" style="position:absolute;top:60px;left: 220px;z-index:999;"></span>
+		   </li>
+		<li class="blue">
+		      <span style="color: #eee;" class="glyphicon glyphicon-question-profile"></span>
+		      <span style="color: #eee;">Profile</span>
+		      <span class="glyphicon glyphicon-arrow-down" style="position:absolute;top:60px;left: 220px;z-index:999;"></span>
+		   </li>
+		   <li><span class="glyphicon glyphicon-search"></span><span> Search</span></li>
+		   <li style="float: right;"><a href="http://130.240.5.168:5000/u/login">Sign in</a></li>
+		  
+		</ul>   
 	</div>
 </div>
-
-<div class="container">
-	<div class="row text-center">
-		<img src="img/logo.png" width="359px" height="220px"/>
-	</div>
-	<div class="row">
-		<div class="col-lg-10 col-lg-offset-1">
-			<form id="search" class="form-horizontal" role="form" method="POST" target="#">
-				<div class="form-group">
-						<div class="col-lg-7 col-lg-offset-2 ">
-							<input id="search-bar" type="text" class="form-control"/>
-						</div>
-						<div class="col-lg-1">
-							<input id="submit-button" type="submit" value="Search" class="btn btn-primary"/>
-						</div>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
-<div class="container">
-	<div data-bind="
-		page: {
-			id: 'listQuestions',
+<div id="pages" class="container">
+	<div data-bind="page: { id: 'questionPage',
 			role:'start',
 			loader: spinnerLoader,
-			sourceOnShow: 'list.html',
-            with: new ListQuestionsModel()
-		}">
+			source: 'questions.html',
+            		with: questionViewModel }">
 		Loading files...
 	</div>
 
@@ -69,7 +50,7 @@
 		loader: spinnerLoader,
 		sourceOnShow: 'edit.html'}">
 	</div>
-    <div data-bind="page: {
+    	<div data-bind="page: {
 		id: 'editQuestion',
 		loader: spinnerLoader,
 		sourceOnShow: 'edit.html'}">
@@ -101,14 +82,15 @@
 		return loader;
 	}
 
-	var IndexViewModel = function() {
-	};
-	
-	var viewModel = new IndexViewModel();
+	var emptyViewModel = function() {};
+
+	pager.useHTML5history = true;
+	pager.Href5.history = History;
 	pager.Href.hash = '#!/';
-	pager.extendWithPage(viewModel);
-	ko.applyBindings(viewModel);
-	pager.start();
+	pager.extendWithPage(emptyViewModel);
+	ko.applyBindings(emptyViewModel);
+
+	pager.startHistoryJs();
 </script>	
 </body>
 </html>
