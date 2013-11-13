@@ -2,11 +2,14 @@
 body { 
    margin: 0; 
    padding: 0;
-   font-family: tahoma; 
+   font-family: tahoma, verdana, sans-serif; 
 }
 
-#header { 
+#header {
+   position:fixed;
+   z-index: 999;
    height: 70px;
+
    background-color: #333; 
 }
 
@@ -55,7 +58,7 @@ body {
    color: #444;
    text-transform: uppercase;
    padding: 10px;
-   margin: 0 0 2px 0;
+   margin: 72px 0 2px 0;
 }
 
 #nav-filter-menu:hover {
@@ -97,5 +100,6 @@ body {
 
 #questionView {
    position:fixed;
+   top: 70px;
    right: 0;
 }
