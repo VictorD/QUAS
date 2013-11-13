@@ -28,6 +28,10 @@ body {
    margin-left: 20px;
 }
 
+#sign-in {
+   float: right !important;
+}
+
 #header div.button a {
    display: block;
    width: 120px;
