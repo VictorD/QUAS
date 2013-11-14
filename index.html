@@ -53,7 +53,7 @@
 	<div data-bind="page: { id: 'profile',
 			loader: spinnerLoader,
 			sourceOnShow: 'profile.html',
-            		withOnShow: ProfileModel }">
+            		withOnShow: function(callback){callback(new ProfileModel()); }}">
 		Profile page
 	</div>
 </div>
