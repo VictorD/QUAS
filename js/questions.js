@@ -8,19 +8,7 @@ var Question = function(data) {
    this.tags      = ko.observable();
    this.timestamp = ko.observable("undefined time");
    this.replies   = ko.observableArray();
-
-   var self = this;
-   this.deleteQuestion = function() {
-      var qid = self.id();
-      $.ajax({
-        url: window.backendURL + '/questions/' + qid + '/',
-        type: 'DELETE',
-        success: function(result) {
-            // Do something with the result
-            alert("deleted question " + qid);
-        }
-      });
-    }
+  
    this.update(data);
 };
 
@@ -35,11 +23,11 @@ Question.prototype.update = function(data) {
 };
 
 var QuestionViewModel = function() {
-   this.questions      = ko.observableArray();
-   this.viewedQuestion = ko.observable();
-   this.viewQuestion   = this.viewQuestion.bind(this);
+   var self = this;
+   self.questions      = ko.observableArray();
+   self.viewedQuestion = ko.observable();
+   self.viewQuestion   = self.viewQuestion.bind(this);
 
-   self = this;
    $.getJSON(window.backendURL + '/questions/').done(function(data) {
       console.log("We are in ajax();");
       var ql = data.QuestionList;
@@ -48,27 +36,28 @@ var QuestionViewModel = function() {
       }
    });
 
-  // Establish Variables
-  var State = History.getState();
-
   // Bind to State Change
-  History.Adapter.bind(window,'statechange',function(){ // Note: We are using statechange instead of popstate
-     var State = History.getState(); // Note: We are using History.getState() instead of event.state
-     //History.log('statechange:', State.data, State.title, State.url);
-     //History.log('questionId: ', State.data.state);
-     self.viewedQuestion(self.getQuestionById(State.data.state)[0]);
+  History.Adapter.bind(window,'statechange',function(){
+    var State = History.getState();
+
+    console.log('statechange:', State.data, State.title, State.url);
+    currentQuestion = State.data.question;
+    if (currentQuestion) {      
+      self.viewedQuestion(currentQuestion);
+    }
   });
 };
 
 ko.utils.extend(QuestionViewModel.prototype, {
   isViewingQuestion: function() { 
-    return (this.viewedQuestion() != undefined); 
+    console.log(ko.toJS(this.viewedQuestion))
+    return (ko.toJS(this.viewedQuestion) != undefined); 
   },
   getQuestionById: function(id) {
-    return $.grep(self.questions(), function(q) { return q.id() == id; });
+    return $.grep(ko.toJS(this.questions), function(q) { return q.id == id; });
   },
-  isQuestionSelected: function(id) {
-    return (this.isViewingQuestion() && this.viewedQuestion().id() == id());
+  isQuestionSelected: function(question) {
+    return this.isViewingQuestion() && (ko.toJS(this.viewedQuestion).id == question.id);
   },
   viewQuestion: function(question) {
     var questionId = ko.toJS(question.id);
@@ -87,7 +76,17 @@ ko.utils.extend(QuestionViewModel.prototype, {
        } 
     });
 
-    History.pushState({state:questionId, rnd:Math.random()}, null, "?question=" + questionId);
- }
+    History.pushState({question:ko.toJS(question), rnd:Math.random()}, "Viewing Question: " + questionId, "?question=" + questionId);
+  },
+  deleteQuestion: function(question) {
+    var qid = question.id;
+    $.ajax({
+      url: window.backendURL + '/questions/' + qid + '/',
+      type: 'DELETE',
+      success: function(result) {
+          alert("deleted question " + qid);
+      }
+    });
+  }
 });
 

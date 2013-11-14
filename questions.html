@@ -23,7 +23,7 @@
       </li>
    </ul>
    </div>
-   <div id="questionView" class="col-md-6 column" data-bind="with: viewedQuestion, fadeVisible: isViewingQuestion(id)">
+   <div id="questionView" class="col-md-6 column" data-bind="with: viewedQuestion">
          <h1>Viewing Question <span data-bind="text: id"></span></h1>
          <span  data-bind="text:title"></span>
          <p data-bind="text: timestamp"></p>
@@ -42,7 +42,7 @@
          </table>
          <br/>
          <p>
-            <form data-bind="submit: deleteQuestion">
+            <form data-bind="submit: $root.deleteQuestion.bind('question', $data)">
              <button>Delete question</button>
          </p>
       </div>
