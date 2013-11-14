@@ -13,7 +13,7 @@ var Question = function(data) {
 };
 
 Question.prototype.update = function(data) {
-   this.author(data.author)
+   this.author(data.author);
    this.id(data.id);
    this.body(data.body);
    this.title(data.title);
@@ -66,12 +66,13 @@ ko.utils.extend(QuestionViewModel.prototype, {
   viewQuestion: function(question) {
     var questionId = ko.toJS(question.id);
 
+    var sv = this.viewedQuestion;
     $.getJSON(window.backendURL + "/questions/" + questionId + "/replies/").done(function(data) {
-       question.replies([]);
+       sv.replies([]);
        console.log("Loading replies for question: " + questionId);
        var rl = data.ReplyList;
        for (var i = 0; i < rl.length; i++) {
-          question.replies.push({				
+          sv.replies.push({				
             body: ko.observable(rl[i].body),
             id: ko.observable(rl[i].id),
             timestamp: ko.observable(rl[i].timestamp)
