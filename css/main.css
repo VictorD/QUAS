@@ -9,7 +9,7 @@
 
 body { 
    margin: 0;
-   margin-top: 70px; 
+   margin-top: 60px; 
    padding: 0;
    font-family: tahoma, verdana, sans-serif; 
 }
@@ -20,7 +20,7 @@ body {
    z-index: 999;
    background-color: #333; 
    color: #EEE;
-   line-height: 70px;
+   line-height: 60px;
    border-bottom: 1px solid #444;
 }
 
@@ -31,49 +31,29 @@ body {
 }
 
 #search-bar {
+    font-size: 150%;
+    font-family: helvetica;
    margin-left: 20px;
 }
 
-#sign-in {
+.right {
    float: right !important;
 }
 
 #header div.button a {
    display: block;
    width: 120px;
-   height: 70px;
-   line-height: 70px;
+   height: 60px;
+   line-height: 60px;
    text-align: center;
    font-size: 100%;
    color: #FFF; 
    text-decoration: none;
 }
 
-#nav-menu a {
-   color: #FFF;
-   text-decoration: none;
-}
-
-#nav-menu li {
-   margin: 0 0 0 10px;
-   display: inline-block;
-}
-
-#nav-menu li a {
-   display: block;
-   height: 70px;
-   line-height: 70px;
-   text-align: center;
-   font-size: 100%;
-   color: #FFF; 
-}
-
-#nav-menu li.blue, #nav-menu li.orange{
-   width: 130px;
-}
 
 .brand {
-      width: 120px;
+    min-width: 200px;
 }
 .blue {
    background-color: #82cce7; 
@@ -142,7 +122,7 @@ body {
 
 #questionView {
    margin: 0;
-   padding: 0 10px;
+   padding: 0 10px 0 0;
    }
 
 #rightColumn {

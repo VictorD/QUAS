@@ -3,19 +3,22 @@
       <span class="glyphicon glyphicon-list-alt"></span>&nbsp;<span>Show author options</span>
    </div>
     <div class="currentQuestion clearfix">
-        <div class="col-xs-3" style="line-height: 200px;">
+        <div class="col-xs-2" style="line-height: 60px;">
             VOTE stuff
         </div>
-        <div class="col-xs-9">
+        <div class="col-xs-7">
              <h4  data-bind="text:title"></h4>
              <p data-bind="text: timestamp"></p>
              <p id="question-body" data-bind="text: body"></p>
-             <p>Tags: <span data-bind="text: tags"></span></p>   
+            
              <p>
                 <form data-bind="submit: $root.deleteQuestion.bind('question', $data)">
                  <button>Delete question</button>
              </p>
-         </div>
+        </div>
+        <div class="col-xs-3">
+             <p>Tags: <span data-bind="text: tags"></span></p>   
+        </div>
       </div>
       <!-- ko foreach: replies -->
       <div class="reply clearfix">
