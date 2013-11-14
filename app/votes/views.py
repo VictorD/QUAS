@@ -4,7 +4,7 @@ from app.replies.models import Reply
 from app import db
 from app.votes.models import QVote,RVote
 import datetime
-from app.decorators import crossdomain
+from app.decorators import crossdomain,requires_login
 
 vmod = Blueprint('votes', __name__, url_prefix='/vote')
 
@@ -13,8 +13,9 @@ vmod = Blueprint('votes', __name__, url_prefix='/vote')
 @vmod.route('/q/<int:qid>/', methods = ['POST'])
 @vmod.route('/q/<int:qid>/<upOrDown>', methods = ['POST'])
 @crossdomain
-#TODO: requires login
+@requires_login
 def create_vote_question(qid=0,upOrDown=None):
+   user = User.query.filter_by(email=session['email']).first()
    if not (qid!=0 or (request.json and 'question_id' in request.json)):
       abort(400)
    if qid==0:
@@ -31,7 +32,7 @@ def create_vote_question(qid=0,upOrDown=None):
    else:
       value=request.json['value']
 
-   r = QVote(value = value, timestamp = datetime.datetime.utcnow(),question_id=qid)
+   r = QVote(value = value, timestamp = datetime.datetime.utcnow(),question_id=qid,author_id=u.id)
    db.session.add(r)
    db.session.commit()
    return "",200
@@ -65,8 +66,9 @@ def list_question(qid):
 @vmod.route('/r/<int:rid>/', methods = ['POST'])
 @vmod.route('/r/<int:rid>/<upOrDown>', methods = ['POST'])
 @crossdomain
-#TODO: requires login
+@requires_login
 def create_vote_reply(rid=0,upOrDown=None):
+   user = User.query.filter_by(email=session['email']).first()
    if not (rid!=0 or (request.json and 'reply_id' in request.json)):
       abort(400)
    if rid==0:
@@ -83,7 +85,7 @@ def create_vote_reply(rid=0,upOrDown=None):
    else:
       value=request.json['value']
 
-   r = RVote(value = value, timestamp = datetime.datetime.utcnow(),reply_id=rid)
+   r = RVote(value = value, timestamp = datetime.datetime.utcnow(),reply_id=rid,author_id=u.id)
    db.session.add(r)
    db.session.commit()
    return "",200

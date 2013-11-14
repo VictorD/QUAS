@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, make_response, send_from_directory
+from flask import Flask, jsonify, make_response, send_from_directory, render_template
 import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 from flask.ext.sqlalchemy import SQLAlchemy
@@ -26,6 +26,10 @@ def bad_request(error):
 def favicon():
    return send_from_directory(basedir, 'favicon.ico')
 
+@app.route('/api')
+def api_doc():
+   return render_template('api.html')
+
 from questions.views import qmod as QuestionModule
 app.register_blueprint(QuestionModule)
 
@@ -40,3 +44,7 @@ app.register_blueprint(VotesModule)
 
 from users.views import umod as UsersModule
 app.register_blueprint(UsersModule)
+
+from search.views import smod as SearchModule
+app.register_blueprint(SearchModule)
+

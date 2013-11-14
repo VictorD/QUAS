@@ -1,29 +1,63 @@
 from models import User
-from flask import Flask, jsonify, Blueprint, request, abort, g, session
+from flask import Flask, jsonify, Blueprint, request, abort, g, session, redirect
 from app.decorators import crossdomain, requires_login
 from app import db, oid
-import datetime, pprint
-from werkzeug import check_password_hash, generate_password_hash
+import datetime
+from pprint import pprint
 
 umod = Blueprint('users', __name__, url_prefix='/u')
 
+@umod.route('/<int:qid>/', methods = ['OPTIONS'])
+@umod.route('/', methods = ['OPTIONS'])
+@crossdomain
+def tellThemEverythingWillBeOk(qid=0):
+   return jsonify ( {'Allowed Methods':''} ), 200
+
 @umod.route('/', methods = ['GET'])
+@crossdomain
+#@requires_login
 def get_users():
    us = User.query.all()
    usdict = []
    for u in us:
       usdict.append(u.to_dict())
-   return jsonify( {'UserList':usdict} ) 
+   return jsonify( {'UserList':usdict} )
+
 
 @umod.route('/<int:id>/', methods = ['GET'])
+@crossdomain
 def get_user(id):
    u = User.query.get(id)
    if u:
       return jsonify({'User':u.to_dict()})
-   abort(400) 
+   abort(400)
+
+
+@umod.route('/<int:id>/', methods = ['PUT'])
+@crossdomain
+def update_user(id):
+   u = User.query.get(id)
+   if 'username' in request.json:
+      u.username = request.json['username']
+   if 'description' in request.json:
+      u.description = request.json['description']
+   db.session.commit()  
+   return jsonify({'User': u.to_dict()})
+      
+
+@umod.route('/<int:id>/q/')
+@crossdomain
+def get_user_questions(id):
+   u = User.query.get(id)
+   uq = u.questions
+   uq_dict = []
+   for q in uq:
+      uq_dict.append(q.to_dict())
+   return jsonify ( {'QuestionList': uq_dict} )
 
 @umod.route('/login', methods = ['GET','POST'])
 @oid.loginhandler
+@crossdomain
 def login():
    if g.user is not None:
       return jsonify({'Login':'Already logged in'})
@@ -34,6 +68,7 @@ def login():
    return jsonify({'Login':'Failed'})
 
 @umod.route('/logout')
+@crossdomain
 def logout():
    session.pop('email', None)
    session.pop('token', None)
@@ -56,7 +91,8 @@ def create_or_login(resp):
    session['token'] = user.token
    db.session.commit()
    g.user = user
-   return jsonify({'Login': msg}), 200
+   next = request.args.get('next')+'?user='+str(user.id)
+   return redirect(next)
 
 @umod.before_request
 def before_request():

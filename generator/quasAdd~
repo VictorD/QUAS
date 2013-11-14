@@ -1,26 +1,24 @@
-#!/bin/bash
+#!/usr/bin/env python
+import quasBody as Body
+import quasReply as Reply
+import quasTag as Tag
+import quasTitle as Title
 
-for i in {1..25}
-do
-	TITLE=$(./quasTitle.py)
-	#echo $TITLE
+import requests
+import json
 
-	BODY=$(./quasBody.py)
-	#echo $BODY
+for i in xrange(25):
+   body=Body.generate()
+   reply=Reply.generate()
+   tag=Tag.generate()
+   title=Title.generate()
 
-   REPLY=$(./quasReply.py)
-   #echo $REPLY
+   s=requests.Session()
+   headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 
-   TAGS=$(./quasTag.py)
-   #echo $TAG   
-   
-   STR='{"title": "'$TITLE'", "body" : "'$BODY'", "tags": '$TAGS'}'
-   STR2='{"body": "'$REPLY'", "question_id" : "'$i'"}'
-
-	echo curl -i -H "Content-Type: application/json" -X POST -d "$STR" http://localhost:5000/questions/
-
-   curl -i -H "Content-Type: application/json" -X POST -d "$STR2" http://localhost:5000/replies/
-
-   echo $STR2
-
-done
+   payload={'body':body,'title':title,'tags':tag,'email':'admin@admin','token':'123456'}
+   payload2={'body':reply,'question_id':i}
+   r=s.post("http://localhost:5000/questions/",data=json.dumps(payload),headers=headers)
+   print "1"
+   r2=r=s.post("http://localhost:5000/replies/",data=json.dumps(payload2),headers=headers)
+   print "2"

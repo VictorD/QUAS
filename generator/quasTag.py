@@ -3,12 +3,19 @@
 from random import choice
 import json
 
-tags = ["Physics", "Math", "Gibb", "ComputerScience", "Hockeypulver", "Duschhjalm"]
-tmp = []
+def generate():
+   tags = ["Physics", "Math", "Gibb", "ComputerScience", "Hockeypulver", "Duschhjalm"]
+   tmp = []
 
-x = choice([1,2,3])
-while len(tmp) < x:
-   t = choice(tags)
-   if t not in tmp:
-      tmp.append(t)
-print json.dumps(tmp)
+   x = choice([1,2,3])
+   while len(tmp) < x:
+      t = choice(tags)
+      if t not in tmp:
+         tmp.append(t)
+   return tmp
+
+if __name__=="__main__":
+   print generate()
+
+
+

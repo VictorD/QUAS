@@ -7,6 +7,7 @@ class QVote(db.Model):
    question_id = db.Column(db.Integer, db.ForeignKey('question.id'), nullable=False)
    timestamp = db.Column(db.DateTime)
    question = db.relationship('Question', backref='votes')   
+   author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
    def to_dict(self):
       return dict(
@@ -28,6 +29,7 @@ class RVote(db.Model):
    reply_id = db.Column(db.Integer, db.ForeignKey('reply.id'), nullable=False)
    timestamp = db.Column(db.DateTime)
    reply = db.relationship('Reply', backref='votes')   
+   author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
    def to_dict(self):
       return dict(

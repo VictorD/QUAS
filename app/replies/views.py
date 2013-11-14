@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, Blueprint, request, abort
 from models import Reply
-from app.decorators import crossdomain
+from app.decorators import crossdomain, requires_login
 from app import db
 import datetime
 
@@ -8,7 +8,7 @@ rmod = Blueprint('replies', __name__, url_prefix='/replies')
 
 @rmod.route('/', methods = ['POST'])
 @crossdomain
-#TODO: requires login
+#@requires_login
 def create_reply():   
    if not request.json or not 'body' in request.json:
       abort(400)

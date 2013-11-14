@@ -14,9 +14,7 @@ class User(db.Model):
    token = db.Column(db.String)
    token_expires = db.Column(db.DateTime)
    questions = db.relationship('Question', backref='author')
-   question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
    replies = db.relationship('Reply', backref='author')
-   replies_id = db.Column(db.Integer, db.ForeignKey('reply.id'))
    #votes = db.relationship('Vote', backref='author')
    #votes_id = db.Column(db.Integer, db.ForeignKey('vote.id'))
 
@@ -50,4 +48,4 @@ class User(db.Model):
       )
 
    def __repr__(self):
-      return '<User %r>' % (self.username)
+      return '<User %r>' % (self.id)

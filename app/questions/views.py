@@ -1,9 +1,10 @@
-from flask import Flask, jsonify, Blueprint, request, abort
+from flask import Flask, jsonify, Blueprint, request, abort, session, g
 from models import Question
 from app.tags.models import Tag
-from app.decorators import crossdomain
+from app.users.models import User
+from app.decorators import crossdomain, requires_login, requires_author
 from app import db
-import datetime
+import datetime, math
 from app.tags.views import get_tag
 from pprint import pprint
 
@@ -17,18 +18,52 @@ def tellThemEverythingWillBeOk(qid=0):
 
 @qmod.route('/', methods = ['GET'])
 @crossdomain
-def get_all_questions():
-   all_q = Question.query.all()
-   all_q_dict = []
-   tag_dict = []
-   for q in all_q:   
-      all_q_dict.append(q.to_dict())
-   return jsonify( {'QuestionList':all_q_dict} )
+def get_questions():
+   if request.json and 'paginate' in request.json:
+      paginate = request.json['paginate']
+      page_size=paginate.get('page_size', 5)
+      page=int(paginate.get('page', 1))
+      order_by=paginate.get('order_by', 'date')
+      filter_by=paginate.get('filter_by', '')
+      filter_data=paginate.get('filter_data','')
+      
+      qs = None
+      qs_dict = []
 
+      if filter_by == 'author':
+         qs = Question.query.filter(Question.author_id==int(filter_data))
+         if order_by == 'name':   
+            qs = qs.order_by(Question.title.desc())
+         
+         elif order_by == 'vote':
+            qs = qs.order_by(Question.votesum.desc())
+     
+         else:
+            qs = qs.order_by(Question.timestamp.desc()) 
+      
+      elif filter_by == 'tags':
+         qs = Question.query.filter(Question.tags.any(Tag.title == filter_data))
+      
+      else:
+         pass
+
+      qs = qs.paginate(page,page_size,False)
+      for q in qs.items:
+         qs_dict.append(q.to_dict())
+      return jsonify( {'QuestionList': qs_dict, 'Pages':int(math.ceil(float(qs.total)/page_size))} )
+      
+   else: 
+      all_q = Question.query.all()
+      all_q_dict = []
+      tag_dict = []
+      for q in all_q:   
+         all_q_dict.append(q.to_dict())
+      return jsonify( {'QuestionList':all_q_dict} )
 
 @qmod.route('/<int:qid>/', methods = ['GET'])
 @crossdomain
-def get_questions(qid):
+#@requires_author
+def get_question(qid):
    q = Question.query.get(qid)
    if q is not None:   
       q_dict = q.to_dict()
@@ -38,12 +73,12 @@ def get_questions(qid):
       
 @qmod.route('/', methods = ['POST'])
 @crossdomain
-#TODO: requires login
+@requires_login
 def create_question():
    if not request.json or not 'title' in request.json or not 'body' in request.json:
       abort(400)
-
-   q = Question(title=request.json['title'], body=request.json['body'], timestamp=datetime.datetime.utcnow())
+   u = User.query.filter_by(email=session['email']).first()
+   q = Question(title=request.json['title'], body=request.json['body'], timestamp=datetime.datetime.utcnow(), author_id=u.id)
 
    if request.json.get('tags'):
       tagList = request.json['tags']
