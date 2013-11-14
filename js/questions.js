@@ -31,7 +31,7 @@ var QuestionViewModel = function() {
    $.getJSON(window.backendURL + '/questions/').done(function(data) {
       console.log("We are in ajax();");
       var ql = data.QuestionList;
-      for (var i = 0; i < ql.length; i++) {
+      for (var i = ql.length-1; i >= 0; i--) {
          self.questions.push(new Question(ql[i]));
       }
    });
