@@ -50,7 +50,6 @@ var QuestionViewModel = function() {
 
 ko.utils.extend(QuestionViewModel.prototype, {
   isViewingQuestion: function() { 
-    console.log(ko.toJS(this.viewedQuestion))
     return (ko.toJS(this.viewedQuestion) != undefined); 
   },
   getQuestionById: function(id) {
