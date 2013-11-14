@@ -50,28 +50,32 @@ var QuestionViewModel = function() {
 
 ko.utils.extend(QuestionViewModel.prototype, {
   isViewingQuestion: function() { 
-    return (ko.toJS(this.viewedQuestion) != undefined); 
+    return (this.viewedQuestion() != undefined); 
   },
   getQuestionById: function(id) {
     return $.grep(ko.toJS(this.questions), function(q) { return q.id == id; });
   },
   isQuestionSelected: function(question) {
-    return this.isViewingQuestion() && (ko.toJS(this.viewedQuestion).id == question.id);
+    if (!this.isViewingQuestion()) {
+      return false;
+    }
+
+    eq = ko.toJS(this.viewedQuestion).id == ko.toJS(question.id);
+    return eq;
   },
   viewQuestion: function(question) {
     var questionId = ko.toJS(question.id);
 
-    question.replies([]);
     $.getJSON(window.backendURL + "/questions/" + questionId + "/replies/").done(function(data) {
        question.replies([]);
        console.log("Loading replies for question: " + questionId);
        var rl = data.ReplyList;
        for (var i = 0; i < rl.length; i++) {
           question.replies.push({				
-          body: ko.observable(rl[i].body),
-          id: ko.observable(rl[i].id),
-          timestamp: ko.observable(rl[i].timestamp)
-         });
+            body: ko.observable(rl[i].body),
+            id: ko.observable(rl[i].id),
+            timestamp: ko.observable(rl[i].timestamp)
+          });
        } 
     });
 

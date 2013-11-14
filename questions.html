@@ -1,14 +1,14 @@
 
 <div class="row">
-   <div class="col-md-6" style="padding-left: 0;">
+   <div class="col-xs-6" style="padding-left: 0;">
    <div id="nav-filter-menu">
       <span class="glyphicon glyphicon-list-alt"></span>&nbsp;<span>Filter questions</span>
    </div>
    <ul id="question-list" data-bind="foreach: questions">
        <li class="question-block clearfix" 
-           data-bind="style: $parent.isQuestionSelected($data.id) ? { background: '#b9ecff' } : { background: '#eee'}">
+           data-bind="style: $parent.isQuestionSelected($data) ? { background: '#b9ecff' } : { background: '#eee'}">
          <!--<img src=""/>-->
-         <div style="background-color: #aaa;width:64px;height:64px;float: left;margin-top: 10px;margin-right: 15px;"></div>
+         <div class="hidden-phone" style="background-color: #aaa;width:64px;height:64px;float: left;margin-top: 10px;margin-right: 15px;"></div>
          <ul>
             <li class="question-header">
                <span class="author">AuthorName asked at <span class="timestamp" data-bind="text:timestamp"></span></span>:

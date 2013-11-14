@@ -134,6 +134,6 @@ body {
 
 #questionView {
    position:fixed;
-   top: 70px;
-   right: 0;
+   left: 45%;
+   top: 80px;
 }
