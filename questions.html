@@ -1,52 +1,67 @@
 
 <div class="row">
-   <div class="col-xs-6" style="padding-left: 0;">
+   <div id="questionView" data-bind="with: viewedQuestion, fadeVisible: true" class="col-xs-6 clearfix">
+        <div class="currentQuestion clearfix">
+            <div class="col-xs-3" style="line-height: 200px;">
+                VOTE stuff
+            </div>
+            <div class="col-xs-9">
+                 <h4  data-bind="text:title"></h4>
+                 <p data-bind="text: timestamp"></p>
+                 <p id="question-body" data-bind="text: body"></p>
+                 <p>Tags: <span data-bind="text: tags"></span></p>   
+                 <p>
+                    <form data-bind="submit: $root.deleteQuestion.bind('question', $data)">
+                     <button>Delete question</button>
+                 </p>
+             </div>
+          </div>
+          <!-- ko foreach: replies -->
+          <div class="reply clearfix">
+            <div class="col-xs-3">
+                VOTE stuff
+            </div>
+            <div class="col-xs-9">
+                 <span data-bind="text:author"></span> responded:
+                 <p data-bind="text: timestamp"></p>
+                 <p id="question-body" data-bind="text: body"></p>
+             </div>
+          </div>
+          <!-- /ko -->
+          
+    </div>
+    <div class="col-xs-6">
    <div id="nav-filter-menu">
       <span class="glyphicon glyphicon-list-alt"></span>&nbsp;<span>Filter questions</span>
    </div>
-   <ul id="question-list" data-bind="foreach: questions">
-       <li class="question-block clearfix" 
-           data-bind="style: $parent.isQuestionSelected($data) ? { background: '#b9ecff' } : { background: '#eee'}">
-         <!--<img src=""/>-->
-         <div class="hidden-phone" style="background-color: #aaa;width:64px;height:64px;float: left;margin-top: 10px;margin-right: 15px;"></div>
-         <ul>
-            <li class="question-header">
-               <span class="author">AuthorName asked at <span class="timestamp" data-bind="text:timestamp"></span></span>:
-            </li>
-            <li class="question-body">
-               <a href="#" data-bind="click: $parent.viewQuestion, text: title"></a>
-            </li>
-            <li class="question-tags">
-               <a href="#" data-bind="text: tags"></a>
-            </li>
-         </ul>
+   <ul id="questionList" data-bind="foreach: questions">
+       <li class="question-block clearfix" data-bind="click: $parent.viewQuestion,
+            style: $parent.isQuestionSelected($data) ? { background: '#b9ecff' } : { background: '#eee'}">
+         <div class="col-xs-2">
+            <span data-bind="text: author">AuthorNameHere</span>
+            <div style="background-color: #aaa;width:64px;height:64px;float: left;margin-top: 10px;margin-right: 15px;"></div>
+        </div>
+        <div class="col-xs-9">
+            <ul>
+               <li class="question-header">
+                  <span class="author">
+                     asked at <span class="timestamp" data-bind="text:timestamp"></span>
+                  </span>:
+               </li>
+               <li class="question-body">
+                  <span data-bind="text: title"></span>
+               </li>
+               <li class="question-tags">
+                  <span data-bind="text: tags"></span>
+               </li>
+            </ul>
+         </div>
+
       </li>
    </ul>
    </div>
-   <div id="questionView" class="col-md-6 column" data-bind="with: viewedQuestion, fadeVisible: true">
-         <h1>Viewing Question <span data-bind="text: id"></span></h1>
-         <span  data-bind="text:title"></span>
-         <p data-bind="text: timestamp"></p>
-         <p id="question-body" data-bind="text: body"></p>
-         <p>Tags: <span data-bind="text: tags"></span></p>   
-         <h3>Replies: </h3>
-         <table>
-         <tbody>
-         <!-- ko foreach: replies -->
-         <tr class="replyList">
-           <td data-bind="text: timestamp"></td>
-           <td data-bind="text: body"></td>
-         </tr>
-         <!-- /ko -->
-         </tbody> 
-         </table>
-         <br/>
-         <p>
-            <form data-bind="submit: $root.deleteQuestion.bind('question', $data)">
-             <button>Delete question</button>
-         </p>
-      </div>
-   </div>
 </div>
 </body>
+<script>
+</script>
 </html>

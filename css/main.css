@@ -1,14 +1,17 @@
 html {overflow-y: scroll;}
 
+.full-width-container {
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 body { 
    margin: 0;
    margin-top: 70px; 
    padding: 0;
    font-family: tahoma, verdana, sans-serif; 
-}
-
-#wrapper {
-	margin: 0;
 }
 
 #header {
@@ -101,14 +104,23 @@ body {
 
 }
 
-#question-list {
+#questionList {
+   display:block;
    list-style: none;
    margin: 0;
    padding: 0;
+   height: 90%;
+   overflow-y:auto;
+   overflow-x:hidden;
+   float: right;
+
+   border-right:solid #ff920a 2px;
+   min-height:100px;
 }
 .question-block {
+   cursor:pointer;
    margin: 0;
-   padding: 30px 20px;
+   padding: 30px 0 30px 20px;
    background-color: #eee;
 }
 
@@ -117,23 +129,36 @@ body {
 }
 .question-block .question-header {
    float: left;
-   width: 400px;
    margin: 5px 10px;
 }
 
 .question-block .question-body {
    float: left;
+   width: 70%;
    margin: 0 10px;
 }
 
 .question-block .question-tags {
-   float: left;
-   width: 400px;
+   float: right;
+
    margin: 5px 10px;
 }
 
 #questionView {
-   position:fixed;
-   left: 45%;
-   top: 80px;
+   right: 0;
+   
 }
+
+#questionView .currentQuestion {
+    background: #b9ecff;
+    margin-bottom: 5px;
+    padding: 10px;
+}
+
+#questionView .reply {
+    background: #eee;
+    margin-bottom: 5px;
+   padding: 10px;
+
+}
+

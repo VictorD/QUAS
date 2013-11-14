@@ -6,27 +6,27 @@ var Question = function(data) {
    this.body      = ko.observable("Body placeholder");
    this.title     = ko.observable("Title placeholder");
    this.tags      = ko.observable();
-   this.timestamp = ko.observable("undefined time");
+   this.timestamp = ko.observable("undefined time");  
    this.replies   = ko.observableArray();
-  
+
    this.update(data);
 };
 
 Question.prototype.update = function(data) {
-   this.author(data.author);
+   this.author(data.author ? data.author : "unknown");
    this.id(data.id);
    this.body(data.body);
    this.title(data.title);
    this.tags(data.tags);
    this.timestamp(data.timestamp);
-   this.replies(data.replies);
 };
 
 var QuestionViewModel = function() {
    var self = this;
    self.questions      = ko.observableArray();
    self.viewedQuestion = ko.observable();
-   self.viewQuestion   = self.viewQuestion.bind(this);
+   self.viewQuestion       = self.viewQuestion.bind(this);
+   self.isQuestionSelected = self.isQuestionSelected.bind(this);
 
    $.getJSON(window.backendURL + '/questions/').done(function(data) {
       console.log("We are in ajax();");
@@ -42,55 +42,56 @@ var QuestionViewModel = function() {
 
     console.log('statechange:', State.data, State.title, State.url);
     currentQuestion = State.data.question;
-    if (currentQuestion) {      
+    if (currentQuestion) {
       self.viewedQuestion(currentQuestion);
     }
   });
 };
 
 ko.utils.extend(QuestionViewModel.prototype, {
-  isViewingQuestion: function() { 
-    return (this.viewedQuestion() != undefined); 
-  },
-  getQuestionById: function(id) {
-    return $.grep(ko.toJS(this.questions), function(q) { return q.id == id; });
-  },
   isQuestionSelected: function(question) {
-    if (!this.isViewingQuestion()) {
+    if (this.viewedQuestion() == undefined) {
       return false;
     }
 
     eq = ko.toJS(this.viewedQuestion).id == ko.toJS(question.id);
     return eq;
   },
-  viewQuestion: function(question) {
-    var questionId = ko.toJS(question.id);
-
-    var sv = this.viewedQuestion;
-    $.getJSON(window.backendURL + "/questions/" + questionId + "/replies/").done(function(data) {
-       sv.replies([]);
-       console.log("Loading replies for question: " + questionId);
-       var rl = data.ReplyList;
-       for (var i = 0; i < rl.length; i++) {
-          sv.replies.push({				
-            body: ko.observable(rl[i].body),
-            id: ko.observable(rl[i].id),
+  loadReplies: function(question) {
+      var qid = ko.toJS(question).id;
+      console.log("Loading replies for question: " + qid);
+      
+      question.replies.removeAll();
+      $.getJSON(window.backendURL + "/questions/" + qid + "/replies/").done(function(data) {
+         var rl = data.ReplyList;
+         for (var i = 0; i < rl.length; i++) {
+          question.replies.push({				
+            id:        ko.observable(rl[i].id),
+            author:    ko.observable(rl[i].author),
+            body:      ko.observable(rl[i].body),
             timestamp: ko.observable(rl[i].timestamp)
           });
-       } 
-    });
-
-    History.pushState({question:ko.toJS(question), rnd:Math.random()}, "Viewing Question: " + questionId, "?question=" + questionId);
-  },
-  deleteQuestion: function(question) {
-    var qid = question.id;
-    $.ajax({
-      url: window.backendURL + '/questions/' + qid + '/',
-      type: 'DELETE',
-      success: function(result) {
-          alert("deleted question " + qid);
-      }
-    });
-  }
+         }
+         
+         History.replaceState({question:ko.toJS(question), rnd:Math.random()}, "Viewing Question: " + qid, "?question=" + qid);
+      });
+    },
+    viewQuestion: function(question) {
+        var qid = ko.toJS(question.id);
+        if (question.replies().length == 0) {
+            this.loadReplies(question);
+        }
+        History.pushState({question:ko.toJS(question), rnd:Math.random()}, "Viewing Question: " + qid, "?question=" + qid);
+    },
+    deleteQuestion: function(question) {
+        var qid = question.id;
+        $.ajax({
+            url: window.backendURL + '/questions/' + qid + '/',
+            type: 'DELETE',
+            success: function(result) {
+                alert("deleted question " + qid);
+            }
+        });
+    }
 });
 
