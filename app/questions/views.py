@@ -21,7 +21,7 @@ def tellThemEverythingWillBeOk(qid=0):
 def get_questions():
    if request.json and 'paginate' in request.json:
       paginate = request.json['paginate']
-      page_size=paginate.get('page_size', 5)
+      page_size=int(paginate.get('page_size', 5))
       page=int(paginate.get('page', 1))
       order_by=paginate.get('order_by', 'date')
       filter_by=paginate.get('filter_by', '')
@@ -45,7 +45,15 @@ def get_questions():
          qs = Question.query.filter(Question.tags.any(Tag.title == filter_data))
       
       else:
-         pass
+         qs = Question.query
+         if order_by == 'name':   
+            qs = qs.order_by(Question.title.asc())
+         
+         elif order_by == 'vote':
+            qs = qs.order_by(Question.votesum.desc())
+     
+         else:
+            qs = qs.order_by(Question.timestamp.desc()) 
 
       qs = qs.paginate(page,page_size,False)
       for q in qs.items:

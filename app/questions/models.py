@@ -17,7 +17,7 @@ class Question(db.Model):
          id=self.id,
          title=self.title,
          body=self.body,
-         #author=self.author.author_return(),
+         author=self.author.author_return(),
          timestamp=self.timestamp,
          tags = tag_list
       )

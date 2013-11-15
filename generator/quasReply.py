@@ -11,6 +11,7 @@ def generate():
    END = [".", "!", "!!!", "..."]
 
    reply = choice(PRE) + " " + choice(ADJ) + " " + choice(MAIN) + " " + choice(BND) + " " + choice(SND) + choice(END)
+   return reply
 
 
 

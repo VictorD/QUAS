@@ -15,7 +15,7 @@ def generate():
    return tmp
 
 if __name__=="__main__":
-   print generate()
+   print json.dumps(generate())
 
 
 

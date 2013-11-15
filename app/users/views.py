@@ -60,7 +60,8 @@ def get_user_questions(id):
 @crossdomain
 def login():
    if g.user is not None:
-      return jsonify({'Login':'Already logged in'})
+      return redirect(request.environ.get('HTTP_REFERER'))
+      #return jsonify({'Login':'Already logged in'})
 
    if request.method == 'GET':
       return oid.try_login('https://www.google.com/accounts/o8/id', ask_for=['email'])
