@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>QUAS API</title>
+    <meta charset="utf-8">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <script src="/static/js/jquery-1.9.1.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+        <div class="span16">
+            <h1>API Documentation</h1>
+            <p>
+                Quas API documentation for the backend.
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span16">
+            <ul>
+                <li><a href="#questions">Questions</a></li>
+                <li><a href="#replies">Replies</a></li>
+                <li><a href="#tags">Tags</a></li>
+                <li><a href="#users">Users</a></li>            
+                <li><a href="#votes">Votes</a></li>            
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span16">
+            <h2 id="questions">Questions</h2>
+
+            <div class="row">
+                <div class="span16">
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th style="width: 200px;">Resource</th>
+                            <th>Usage</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <span class="label label-success">GET</span> /questions/<br>
+                            </td>
+                            <td>
+                                <p>
+                                    If no parameters given returns all the questions currently in the database. Otherwise there are options for pagination, parameters are wrapped in a paginate key value i.e {'paginate': parameters}.
+                                </p>
+                                <h3>Pagination Parameters</h3>
+                                <table>
+                                    <tbody>
+                                    <tr>
+                                        <td style="width: 150px">
+                                            <strong>page_size</strong><br>
+                                            optional
+                                        </td>
+                                        <td>
+                                            page size
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 150px">
+                                            <strong>page</strong><br/>
+                                            optional
+                                        </td>
+                                        <td>
+                                            the page number
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 150px">
+                                            <strong>order_by</strong><br/>
+                                            optional
+                                        </td>
+                                        <td>
+                                            order results by date/vote/name
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 150px">
+                                            <strong>filter_by</strong><br/>
+                                            optional
+                                        </td>
+                                        <td>
+                                            filter results by author/tags
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 150px">
+                                            <strong>filter_data</strong><br/>
+                                            optional
+                                        </td>
+                                        <td>
+                                            which author or tags to filter by
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="label label-info">POST</span> /questions/<br><br>
+                                <span class="label label-primary">Require user access</span>
+                            </td>
+                            <td>
+                                <p>
+                                    Posts a question to the database.
+                                </p>
+
+                                <h3>Parameters</h3>
+                                <table>
+                                    <tbody>
+                                    <tr>
+                                        <td style="width: 150px">
+                                            <strong>title</strong><br>
+                                            required
+                                        </td>
+                                        <td>
+                                            title for the question
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 150px">
+                                            <strong>body</strong><br/>
+                                            required
+                                        </td>
+                                        <td>
+                                            the question body
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 150px">
+                                            <strong>tags</strong><br/>
+                                            optional
+                                        </td>
+                                        <td>
+                                            a list of tags, tags which don't exist are added to database
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="label label-warning">PUT</span> /questions/{id}/<br><br>
+                                <span class="label label-primary">Requires author</span>
+                            </td>
+                            <td>
+                                <p>
+                                    Updates a question.
+                                </p>
+
+                                <h3>Parameters</h3>
+                                <table>
+                                    <tbody>
+                                    <tr>
+                                        <td style="width: 150px">
+                                            <strong>title</strong><br>
+                                            optional
+                                        </td>
+                                        <td>
+                                            title for the question
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 150px">
+                                            <strong>body</strong><br/>
+                                            optional
+                                        </td>
+                                        <td>
+                                            the question body
+                                        </td>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="label label-danger">DELETE</span> /questions/{id}/<br><br>
+                                <span class="label label-primary">Requires author</span>
+                            </td>
+                            <td>
+                                <p>
+                                    Deletes a question.
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="label label-success">GET</span> /questions/{id}/replies<br>
+                            </td>
+                            <td>
+                                <p>
+                                    Gets replies for a the question.
+                                </p>
+                            </td>
+                        </tr> 
+                        <tr>
+                            <td>
+                                <span class="label label-success">GET</span> /questions/{tagname}<br>
+                            </td>
+                            <td>
+                                <p>
+                                    Returns all questions that are tagged with the wanted tag name.
+                                </p>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span16">
+            <h2 id="replies">Replies</h2>
+
+            <div class="row">
+                <div class="span16">
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th style="width: 300px;">Resource</th>
+                            <th>Usage</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                              <span class="label label-success">GET</span> /replies/<br>
+                            </td>
+                            <td>
+                                <p>
+                                    Returns all replies to all questions.
+                                </p>     
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                              <span class="label label-success">GET</span> /replies/{id}<br>
+                            </td>
+                            <td>
+                                <p>
+                                    Returns a reply for a reply id.
+                                </p>     
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="label label-info">POST</span> /replies/<br><br>
+                                <span class="label label-primary">Require user access</span>
+                            </td>
+                            <td>
+                                <p>
+                                    Posts a reply to a question.
+                                </p>
+
+                                <h3>Parameters</h3>
+                                <table>
+                                    <tbody>
+                                    <tr>
+                                        <td style="width: 150px">
+                                            <strong>body</strong><br>
+                                            required
+                                        </td>
+                                        <td>
+                                            body for the reply
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 150px">
+                                            <strong>question_id</strong><br/>
+                                            required
+                                        </td>
+                                        <td>
+                                            the target question which to reply to
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="label label-warning">PUT</span> /replies/{id}/<br><br>
+                                <span class="label label-primary">Requires author</span>
+                            </td>
+                            <td>
+                                <p>
+                                    Updates a reply.
+                                </p>
+
+                                <h3>Parameters</h3>
+                                <table>
+                                    <tbody>
+                                    <tr>
+                                        <td style="width: 150px">
+                                            <strong>body</strong><br/>
+                                            optional
+                                        </td>
+                                        <td>
+                                            the reply body
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="label label-danger">DELETE</span> /replies/{id}/<br><br>
+                                <span class="label label-primary">Requires author</span>
+                            </td>
+                            <td>
+                                <p>
+                                    Deletes a reply.
+                                </p>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span16">
+            <h2 id="tags">Tags</h2>
+
+            <div class="row">
+                <div class="span16">
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th style="width: 300px;">Resource</th>
+                            <th>Usage</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                              <span class="label label-success">GET</span> /tags/<br>
+                            </td>
+                            <td>
+                                <p>
+                                    Get all tags.
+                                </p>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span16">
+            <h2 id="users">Users</h2>
+
+            <div class="row">
+                <div class="span16">
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th style="width: 300px;">Resource</th>
+                            <th>Usage</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                              <span class="label label-success">GET</span> /u/<br>
+                            </td>
+                            <td>
+                                <p>
+                                    Get all users.
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                              <span class="label label-success">GET</span> /u/{id}/<br>
+                            </td>
+                            <td>
+                                <p>
+                                    Get a single user by id.
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="label label-warning">PUT</span> /u/{id}/<br><br>
+                                <span class="label label-primary">Requires user</span>
+                            </td>
+                            <td>
+                                <p>
+                                    Updates a user.
+                                </p>
+
+                                <h3>Parameters</h3>
+                                <table>
+                                    <tbody>
+                                    <tr>
+                                        <td style="width: 150px">
+                                            <strong>username</strong><br/>
+                                            optional
+                                        </td>
+                                        <td>
+                                            the user username
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                       <td style="width: 150px">
+                                            <strong>description</strong><br/>
+                                            optional
+                                        </td>
+                                        <td>
+                                            the user description
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                              <span class="label label-success">GET</span> /u/login/<br>
+                            </td>
+                            <td>
+                                <p>
+                                    Redirects user to Google OpenID to let server access the users email, if user is not registered it will be when OpenID verified.
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                              <span class="label label-success">GET</span> /u/logout/<br>
+                            </td>
+                            <td>
+                                <p>
+                                    Releases information on the user and clears QUAS related cookies.
+                                </p>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   <div class="row">
+        <div class="span16">
+            <h2 id="votes">Votes</h2>
+
+            <div class="row">
+                <div class="span16">
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th style="width: 300px;">Resource</th>
+                            <th>Usage</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+
+                        <tr>
+                            <td>
+                              <span class="label label-info">Post</span> /vote/q/<br><br>
+                              <span class="label label-primary">Require user access</span>
+                            </td>
+                            <td>
+                                <p>
+                                    Vote on a question
+                                </p>
+
+                                <h3>Parameters</h3>
+                                <table>
+                                    <tbody>
+                                    <tr>
+                                        <td style="width: 150px">
+                                            <strong>qid</strong><br>
+                                            required
+                                        </td>
+                                        <td>
+                                            question id
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 150px">
+                                            <strong>value</strong><br/>
+                                            required
+                                        </td>
+                                        <td>
+                                            only 1 or -1
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                              <span class="label label-info">Post</span> /vote/q/{qid}/<br><br>
+                              <span class="label label-primary">Require user access</span>
+                            </td>
+                            <td>
+                                <p>
+                                    Vote on a question
+                                </p>
+
+                                <h3>Parameters</h3>
+                                <table>
+                                    <tbody>
+                                    <tr>
+                                        <td style="width: 150px">
+                                            <strong>value</strong><br/>
+                                            required
+                                        </td>
+                                        <td>
+                                            only 1 or -1
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                              <span class="label label-info">Post</span> /vote/q/{qid}/up<br><br>
+                              <span class="label label-primary">Require user access</span>
+                            </td>
+                            <td>
+                                <p>
+                                    Upvote a question
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                              <span class="label label-info">Post</span> /vote/q/{qid}/down<br><br>
+                              <span class="label label-primary">Require user access</span>
+                            </td>
+                            <td>
+                                <p>
+                                    Downvote a question
+                                </p>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td>
+                              <span class="label label-info">Post</span> /vote/r/<br><br>
+                              <span class="label label-primary">Require user access</span>
+                            </td>
+                            <td>
+                                <p>
+                                    Vote on a reply
+                                </p>
+
+                                <h3>Parameters</h3>
+                                <table>
+                                    <tbody>
+                                    <tr>
+                                        <td style="width: 150px">
+                                            <strong>rid</strong><br>
+                                            required
+                                        </td>
+                                        <td>
+                                            reply id
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 150px">
+                                            <strong>value</strong><br/>
+                                            required
+                                        </td>
+                                        <td>
+                                            only 1 or -1
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                              <span class="label label-info">Post</span> /vote/r/{rid}/<br><br>
+                              <span class="label label-primary">Require user access</span>
+                            </td>
+                            <td>
+                                <p>
+                                    Vote on a reply
+                                </p>
+
+                                <h3>Parameters</h3>
+                                <table>
+                                    <tbody>
+                                    <tr>
+                                        <td style="width: 150px">
+                                            <strong>value</strong><br/>
+                                            required
+                                        </td>
+                                        <td>
+                                            only 1 or -1
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                              <span class="label label-info">Post</span> /vote/r/{rid}/up<br><br>
+                              <span class="label label-primary">Require user access</span>
+                            </td>
+                            <td>
+                                <p>
+                                    Upvote a reply
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                              <span class="label label-info">Post</span> /vote/r/{rid}/down<br><br>
+                              <span class="label label-primary">Require user access</span>
+                            </td>
+                            <td>
+                                <p>
+                                    Downvote a reply
+                                </p>
+                            </td>
+                        </tr>
+                       
+                        <tr>
+                            <td>
+                              <span class="label label-success">GET</span> /vote/q/{qid}/<br>
+                            </td>
+                            <td>
+                                <p>
+                                    The score of a question 
+                                </p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                              <span class="label label-success">GET</span> /vote/r/{rid}/<br>
+                            </td>
+                            <td>
+                                <p>
+                                    The score of a reply 
+                                </p>
+                            </td>
+                        </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
+
+
