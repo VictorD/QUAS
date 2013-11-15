@@ -50,12 +50,12 @@ var QuestionViewModel = function() {
    });
 
   // Bind to State Change
-  History.Adapter.bind(window,'statechange',function(){
+  /*History.Adapter.bind(window,'statechange',function(){
     var State = History.getState();
     console.log('id: ' + self.viewingID());
     console.log('statechange:', State.data, State.title, State.url);
     console.log("question viewed: " + self.viewedQuestion());
-  });
+  });*/
 };
 
 ko.utils.extend(QuestionViewModel.prototype, {

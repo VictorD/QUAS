@@ -48,7 +48,7 @@
              <p id="question-body" data-bind="text: body"></p>
             
              <p>
-                <form data-bind="submit: $root.deleteQuestion.bind('question', $data)">
+                <form data-bind="submit: $parent.deleteQuestion.bind('question', $data)">
                  <button>Delete question</button>
              </p>
         </div>
@@ -70,3 +70,10 @@
       <!-- /ko -->
       
 </div>
+
+<script>
+function moveQuestionDiv(element) {
+
+}
+
+</script>

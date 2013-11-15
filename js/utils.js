@@ -16,6 +16,7 @@ function spinnerLoader(page, element) {
 ko.bindingHandlers.fadeVisible = {
     init: function(element, valueAccessor) {
         $(element).hide();
+        
          
         var value = valueAccessor();
         ko.unwrap(value) ? $(element).fadeIn() : $(element).fadeOut();
