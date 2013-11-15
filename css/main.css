@@ -121,13 +121,15 @@ body {
 }
 
 #questionView {
+   
+   right: 0;
    margin: 0;
-   padding: 0 10px 0 0;
+   padding: 0 0 0 10px;
    }
 
 #rightColumn {
     border-left: 1px solid #aaa;
-    float: right;
+    float: left;
     padding: 0;
     margin: 0;
 }
@@ -137,9 +139,6 @@ body {
     margin: 0;
     padding: 0;
     height: 95%;
-    overflow-y:auto;
-    overflow-x:hidden;
-    border-right:solid #ff920a 2px;
     min-height:100px;
 }
 
