@@ -23,10 +23,12 @@ Question.prototype.update = function(data) {
 
 var QuestionViewModel = function() {
    var self = this;
-   self.questions      = ko.observableArray();
+   self.questions      = ko.observableArray(); 
+   self.viewingID      = ko.observable();
    self.viewedQuestion = ko.observable();
    self.viewQuestion       = self.viewQuestion.bind(this);
    self.isQuestionSelected = self.isQuestionSelected.bind(this);
+   self.findQuestion       = self.findQuestion.bind(this);
 
    $.getJSON(window.backendURL + '/questions/').done(function(data) {
       console.log("We are in ajax();");
@@ -39,16 +41,25 @@ var QuestionViewModel = function() {
   // Bind to State Change
   History.Adapter.bind(window,'statechange',function(){
     var State = History.getState();
-
+    console.log('id: ' + self.viewingID());
     console.log('statechange:', State.data, State.title, State.url);
-    currentQuestion = State.data.question;
-    if (currentQuestion) {
-      self.viewedQuestion(currentQuestion);
+    
+    if (self.viewingID()) {
+        var match = self.findQuestion(self.viewingID());
+        if (match) {
+            console.log("State set viewedQuestion to " + self.viewingID());
+            self.viewedQuestion(match);
+        }
     }
   });
 };
 
 ko.utils.extend(QuestionViewModel.prototype, {
+    findQuestion: function(id) {
+        return ko.utils.arrayFirst(this.questions(), function(item) {
+            return id == item.id();
+        });
+    },
   isQuestionSelected: function(question) {
     if (this.viewedQuestion() == undefined) {
       return false;
@@ -58,10 +69,8 @@ ko.utils.extend(QuestionViewModel.prototype, {
     return eq;
   },
   loadReplies: function(question) {
+      console.log(this.viewedQuestion());
       var qid = ko.toJS(question).id;
-      console.log("Loading replies for question: " + qid);
-      
-      question.replies.removeAll();
       $.getJSON(window.backendURL + "/questions/" + qid + "/replies/").done(function(data) {
          var rl = data.ReplyList;
          for (var i = 0; i < rl.length; i++) {
@@ -73,15 +82,19 @@ ko.utils.extend(QuestionViewModel.prototype, {
           });
          }
          
-         History.replaceState({question:ko.toJS(question), rnd:Math.random()}, "Viewing Question: " + qid, "?question=" + qid);
+         History.replaceState({question:ko.toJS(question), rnd:Math.random()}, "Viewing Question: " + qid, "?viewingID=" + qid);
       });
     },
     viewQuestion: function(question) {
+        if (!question)
+            return;
+            
         var qid = ko.toJS(question.id);
         if (question.replies().length == 0) {
+            console.log("Loading replies for question: " + qid);
             this.loadReplies(question);
         }
-        History.pushState({question:ko.toJS(question), rnd:Math.random()}, "Viewing Question: " + qid, "?question=" + qid);
+        History.pushState({questionId: qid}, "Viewing Question: " + qid, "?viewingID=" + qid);
     },
     deleteQuestion: function(question) {
         var qid = question.id;
