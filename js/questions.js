@@ -139,11 +139,11 @@ ko.bindingHandlers.refreshSelection = {
         if (question)
             viewModel.updateSelection(question.id());
     },
-    update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+    /*update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
         var value = valueAccessor();
         var question = ko.unwrap(value)
         if (question)
             viewModel.updateSelection(question.id());
-    }
+    }*/
 };
 

@@ -1,0 +1,30 @@
+.upvote, .downvote, .current-score {
+    width: 100%;
+    line-height: 130%;
+    font-size: 150%;
+}
+
+.upvote {
+    color: #aaa;
+}
+
+.downvote {
+    margin-left: 2px;
+    color: #aaa;
+}
+
+.current-score {
+    margin-left: 5px;
+
+    color: #777;
+    font-family: verdana;
+    
+}
+
+.upvote:hover {
+    color: #4F4;
+}
+
+.downvote:hover {
+    color: #F44;
+}
