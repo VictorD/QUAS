@@ -22,9 +22,15 @@ Question.prototype.update = function(data) {
 };
 
 var QuestionViewModel = function() {
-   var self = this;
-   self.questions      = ko.observableArray(); 
-   self.viewingID      = ko.observable();
+    var self = this;
+    self.questions      = ko.observableArray(); 
+    self.viewingID      = ko.observable();
+    
+    self.viewingID.subscribe(function (newId) {
+        self.updateSelection(newId);
+        console.log("VIEWING ID CHANGED: " + newId);
+    });
+      
    self.viewedQuestion = ko.computed(function() {
       var q = self.findQuestion(self.viewingID())
 
@@ -33,6 +39,7 @@ var QuestionViewModel = function() {
           console.log("Loading replies for question: " + ko.toJS(q).id);
           self.loadReplies(q);
       }
+
       return q;
    });
 
@@ -40,6 +47,7 @@ var QuestionViewModel = function() {
    self.isQuestionSelected = self.isQuestionSelected.bind(this);
    self.findQuestion       = self.findQuestion.bind(this);
    self.deleteQuestion     = self.deleteQuestion.bind(this);
+   self.updateSelection    = self.updateSelection.bind(this);
 
    $.getJSON(window.backendURL + '/questions/').done(function(data) {
       console.log("We are in ajax();");
@@ -50,12 +58,13 @@ var QuestionViewModel = function() {
    });
 
   // Bind to State Change
-  /*History.Adapter.bind(window,'statechange',function(){
+  History.Adapter.bind(window,'statechange',function(){
     var State = History.getState();
-    console.log('id: ' + self.viewingID());
-    console.log('statechange:', State.data, State.title, State.url);
+    console.log('StateChange, URL: ' + querystring('viewingID'));
+    console.log('StateChange, koViewingID: ' + self.viewingID());        
     console.log("question viewed: " + self.viewedQuestion());
-  });*/
+
+  });
 };
 
 ko.utils.extend(QuestionViewModel.prototype, {
@@ -87,10 +96,11 @@ ko.utils.extend(QuestionViewModel.prototype, {
         delete question.loading;
       });
     },
-    viewQuestion: function(id) {
-        if (id) {
-          id = id()
-          History.pushState({}, "Viewing Question: " + id, "?viewingID=" + id);
+    viewQuestion: function(item, event) {
+        if (item) {
+            id = item.id()
+            console.log("Pushing state with id " + id);
+            History.pushState({id: id, rnd:Math.random()}, "Viewing Question: " + id, "/?viewingID=" + id);
         }
     },
     deleteQuestion: function(question) {
@@ -104,6 +114,36 @@ ko.utils.extend(QuestionViewModel.prototype, {
 
             }
         });
+    },
+    updateSelection: function(id) {
+        console.log("Updating higlight and updating QuestionView top-offset.");
+        console.log(id);
+        var self = this;
+        var elem = $("#question_" + id)
+        
+        $("#questionList li").removeAttr('style');
+        elem.css({'background-color': '#b9ecff'});
+        
+        var position = elem.position();
+        if (position) {
+            var offset = position.top + 19;
+            $("#questionView").offset({ top: offset});
+        }
     }
 });
+
+ko.bindingHandlers.refreshSelection = {
+    init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+        var value = valueAccessor();
+        var question = ko.unwrap(value)
+        if (question)
+            viewModel.updateSelection(question.id());
+    },
+    update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+        var value = valueAccessor();
+        var question = ko.unwrap(value)
+        if (question)
+            viewModel.updateSelection(question.id());
+    }
+};
 

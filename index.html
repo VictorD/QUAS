@@ -1,13 +1,15 @@
 <html>
 <head>
-<base href="/"/>
+<base href=""/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
 <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/vote.css">
 
 <script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.js"></script>
+<script src="js/jquery-ui.js"></script>
 <script src="js/knockout-2.3.0.js"></script>
-<script>window.History = {options: {html4Mode: true}};</script>
+
 <script src="js/jquery.history.js"></script>
 <script src="js/utils.js"></script>
 <script src="js/pager.js"></script>
@@ -44,18 +46,15 @@
 				Questions
 			</a>
 		</div>
-		
-		
-		
 	</div>
 </div>
 <div class="row" id="pages">
 	<div data-bind="page: { id: 'questions',
-         params: ['viewingID'],
+            params: ['viewingID'],
 			role: 	'start',
 			loader:  spinnerLoader,
-			source: 'questions.html',
-			with: new QuestionViewModel() 
+			source: 'questions.html'
+			
 		}">
 		Question page
 	</div>
@@ -74,15 +73,15 @@
 		window.userId = usr;
 	}
 
-	var DefaultModel = function() {
+	var DefaultModel = new QuestionViewModel();
+    /*function() {
 
-	} 
+	} */
 
-	pager.useHTML5history = true;
-	pager.Href5.history = History;;
+	pager.Href5.history = History;
+    pager.Href.hash = "#!/";
 	pager.extendWithPage(DefaultModel);
 	ko.applyBindings(DefaultModel);
-
 	pager.startHistoryJs();
 </script>	
 </body>

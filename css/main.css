@@ -86,12 +86,15 @@ body {
 
 #author-options-menu {
     border: 1px solid #aaa;
+    border-left: none;
+    border-bottom: none;
 }
 
 .question-block {
+   display: block;
    cursor:pointer;
    margin: 0;
-   padding: 30px 0 30px 20px;
+   padding: 20px 0 20px 20px;
    background-color: #eee;
    border-top: 1px solid #aaa;
 }
@@ -125,11 +128,11 @@ body {
    top: 0;
    right: 0;
    margin: 0;
-   padding: 0 0 0 10px;
+   padding: 0;
    }
 
 #rightColumn {
-    border-left: 1px solid #aaa;
+    border-right: 1px solid #aaa;
     float: left;
     padding: 0;
     margin: 0;
@@ -139,13 +142,12 @@ body {
     list-style: none;
     margin: 0;
     padding: 0;
-    height: 95%;
     min-height:100px;
 }
 
 .currentQuestion {
     border: 1px solid #aaa;
-    border-top: none;
+    border-left: none;
 }
 #questionView .currentQuestion {
     background: #b9ecff;
@@ -155,7 +157,11 @@ body {
 
 #questionView .reply {
     background: #eee;
-    margin-bottom: 5px;
-    padding: 10px;
+    margin: 10px;
+    padding: 10px 20px;
+}
+
+.add-reply {
+    padding: 10px 20px;
 }
 
