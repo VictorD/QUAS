@@ -1,0 +1,94 @@
+
+<div id="rightColumn" class="col-xs-5">
+   <div id="nav-filter-menu">
+      <span class="glyphicon glyphicon-list-alt"></span>&nbsp;<span>Filter questions</span>
+   </div>
+   <ul id="questionList" data-bind="foreach: questions">
+       <li class="question-block clearfix" data-bind="click: $parent.viewQuestion, attr: {'id': 'question_' + id()}">
+        <div class="col-xs-1">
+            <span class="upvote glyphicon glyphicon-arrow-up"></span>
+            <span class="current-score">2</span>
+            <span class="downvote glyphicon glyphicon-arrow-down"></span>            
+        </div>            
+         <div class="col-xs-1" data-bind="with: author">
+            <span data-bind="text: username">AuthorNameHere</span>
+            <div style="background-color: #aaa;width:64px;height:64px;float: left;margin-top: 10px;margin-left: 8px;"></div>
+        </div>
+        <div class="col-xs-8" style="padding-top: 20px;">
+            <ul>
+               <li class="question-header">
+               </li>
+               <li class="question-body">
+                  <span data-bind="text: title"></span>
+               </li>
+            </ul>
+         </div>
+         <div class="col-xs-2 question-tags" style="overflow-x:hidden;">
+            <span data-bind="text: tags"></span>
+         </div>
+
+      </li>
+   </ul>
+</div>
+
+<div id="questionView" class="col-xs-6 clearfix"  data-bind="with: viewedQuestion, fadeVisible: true, refreshSelection: $data">
+    <div id="author-options-menu">
+      <span class="glyphicon glyphicon-list-alt"></span>&nbsp;<span>Show author options</span>
+   </div>
+    <div class="currentQuestion clearfix">
+       <div class="col-xs-1" style="padding-top: 20px;">
+            <div style="background-color: #afa;width:16px;height:16px;"></div>
+            <span>&nbsp;2</span>
+            <div style="background-color: #faa;width:16px;height:16px;"></div>
+        </div>            
+        <div class="col-xs-7">
+             <h4  data-bind="text:title"></h4>
+             <p data-bind="text: timestamp"></p>
+             <p id="question-body" data-bind="text: body"></p>
+            
+             <p>
+                <form data-bind="submit: $parent.deleteQuestion.bind('question', $data)">
+                 <button>Delete question</button>
+             </p>
+        </div>
+      </div>
+      <div id="replyList">
+          <!-- ko foreach: replies -->
+          <div class="reply clearfix">
+            <div class="col-xs-1" style="padding-top: 20px;">
+                <div style="background-color: #afa;width:16px;height:16px;"></div>
+                <span>&nbsp;2</span>
+                <div style="background-color: #faa;width:16px;height:16px;"></div>
+            </div>            
+            <div class="col-xs-9">
+                 <span data-bind="text:author"></span> responded:
+                 <p data-bind="text: timestamp"></p>
+                 <p id="question-body" data-bind="text: body"></p>
+             </div>
+          </div>
+          <!-- /ko -->
+        </div>
+        <div class="add-reply">
+            <h4>Do you know the answer?</h4>
+            <form accept-charset="UTF-8" action="" method="post">
+            <input id="ratings-hidden" name="rating" type="hidden"> 
+            <textarea class="form-control animated" cols="50" id="new-review" name="comment" placeholder="Enter your reply here..." rows="5"></textarea>
+
+            <div class="text-right">
+                <div class="stars starrr" data-rating="0"></div>
+                <a class="btn btn-danger btn-sm" href="#" id="close-review-box" style="display:none;">
+                <span class="glyphicon glyphicon-remove"></span>Cancel</a>
+                <br/>
+                <button class="btn btn-success btn-lg" type="submit">Submit reply</button>
+            </div>
+            </form>
+          </div>
+      
+</div>
+
+<script>
+function moveQuestionDiv(element) {
+
+}
+
+</script>
