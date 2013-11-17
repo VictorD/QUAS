@@ -1,0 +1,57 @@
+<div id="profileView">
+<!--
+public:
+	Info:
+	Current username
+	Description
+	Reputation (votesum)
+	Member since
+	Number of posts
+	
+private:
+	Edit visible username
+	Edit desc
+	Activity:
+	View my most recent posts
+	View most recent replies to my posts
+	Follow my questions
+	
+-->
+<div class="panel-body" data-bind="with: profile">
+    <div class="row">
+        <div class="col-md-3">
+            <img class="img-circle"
+                 src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=100"
+                 alt="User Pic">
+        </div>
+        <div class="col-md-6">
+            <strong data-bind="text:username">Uname</strong><br>
+            <table class="table table-condensed table-responsive table-user-information">
+                <tbody>
+                <tr>
+                    <td>Member since:</td>
+                    <td data-bind="text:create_at">Negroe plz</td>
+                </tr>
+                <tr>
+                    <td>Description:</td><br>
+                    <td data-bind="text:description"></td>
+                </tr>
+                <tr>
+                    <td>Warnings</td>
+                    <td>0</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<form data-bind="submit:submitUsername, with:profile">
+	Change username: <input data-bind="value:username" type="text"><br>
+	Change description: <input data-bind="value:description" type="text"><br>
+	<button> submit </button>
+</form>
+	<p> Recent questions I wrote </p>
+	<p> Recent replies I wrote</p>
+	<p> Replies to my posts update </p>
+</div>
