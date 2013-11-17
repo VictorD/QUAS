@@ -76,6 +76,7 @@ var QuestionViewModel = function() {
     self.deleteQuestion     = self.deleteQuestion.bind(this);
     self.updateSelection    = self.updateSelection.bind(this);
     self.afterRenderCallback = self.afterRenderCallback.bind(this);
+    self.stateChangeCallback = self.stateChangeCallback.bind(this);
 
     // Bind to State Change
     History.Adapter.bind(window,'statechange',function(){
@@ -121,7 +122,7 @@ ko.utils.extend(QuestionViewModel.prototype, {
         if (item) {
             id = item.id()
             console.log("Pushing state with id " + id);
-            History.pushState({id: id, rnd:Math.random()}, "Viewing Question: " + id, "/?viewingID=" + id);
+            History.pushState({pageName: 'questions', rnd:Math.random()}, "Viewing Question: " + id, "/?viewingID=" + id);
         }
     },
     deleteQuestion: function(question) {
@@ -162,14 +163,19 @@ ko.utils.extend(QuestionViewModel.prototype, {
         }
     },
     animatePageChange: function() { 
+        $('#questionView').hide(); 
+        $('#questionView').fadeIn(600);
         $('#rightColumn').hide(); 
-        $('#rightColumn').effect('slide', {'direction':'left', 'mode':'show'}, 400); 
+        $('#rightColumn').fadeIn(600);//('slide', {'direction':'left', 'mode':'show'}, 400); 
     },
     afterRenderCallback: function(elements) {
         if (elements.length > 1) {          
             console.log(elements);
             this.updateSelection();
         }
+    },    
+    stateChangeCallback : function() {
+        
     }
 });
 

@@ -35,7 +35,7 @@ var ProfileModel = function(){
     self.profile = ko.observable(new Profile());
     self.animatePageChange = function() { 
         $('#profileView').hide(); 
-        $('#profileView').effect('slide', {'direction':'left', 'mode':'show'}, 400); 
+        $('#profileView').fadeIn(500);//effect('slide', {'direction':'left', 'mode':'show'}, 400); 
     }    
     self.afterRenderCallback = function(elements) {
         console.log(window.backendURL + '/u/' + uid +'/');
@@ -53,4 +53,7 @@ var ProfileModel = function(){
         });
     }
 
+    self.stateChangeCallback = function() {
+        
+    }
 }

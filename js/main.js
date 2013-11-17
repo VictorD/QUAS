@@ -19,13 +19,23 @@ $(function() {
         });
         
         self.changePage = function(pageName) {
-            var newModel = self.pages[pageName];
-            if (newModel) {
-                console.log(pageName);
-                console.log(newModel);
-                self.currentPage(pageName);
-            }
+            History.pushState({pageName: pageName}, null, "");
         }
+        
+        // Bind to State Change
+        History.Adapter.bind(window,'statechange',function(){
+            var State = History.getState();
+            
+            var newPage = State.data.pageName;
+            var newModel = self.pages[newPage];
+            if (newModel) {
+                console.log(newPage);
+                console.log(newModel);
+                self.currentPage(newPage);
+            }
+            
+            
+        });
     };
     
     var viewModel = new ViewModel();
