@@ -32,8 +32,12 @@ var ProfileModel = function(){
         }); 
     }
 
+    self.profile = ko.observable(new Profile());
+    self.animatePageChange = function() { 
+        $('#profileView').hide(); 
+        $('#profileView').effect('slide', {'direction':'left', 'mode':'show'}, 400); 
+    }    
     self.afterRenderCallback = function(elements) {
-        this.profile = new Profile();
         console.log(window.backendURL + '/u/' + uid +'/');
 
         $.ajax({

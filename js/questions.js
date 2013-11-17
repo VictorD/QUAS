@@ -154,11 +154,19 @@ ko.utils.extend(QuestionViewModel.prototype, {
         console.log("Position: " + position);
         if (position) {
             var offset = position.top + 19;
-            $("#questionView").offset({ top: offset});
+            var viewBox = $("#questionView");
+            viewBox.offset({ top: offset});
+            viewBox.hide();
+            viewBox.effect('slide', {'direction':'left', 'mode':'show'}, 400);
+            
         }
     },
+    animatePageChange: function() { 
+        $('#rightColumn').hide(); 
+        $('#rightColumn').effect('slide', {'direction':'left', 'mode':'show'}, 400); 
+    },
     afterRenderCallback: function(elements) {
-        if (elements.length > 1) {
+        if (elements.length > 1) {          
             console.log(elements);
             this.updateSelection();
         }

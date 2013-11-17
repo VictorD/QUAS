@@ -11,18 +11,18 @@ function spinnerLoader(page, element) {
     return loader;
   }
   
-
 // Here's a custom Knockout binding that makes elements shown/hidden via jQuery's fadeIn()/fadeOut() methods
 // Could be stored in a separate utility library
 ko.bindingHandlers.fadeVisible = {
-    update: function(element, valueAccessor, allBindings) {
-        
+    init: function(element, valueAccessor, allBindings) {
         $(element).hide();
         // Whenever the value subsequently changes, slowly fade the element in or out
         var value = valueAccessor();
         //ko.unwrap(value) ? $(element).fadeIn() : $(element).fadeOut();
         var show = ko.unwrap(value) ? 'show' : 'hide';
-        $(element).effect('slide', {'direction':'left', 'mode':show}, 400);
+        $(element).effect('slide', {'direction':'left', 'mode':show}, 4000);
+        console.log(element);
+        console.log("wadup");
 
     }
 };

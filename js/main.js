@@ -13,19 +13,23 @@ $(function() {
             'profile'   : new ProfileModel()
         }
 
-        self.currentPage  = ko.observable('questions');
+        self.currentPage  = ko.observable('questions')
         self.currentModel = ko.computed(function() {
             return self.pages[self.currentPage()];
         });
         
         self.changePage = function(pageName) {
-            console.log(pageName);
-            var newPage = self.pages[pageName];
-            console.log(newPage);
-           // if (newPage)
-           //     self.currentPage(newPage);
+            var newModel = self.pages[pageName];
+            if (newModel) {
+                console.log(pageName);
+                console.log(newModel);
+                self.currentPage(pageName);
+            }
         }
     };
     
-	ko.applyBindings(new ViewModel());
+    var viewModel = new ViewModel();
+    console.log(viewModel)
+
+	ko.applyBindings(viewModel);
 });
