@@ -16,12 +16,13 @@ function spinnerLoader(page, element) {
 // Could be stored in a separate utility library
 ko.bindingHandlers.fadeVisible = {
     update: function(element, valueAccessor, allBindings) {
+        
         $(element).hide();
         // Whenever the value subsequently changes, slowly fade the element in or out
         var value = valueAccessor();
         //ko.unwrap(value) ? $(element).fadeIn() : $(element).fadeOut();
         var show = ko.unwrap(value) ? 'show' : 'hide';
-        $(element).effect('slide', {'direction':'left', 'mode':show}, 500);
+        $(element).effect('slide', {'direction':'left', 'mode':show}, 400);
 
     }
 };
@@ -32,7 +33,7 @@ ko.bindingHandlers.slideVisible = {
         // Whenever the value subsequently changes, slowly fade the element in or out
         var value = valueAccessor();
         //ko.unwrap(value) ? $(element).fadeIn() : $(element).fadeOut();
-        ko.unwrap(value) ? $(element).effect('slide', {'direction':'down', 'mode':'show'}, 500) : $(element).fadeOut();
+        ko.unwrap(value) ? $(element).effect('slide', {'direction':'down', 'mode':'show'}, 200) : $(element).fadeOut();
         /*$(element).hide();
         // First get the latest data that we're bound to
         var value = valueAccessor();

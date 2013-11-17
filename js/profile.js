@@ -17,40 +17,36 @@ Profile.prototype.update = function(data) {
 var ProfileModel = function(){
 	var self = this;
 	var uid = querystring('user');;
-  $.support.cors = true;
+    $.support.cors = true;
 
-  this.submitUsername = function(){
-    var data = JSON.stringify(
-		ko.toJS(
-		// send only usr and desc if u want lolz
-			self.profile
-		)
-	);
-	alert("we are in subU");
-    postJSON(window.backendURL + '/u/' + uid + '/', 'PUT', data).done(function(response) {
-      console.log("POSTED BAD REQUEST?");
-    }); 
-  }
+    self.submitUsername = function(){
+        var data = JSON.stringify(
+            ko.toJS(
+            // send only usr and desc if u want lolz
+                self.profile
+            )
+        );
+        alert("we are in subU");
+        postJSON(window.backendURL + '/u/' + uid + '/', 'PUT', data).done(function(response) {
+          console.log("POSTED BAD REQUEST?");
+        }); 
+    }
 
-  
+    self.afterRenderCallback = function(elements) {
+        this.profile = new Profile();
+        console.log(window.backendURL + '/u/' + uid +'/');
 
+        $.ajax({
+            url: 'http://130.240.5.168:5000/u/' + uid + '/',
+            dataType: 'json',
+            success: function(data){
+            console.log(data.User);
+            self.profile.update(data.User);
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+            console.log("error");
+            }
+        });
+    }
 
-  this.profile = new Profile();
-
-  console.log(window.backendURL + '/u/' + uid +'/');
-
-	$.ajax({
-		url: 'http://130.240.5.168:5000/u/' + uid + '/',
-		dataType: 'json',
-		success: function(data){
-			console.log(data.User);
-			self.profile.update(data.User);
-		},
-		error: function(jqXHR, textStatus, errorThrown){
-			console.log("error");
-		}
-	});
-	
-	this.profile = new Profile({"username":"Dupr"});
-	
 }
