@@ -9,6 +9,7 @@ $(function() {
        this.posts     = ko.observable();
        this.username  = ko.observable();
 	   this.description = ko.observable();
+	   this.votesum = ko.observable();
        if (data)
         this.update(data);
     };
@@ -21,6 +22,7 @@ $(function() {
        this.posts(data.posts);
        this.username(data.username);
 	   this.description(data.description);
+	   this.votesum(data.votesum);
     };
 
 	var ViewModel = function() {

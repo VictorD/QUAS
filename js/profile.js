@@ -25,6 +25,17 @@ var ProfileModel = function(parent){
 		//alert(parent.user.email);
 		self.profile(parent.user());
 		console.log("wadup:" + parent.user().created());
-	}    
+	}
+
+//	if edit==True: profile/edit, else profile/view
+	self.editMode = ko.observable(false);
+	self.profileView = ko.computed(function(){
+		console.log("Profile view");
+		return self.editMode() ? 'profile/edit' : 'profile/view';
+	});
+	// TODO: Fix cancel
+	
+	
+	
     
 }

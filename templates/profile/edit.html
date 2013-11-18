@@ -1,0 +1,29 @@
+        <div class="col-md-6">
+		<form data-bind="submit:$parent.submitUsername">
+            <input data-bind="value:username" type="text">
+			<a href="#" data-bind="click: function() { $parent.editMode(false) }">cancel</a>
+			<br>
+            <table class="table table-condensed table-responsive table-user-information">
+                <tbody>
+				
+                <tr>
+                    <td>Member since:</td>
+                    <td data-bind="text:created">beep plz</td>
+                </tr>
+                <tr>
+                    <td>Edit Description:</td><br>
+                    <td><input data-bind="value:description" type="text"></td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td data-bind="text:email">xxx</td>
+                </tr>
+				<tr>
+                    <td>Reputation</td>
+                    <td data-bind="text:votesum">xxx</td>
+                </tr>
+				
+                </tbody>
+            </table>
+		</form>	
+        </div>
