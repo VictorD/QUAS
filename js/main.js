@@ -8,6 +8,7 @@ $(function() {
        this.last_seen = ko.observable();
        this.posts     = ko.observable();
        this.username  = ko.observable();
+	   this.description = ko.observable();
        if (data)
         this.update(data);
     };
@@ -15,18 +16,27 @@ $(function() {
     User.prototype.update = function(data) {
        this.id(data.id || 0);
        this.email(data.email);
-       this.created(data.created_at);
+       this.created(data.created);
        this.last_seen(data.last_seen);
        this.posts(data.posts);
        this.username(data.username);
+	   this.description(data.description);
     };
 
 	var ViewModel = function() {
         self = this;
+		
+		self.userJSON = asyncDependentObservable(function() {
+            return postJSON(window.backendURL + '/u/me/', 'GET');
+        }, this);
+    
+        self.user = ko.computed(function() {
+            return new User(self.userJSON().User);
+        });
         
         self.pages = {
             'questions' : new QuestionViewModel(),
-            'profile'   : new ProfileModel()
+            'profile'   : new ProfileModel(this)
         }
 
         self.currentPage  = ko.observable('questions');
@@ -34,13 +44,7 @@ $(function() {
             return self.pages[self.currentPage()];
         });
 
-        self.userJSON = asyncDependentObservable(function() {
-            return postJSON(window.backendURL + '/u/me/', 'GET');
-        }, this);
-    
-        self.user = ko.computed(function() {
-            return new User(self.userJSON().User);
-        });
+
 
         self.loggedIn = ko.computed(function() {
             return (self.user().id() > 0);
@@ -77,16 +81,13 @@ $(function() {
                 self.currentPage(newPage);
             }
 
-            var usr = getParameterByName('user', location.search);
-            if (usr) {
-                self.tryLogin(usr);
-            }
+
             
         });
     };
     
     var viewModel = new ViewModel();
-    console.log(viewModel)
+    
 
 	ko.applyBindings(viewModel);
 });

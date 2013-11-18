@@ -55,8 +55,7 @@ var QuestionViewModel = function() {
     self.findQuestion       = self.findQuestion.bind(this);
     self.deleteQuestion     = self.deleteQuestion.bind(this);
     self.updateSelection    = self.updateSelection.bind(this);
-    self.afterRenderCallback = self.afterRenderCallback.bind(this);
-    self.stateChangeCallback = self.stateChangeCallback.bind(this);
+
 
     // Bind to State Change
     History.Adapter.bind(window,'statechange',function(){
@@ -142,20 +141,11 @@ ko.utils.extend(QuestionViewModel.prototype, {
             
         }
     },
-    animatePageChange: function() { 
+    afterRenderCallback: function() { 
         $('#questionView').hide(); 
         $('#questionView').fadeIn(600);
         $('#rightColumn').hide(); 
         $('#rightColumn').fadeIn(600);//('slide', {'direction':'left', 'mode':'show'}, 400); 
-    },
-    afterRenderCallback: function(elements) {
-        if (elements.length > 1) {          
-            console.log(elements);
-            this.updateSelection();
-        }
-    },    
-    stateChangeCallback : function() {
-        
     }
 });
 
