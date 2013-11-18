@@ -20,26 +20,6 @@ Question.prototype.update = function(data) {
    this.timestamp(data.timestamp);
 };
 
-function getParameterByName(name, hash) {
-    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
-    var results = regex.exec(hash);
-    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-}
-
-// source: https://github.com/knockout/knockout/wiki/Asynchronous-Dependent-Observables
-function asyncDependentObservable(evaluator, owner) {
-    var result = ko.observableArray();
-    
-    ko.dependentObservable(function() {
-        // Get the $.Deferred value, and then set up a callback so that when it's done,
-        // the output is transferred onto our "result" observable
-        evaluator.call(owner).done(result);        
-    });
-    
-    return result;
-}
-
 var QuestionViewModel = function() {
     var self = this;
     self.viewingID = ko.observable();
