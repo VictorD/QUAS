@@ -45,7 +45,7 @@ $(function() {
             postJSON(window.backendURL + '/u/me/', 'GET').success(function(data) {
                 console.log("wat");
                 self.user(new User(data.User));
-            }).error(function(XMLHttpRequest, textStatus, errorThrown) { console.log("ERR")});
+            });
         });
         
         self.pages = {
