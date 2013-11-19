@@ -93,7 +93,7 @@ def create_question():
       for tagName in tagList:
          t = get_tag(tagName)
          q.tags.append(t)
-
+   u.posts_eval()
    db.session.add(q)
    db.session.commit()
    q_dict = q.to_dict()
@@ -122,6 +122,14 @@ def modify_question(qid):
 
    if 'body' in request.json:
       db.session.query(Question).filter(Question.id == qid).update({'body':request.json['body']})
+
+   if 'tags' in request.json:
+      q = Question.query.get(qid)
+      tagList = request.json['tags']
+      q.tags = []
+      for tagName in tagList:
+         t = get_tag(tagName)
+         q.tags.append(t)
 
    db.session.commit()
    return jsonify( {'Modified id':qid} ), 200

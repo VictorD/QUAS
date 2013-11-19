@@ -1,6 +1,8 @@
-from app import db
+from app import db, app
+import flask.ext.whooshalchemy as whooshalchemy
 
 class Tag(db.Model):
+   __searchable__ = ['title']
    id = db.Column(db.Integer, primary_key=True)
    title = db.Column(db.String(30))
    
@@ -17,4 +19,6 @@ tags = db.Table('tags',
    db.Column('tag_id', db.Integer, db.ForeignKey('tag.id')),
    db.Column('question_id', db.Integer, db.ForeignKey('question.id'))
 )
+
+whooshalchemy.whoosh_index(app, Tag)
 

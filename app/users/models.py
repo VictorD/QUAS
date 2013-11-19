@@ -1,8 +1,14 @@
-from app import db
+from app import db, app
+from app.questions.models import Question
+from app.votes.models import QVote,RVote
+from app.replies.models import Reply
 import os, binascii
 from datetime import datetime, timedelta
+import flask.ext.whooshalchemy as whooshalchemy
 
 class User(db.Model):
+   __searchable__ = ['username']
+
    id = db.Column(db.Integer, primary_key=True)
    username = db.Column(db.String(25))
    description = db.Column(db.String(500))
@@ -26,8 +32,9 @@ class User(db.Model):
          token = self.token,
          expires = self.token_expires,
          description=self.description,
+         posts=self.posts,
          votesum=self.votesum,
-         create_at=self.created_at,
+         created=self.created_at,
          last_seen=self.last_seen
       )
 
@@ -40,6 +47,18 @@ class User(db.Model):
    def check_token(self, token):
       return (self.token == token)
 
+   def posts_eval(self):
+      qs = Question.query.filter(Question.author_id==self.id)
+      rs = Reply.query.filter(Reply.author_id==self.id)
+      self.posts = qs.count() + rs.count()
+      db.session.commit()
+
+   def vote_eval(self):
+      qs = Question.query.filter(Question.author_id==self.id)
+      rs = Reply.query.filter(Reply.author_id==self.id)
+      #for q in qs:
+      #   q.votes
+
    def author_return(self):
       return dict(
          username = self.username,
@@ -49,3 +68,5 @@ class User(db.Model):
 
    def __repr__(self):
       return '<User %r>' % (self.id)
+
+whooshalchemy.whoosh_index(app, User)

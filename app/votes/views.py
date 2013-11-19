@@ -1,5 +1,6 @@
-from flask import Flask, jsonify, Blueprint, request, abort, make_response
+from flask import Flask, jsonify, Blueprint, request, abort, make_response, session
 from app.questions.models import Question
+from app.users.models import User
 from app.replies.models import Reply
 from app import db
 from app.votes.models import QVote,RVote
@@ -8,35 +9,37 @@ from app.decorators import crossdomain,requires_login
 
 vmod = Blueprint('votes', __name__, url_prefix='/vote')
 
+#@vmod.route('/me/', methods = ['GET'])
+#@crossdomain
+#@requires_login
+#def my_vote_score():
+   
+
+
 ##___QUESTIONS________
-@vmod.route('/q/', methods = ['POST'])
-@vmod.route('/q/<int:qid>/', methods = ['POST'])
-@vmod.route('/q/<int:qid>/<upOrDown>', methods = ['POST'])
+##works as put or post
+@vmod.route('/q/', methods = ['POST','PUT'])
 @crossdomain
 @requires_login
-def create_vote_question(qid=0,upOrDown=None):
+def create_vote_question():
    user = User.query.filter_by(email=session['email']).first()
-   if not (qid!=0 or (request.json and 'question_id' in request.json)):
+   if not (request.json and 'question_id' in request.json):
       abort(400)
-   if qid==0:
-      qid=int(request.json['question_id'])
-   if not ((upOrDown=="up" or upOrDown=="down") or (request.json and 'value' in request.json)):
+   qid=int(request.json['question_id'])
+   if not (request.json and 'value' in request.json):  
       abort(400)
-   if upOrDown:
-      if upOrDown=="up":
-         value=1
-      if upOrDown=="down":
-         value=-1
-   elif not (request.json['value']==1 or request.json['value']==-1):
+   if not (request.json['value']==1 or request.json['value']==-1 or request.json['value']==0):
       abort(400)
-   else:
-      value=request.json['value']
-
-   r = QVote(value = value, timestamp = datetime.datetime.utcnow(),question_id=qid,author_id=u.id)
-   db.session.add(r)
+   value=request.json['value']
+   already = db.session.query(QVote).filter_by(question_id=qid,author_id=user.id).first()
+   if not already:
+      r = QVote(value = value, timestamp = datetime.datetime.utcnow(),question_id=qid,author_id=user.id)
+      db.session.add(r)
+      db.session.commit()
+      return jsonify({"Status":"Created"}),200
+   already.value=value
    db.session.commit()
-   return "",200
-
+   return jsonify({"Status":"Changed"}),200
 
 ##The score of the question with qid
 @vmod.route('/q/<int:qid>/', methods = ['GET'])
@@ -59,36 +62,30 @@ def list_question(qid):
      vdict.append(v.to_dict())
    return jsonify({'VoteList':vdict} )
 
-
-
 ##___REPLIES________
-@vmod.route('/r/', methods = ['POST'])
-@vmod.route('/r/<int:rid>/', methods = ['POST'])
-@vmod.route('/r/<int:rid>/<upOrDown>', methods = ['POST'])
+@vmod.route('/r/', methods = ['POST','PUT'])
 @crossdomain
 @requires_login
-def create_vote_reply(rid=0,upOrDown=None):
-   user = User.query.filter_by(email=session['email']).first()
-   if not (rid!=0 or (request.json and 'reply_id' in request.json)):
+def create_vote_reply():
+   u = User.query.filter_by(email=session['email']).first()
+   if not (request.json and 'reply_id' in request.json):
       abort(400)
-   if rid==0:
-      rid=int(request.json['reply_id'])
-   if not ((upOrDown=="up" or upOrDown=="down") or (request.json and 'value' in request.json)):
+   rid=int(request.json['reply_id'])
+   if not (request.json and 'value' in request.json):
       abort(400)
-   if upOrDown:
-      if upOrDown=="up":
-         value=1
-      if upOrDown=="down":
-         value=-1
-   elif not (request.json['value']==1 or request.json['value']==-1):
+   if not (request.json['value']==1 or request.json['value']==-1 or request.json['value']==0):
       abort(400)
-   else:
-      value=request.json['value']
+   value=request.json['value']
 
-   r = RVote(value = value, timestamp = datetime.datetime.utcnow(),reply_id=rid,author_id=u.id)
-   db.session.add(r)
+   already = db.session.query(RVote).filter_by(reply_id=rid,author_id=u.id).first()
+   if not already:
+      r = RVote(value = value, timestamp = datetime.datetime.utcnow(),reply_id=rid,author_id=u.id)
+      db.session.add(r)
+      db.session.commit()
+      return jsonify({"Satus":"Created"}),200
+   already.value=value
    db.session.commit()
-   return "",200
+   return jsonify({"Status":"Changed"}),200
 
 
 ##The score of the reply with rid

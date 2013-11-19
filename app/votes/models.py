@@ -1,7 +1,6 @@
 from app import db
 
 class QVote(db.Model):
-#TODO USER/AUTHOR
    id = db.Column(db.Integer, primary_key=True)
    value =db.Column(db.Integer) 
    question_id = db.Column(db.Integer, db.ForeignKey('question.id'), nullable=False)
@@ -23,7 +22,6 @@ class QVote(db.Model):
       return '<Vote %r >' % (self.id)
 
 class RVote(db.Model):
-#TODO USER/AUTHOR
    id = db.Column(db.Integer, primary_key=True)
    value =db.Column(db.Integer) 
    reply_id = db.Column(db.Integer, db.ForeignKey('reply.id'), nullable=False)

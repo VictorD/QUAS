@@ -30,6 +30,10 @@ def favicon():
 def api_doc():
    return render_template('api.html')
 
+@app.route('/')
+def index():
+   return jsonify ( {'Index':'Welcome to QUAS backend! To see API documention go to /api/'} )
+
 from questions.views import qmod as QuestionModule
 app.register_blueprint(QuestionModule)
 

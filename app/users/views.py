@@ -2,13 +2,15 @@ from models import User
 from flask import Flask, jsonify, Blueprint, request, abort, g, session, redirect
 from app.decorators import crossdomain, requires_login
 from app import db, oid
-import datetime
+import datetime, json
 from pprint import pprint
 
 umod = Blueprint('users', __name__, url_prefix='/u')
 
 @umod.route('/<int:qid>/', methods = ['OPTIONS'])
 @umod.route('/', methods = ['OPTIONS'])
+@umod.route('/me/', methods = ['OPTIONS'])
+@umod.route('/logout', methods = ['OPTIONS'])
 @crossdomain
 def tellThemEverythingWillBeOk(qid=0):
    return jsonify ( {'Allowed Methods':''} ), 200
@@ -32,6 +34,13 @@ def get_user(id):
       return jsonify({'User':u.to_dict()})
    abort(400)
 
+@umod.route('/me/', methods = ['GET'])
+@crossdomain
+def get_self():
+   if g.user is not None:
+      return jsonify({'User':g.user.to_dict()})
+   else:
+      abort(403)
 
 @umod.route('/<int:id>/', methods = ['PUT'])
 @crossdomain
@@ -61,7 +70,6 @@ def get_user_questions(id):
 def login():
    if g.user is not None:
       return redirect(request.environ.get('HTTP_REFERER'))
-      #return jsonify({'Login':'Already logged in'})
 
    if request.method == 'GET':
       return oid.try_login('https://www.google.com/accounts/o8/id', ask_for=['email'])
@@ -82,7 +90,7 @@ def create_or_login(resp):
    msg = 'Successful'
 
    if not user:
-      user = User(username='',description='', votesum=0, created_at=datetime.datetime.utcnow(), last_seen=datetime.datetime.utcnow(), email=resp.email)
+      user = User(username='',description='', votesum=0, created_at=datetime.datetime.utcnow(), last_seen=datetime.datetime.utcnow(), email=resp.email, posts=0)
       db.session.add(user)
       msg = 'Created User'
 

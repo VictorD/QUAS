@@ -1,6 +1,7 @@
 from flask import make_response, g, request, abort, session
 from app.users.models import User
 from app.questions.models import Question
+from app.replies.models import Reply
 from functools import wraps
 from pprint import pprint
 import datetime
@@ -47,11 +48,19 @@ def requires_author(f):
    def decorated_function(*args,**kwargs):
       if 'email' and 'token' in session:
          user = User.query.filter_by(email=session['email']).first()
-         r = [x for x in request.environ.get('PATH_INFO').split('/') if x]
-         if r[0] == 'questions':
-            q = Question.query.get(r[1])
+         xs = [x for x in request.environ.get('PATH_INFO').split('/') if x]
+         if xs[0] == 'questions':
+            q = Question.query.get(xs[1])
             if user != q.author:
                abort(403)
-            
+         elif xs[0] == 'replies':
+            r = Reply.query.get(xs[1])
+            if user != r.author:
+               abort(403)
+         elif xs[0] == 'u':
+            if xs[1] != user.id:
+               abort(403)
+
       return f(*args, **kwargs)
-   return decorated_function     
+   return decorated_function
+

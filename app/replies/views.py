@@ -1,10 +1,17 @@
-from flask import Flask, jsonify, Blueprint, request, abort
+from flask import Flask, jsonify, Blueprint, request, abort, session
 from models import Reply
+from app.users.models import User
 from app.decorators import crossdomain, requires_login
 from app import db
 import datetime
 
 rmod = Blueprint('replies', __name__, url_prefix='/replies')
+
+@rmod.route('/<int:rid>/', methods = ['OPTIONS'])
+@rmod.route('/', methods = ['OPTIONS'])
+@crossdomain
+def tellThemEverythingWillBeOk(qid=0):
+   return jsonify ( {'Allowed Methods':''} ), 200
 
 @rmod.route('/', methods = ['POST'])
 @crossdomain
@@ -12,8 +19,8 @@ rmod = Blueprint('replies', __name__, url_prefix='/replies')
 def create_reply():   
    if not request.json or not 'body' in request.json:
       abort(400)
-
-   r = Reply(body = request.json['body'], timestamp = datetime.datetime.utcnow(), question_id=int(request.json['question_id']))
+   u = User.query.filter_by(email=session['email']).first()
+   r = Reply(body = request.json['body'], timestamp = datetime.datetime.utcnow(), question_id=int(request.json['question_id']), author_id=u.id)
    db.session.add(r)
    db.session.commit()
    return jsonify( {'Reply id': r.to_dict()} ), 201

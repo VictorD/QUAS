@@ -177,6 +177,16 @@
                                         <td>
                                             the question body
                                         </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 150px">
+                                            <strong>tags</strong><br/>
+                                            optional
+                                        </td>
+                                        <td>
+                                            list of tags to replace old ones
+                                        </td>
+                                    </tr>
                                     </tbody>
                                 </table>
                             </td>
@@ -399,6 +409,17 @@
                         </tr>
                         <tr>
                             <td>
+                              <span class="label label-success">GET</span> /u/me/<br><br>
+                              <span class="label label-primary">Requires user</span>
+                            </td>
+                            <td>
+                                <p>
+                                    Get logged in user.
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
                                 <span class="label label-warning">PUT</span> /u/{id}/<br><br>
                                 <span class="label label-primary">Requires user</span>
                             </td>
@@ -430,6 +451,16 @@
                                     </tr>
                                     </tbody>
                                 </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                              <span class="label label-success">GET</span> /u/{id}/q/<br>
+                            </td>
+                            <td>
+                                <p>
+                                   Returns all the questions by a single user.
+                                </p>
                             </td>
                         </tr>
                         <tr>
@@ -490,7 +521,7 @@
                                     <tbody>
                                     <tr>
                                         <td style="width: 150px">
-                                            <strong>qid</strong><br>
+                                            <strong>question_id</strong><br>
                                             required
                                         </td>
                                         <td>
@@ -503,63 +534,14 @@
                                             required
                                         </td>
                                         <td>
-                                            only 1 or -1
+                                            only 1,0 or -1
                                         </td>
                                     </tr>
                                     </tbody>
                                 </table>
                             </td>
                         </tr>
-
-                        <tr>
-                            <td>
-                              <span class="label label-info">Post</span> /vote/q/{qid}/<br><br>
-                              <span class="label label-primary">Require user access</span>
-                            </td>
-                            <td>
-                                <p>
-                                    Vote on a question
-                                </p>
-
-                                <h3>Parameters</h3>
-                                <table>
-                                    <tbody>
-                                    <tr>
-                                        <td style="width: 150px">
-                                            <strong>value</strong><br/>
-                                            required
-                                        </td>
-                                        <td>
-                                            only 1 or -1
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                              <span class="label label-info">Post</span> /vote/q/{qid}/up<br><br>
-                              <span class="label label-primary">Require user access</span>
-                            </td>
-                            <td>
-                                <p>
-                                    Upvote a question
-                                </p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                              <span class="label label-info">Post</span> /vote/q/{qid}/down<br><br>
-                              <span class="label label-primary">Require user access</span>
-                            </td>
-                            <td>
-                                <p>
-                                    Downvote a question
-                                </p>
-                            </td>
-                        </tr>
-                        
+          
                         <tr>
                             <td>
                               <span class="label label-info">Post</span> /vote/r/<br><br>
@@ -575,7 +557,7 @@
                                     <tbody>
                                     <tr>
                                         <td style="width: 150px">
-                                            <strong>rid</strong><br>
+                                            <strong>reply_id</strong><br>
                                             required
                                         </td>
                                         <td>
@@ -588,7 +570,7 @@
                                             required
                                         </td>
                                         <td>
-                                            only 1 or -1
+                                            only 1,0 or -1
                                         </td>
                                     </tr>
                                     </tbody>
@@ -596,54 +578,7 @@
                             </td>
                         </tr>
 
-                        <tr>
-                            <td>
-                              <span class="label label-info">Post</span> /vote/r/{rid}/<br><br>
-                              <span class="label label-primary">Require user access</span>
-                            </td>
-                            <td>
-                                <p>
-                                    Vote on a reply
-                                </p>
 
-                                <h3>Parameters</h3>
-                                <table>
-                                    <tbody>
-                                    <tr>
-                                        <td style="width: 150px">
-                                            <strong>value</strong><br/>
-                                            required
-                                        </td>
-                                        <td>
-                                            only 1 or -1
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                              <span class="label label-info">Post</span> /vote/r/{rid}/up<br><br>
-                              <span class="label label-primary">Require user access</span>
-                            </td>
-                            <td>
-                                <p>
-                                    Upvote a reply
-                                </p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                              <span class="label label-info">Post</span> /vote/r/{rid}/down<br><br>
-                              <span class="label label-primary">Require user access</span>
-                            </td>
-                            <td>
-                                <p>
-                                    Downvote a reply
-                                </p>
-                            </td>
-                        </tr>
                        
                         <tr>
                             <td>

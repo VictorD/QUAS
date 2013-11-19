@@ -1,7 +1,10 @@
-from app import db
+from app import db, app
 from app.tags.models import tags
+import flask.ext.whooshalchemy as whooshalchemy
 
 class Question(db.Model):
+   __searchable__ = ['title', 'body']
+
    id = db.Column(db.Integer, primary_key=True)
    title = db.Column(db.String(50))
    body = db.Column(db.String(500))
@@ -24,3 +27,5 @@ class Question(db.Model):
 
    def __repr__(self):
       return '<Question %r>' % (self.id)
+
+whooshalchemy.whoosh_index(app, Question)
