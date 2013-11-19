@@ -80,21 +80,22 @@ ko.utils.extend(QuestionViewModel.prototype, {
     },
     loadReplies: function(question) {
         var qid = question.id();
+        question.replies = ko.observableArray();
 
-        question.repliesJSON =  asyncDependentObservable(function() {
-            // Filter by some other vars if u want
-            return $.getJSON(window.backendURL + "/questions/" + qid + "/replies/");
-        }, this);
-
-        question.replies = ko.computed(function() {
-            return ko.utils.arrayMap(question.repliesJSON().ReplyList, function(reply) {
-                return {id:        ko.observable(reply.id), 
-                        author:    ko.observable(reply.author),
-                        body:      ko.observable(reply.body),
-                        timestamp: ko.observable(reply.timestamp)
-                       }
-            });
-        })
+        ko.computed(function() {
+          $.getJSON(window.backendURL + "/questions/" + qid + "/replies/").success(function(data) {
+            data = data.ReplyList;
+            for (var i = data.length - 1; i >= 0; i--) {
+              var reply = data[i];
+              question.replies.push({
+                  id:        ko.observable(reply.id), 
+                  author:    ko.observable(reply.author),
+                  body:      ko.observable(reply.body),
+                  timestamp: ko.observable(reply.timestamp)
+                });
+            };
+          });
+        });
     },
     viewQuestion: function(item, event) {
         if (item) {
