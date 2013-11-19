@@ -1,7 +1,8 @@
         <div class="col-md-6">
 		<form data-bind="submit:$parent.submitUsername">
             <input data-bind="value:username" type="text">
-			<a href="#" data-bind="click: function() { $parent.editMode(false) }">cancel</a>
+			<a href="#" data-bind="click: $parent.revertChange">cancel</a>
+			<button>Submit</button>
 			<br>
             <table class="table table-condensed table-responsive table-user-information">
                 <tbody>

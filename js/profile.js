@@ -6,13 +6,9 @@ var ProfileModel = function(parent){
     $.support.cors = true;
 	
     self.submitUsername = function(){
-        var data = JSON.stringify(
-            ko.toJS(
-            // send only usr and desc etc if you want
-                self.profile
-            )
-        );
-        alert("we are in subU");
+		self.profile().commit();
+        var data = JSON.stringify(ko.toJS(self.profile));
+        self.editMode(false);
         postJSON(window.backendURL + '/u/'+ parent.user().id() +'/', 'PUT', data).done(function(response) {
           console.log("POSTED BAD REQUEST?");
         }); 
@@ -24,18 +20,20 @@ var ProfileModel = function(parent){
         $('#profileView').fadeIn(500);//effect('slide', {'direction':'left', 'mode':'show'}, 400); 
 		//alert(parent.user.email);
 		self.profile(parent.user());
-		console.log("wadup:" + parent.user().created());
+		
 	}
 
 //	if edit==True: profile/edit, else profile/view
 	self.editMode = ko.observable(false);
 	self.profileView = ko.computed(function(){
 		console.log("Profile view");
+		
 		return self.editMode() ? 'profile/edit' : 'profile/view';
 	});
 	// TODO: Fix cancel
 	
-	
-	
-    
+	self.revertChange = function(){
+		self.editMode(false);
+		self.profile().revert();
+	}  
 }
