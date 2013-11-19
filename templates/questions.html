@@ -36,7 +36,7 @@
       <span class="glyphicon glyphicon-list-alt"></span>&nbsp;<span>Show author options</span>
    </div>
     <div class="currentQuestion clearfix">
-       <div class="col-xs-1" style="padding-top: 20px;">
+        <div class="col-xs-1" style="padding-top: 20px;">
             <div style="background-color: #afa;width:16px;height:16px;"></div>
             <span>&nbsp;2</span>
             <div style="background-color: #faa;width:16px;height:16px;"></div>
@@ -68,21 +68,14 @@
           </div>
           <!-- /ko -->
         </div>
-        <div class="add-reply">
+        <div class="add-reply" data-bind="with: new Reply()">
             <h4>Do you know the answer?</h4>
-            <form accept-charset="UTF-8" action="" method="post">
-            <input id="ratings-hidden" name="rating" type="hidden"> 
-            <textarea class="form-control animated" cols="50" id="new-review" name="comment" placeholder="Enter your reply here..." rows="5"></textarea>
-
-            <div class="text-right">
-                <div class="stars starrr" data-rating="0"></div>
-                <a class="btn btn-danger btn-sm" href="#" id="close-review-box" style="display:none;">
-                <span class="glyphicon glyphicon-remove"></span>Cancel</a>
-                <br/>
-                <button class="btn btn-success btn-lg" type="submit">Submit reply</button>
-            </div>
+            <form>
+              <textarea data-bind="value: body" class="form-control animated" cols="50" id="new-review" 
+                name="comment" placeholder="Enter your reply here..." rows="5"></textarea>
+              <button  data-bind="click: submitReply" class="btn btn-success btn-lg" style="margin-top: 20px;" type="submit">Submit reply</button>
             </form>
-          </div>
+        </div>
       
 </div>
 

@@ -30,14 +30,13 @@ var QuestionViewModel = function() {
       $.getJSON(window.backendURL + '/questions/').success(function(data) {
         data = data.QuestionList;
         for (var i = data.length - 1; i >= 0; i--) {
-                  self.questions.push(new Question(data[i]));
+          self.questions.push(new Question(data[i]));
         };
       });
     });
 
     self.viewedQuestion = ko.computed(function() {
         var newID = self.viewingID();
-
         var q = self.findQuestion(newID);
         if (q) {
             console.log("Updating viewed question");
@@ -45,7 +44,6 @@ var QuestionViewModel = function() {
             self.loadReplies(q);
             self.updateSelection();
         }
-
         return q;
     });
 
@@ -54,7 +52,6 @@ var QuestionViewModel = function() {
     self.findQuestion       = self.findQuestion.bind(this);
     self.deleteQuestion     = self.deleteQuestion.bind(this);
     self.updateSelection    = self.updateSelection.bind(this);
-
 
     // Bind to State Change
     History.Adapter.bind(window,'statechange',function(){
@@ -79,21 +76,13 @@ ko.utils.extend(QuestionViewModel.prototype, {
         return this.viewedQuestion.id() == question.id();
     },
     loadReplies: function(question) {
-        var qid = question.id();
         question.replies = ko.observableArray();
-
         ko.computed(function() {
+          var qid = question.id();
           $.getJSON(window.backendURL + "/questions/" + qid + "/replies/").success(function(data) {
             data = data.ReplyList;
-            for (var i = data.length - 1; i >= 0; i--) {
-              var reply = data[i];
-              question.replies.push({
-                  id:        ko.observable(reply.id), 
-                  author:    ko.observable(reply.author),
-                  body:      ko.observable(reply.body),
-                  timestamp: ko.observable(reply.timestamp)
-                });
-            };
+            for (var i = data.length - 1; i >= 0; i--)
+              question.replies.push(new Reply(data[i]));
           });
         });
     },
@@ -145,6 +134,7 @@ ko.utils.extend(QuestionViewModel.prototype, {
         $('#rightColumn').hide(); 
         $('#rightColumn').fadeIn(600);//('slide', {'direction':'left', 'mode':'show'}, 400); 
     }
+    
 });
 
 
