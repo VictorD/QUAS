@@ -1,8 +1,12 @@
 
 <div id="rightColumn" class="col-xs-5">
-   <div id="nav-filter-menu">
+   <div id="nav-filter-menu" data-bind="click:toggleVerticalMenu">
       <span class="glyphicon glyphicon-list-alt"></span>&nbsp;<span>Filter questions</span>
+		  
    </div>
+   <div class="filterStuff" style="display:none">
+			<h1>Deal with it.</h1>
+	</div>
    <ul id="questionList" data-bind="foreach: questions">
        <li class="question-block clearfix" data-bind="click: $parent.viewQuestion, attr: {'id': 'question_' + id()}">
         <div class="col-xs-1">

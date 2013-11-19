@@ -34,28 +34,14 @@ ko.bindingHandlers.fadeVisible = {
     }
 };
 
-ko.bindingHandlers.slideVisible = {
-    slide: function(element, valueAccessor, allBindings) {
-        $(element).hide();
-        // Whenever the value subsequently changes, slowly fade the element in or out
-        var value = valueAccessor();
-        //ko.unwrap(value) ? $(element).fadeIn() : $(element).fadeOut();
-        ko.unwrap(value) ? $(element).effect('slide', {'direction':'down', 'mode':'show'}, 200) : $(element).fadeOut();
-        /*$(element).hide();
-        // First get the latest data that we're bound to
-        var value = valueAccessor();
- 
-        // Next, whether or not the supplied model property is observable, get its current value
-        var valueUnwrapped = ko.unwrap(value);
-    
-        console.log(allBindings());
-        var direction = allBindings().slideDirection || 'left';
-        // Grab some more data from another binding property
-        var duration = allBindings().slideDuration || 400; // 400ms is default duration unless otherwise specified
- 
-        console.log(direction + " " + duration);
-        $(element).effect('slide', {'direction':direction, 'mode':'show'}, duration);*/
-    },
-    init: this.slide,
-    update: this.slide
-};
+
+ function toggleVerticalMenu(data, event){
+		
+		var viewBox = $(event.currentTarget);
+		var toggleBox = viewBox.next(".filterStuff:first");
+		console.log("toggleBox");
+		console.log(toggleBox);
+		
+//		viewBox.hide();
+		toggleBox.slideToggle(7000, function(){});
+}

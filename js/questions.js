@@ -122,7 +122,7 @@ ko.utils.extend(QuestionViewModel.prototype, {
         if (position) {
             var offset = position.top + 19;
             var viewBox = $("#questionView");
-            viewBox.offset({ top: offset});
+			viewBox.offset({ top: offset});
             viewBox.hide();
             viewBox.effect('slide', {'direction':'left', 'mode':'show'}, 400);
             
@@ -137,4 +137,5 @@ ko.utils.extend(QuestionViewModel.prototype, {
     
 });
 
+	
 
