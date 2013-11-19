@@ -23,19 +23,18 @@ Question.prototype.update = function(data) {
 var QuestionViewModel = function() {
     var self = this;
     self.viewingID = ko.observable();
-    
-    self.questionsJSON = asyncDependentObservable(function() {
-        // Replace with $.ajax and drop some goody dependant DATA vars here like! 2bootifyl!
-        return $.getJSON(window.backendURL + '/questions/');
-    }, this);
-    
-    self.questions = ko.computed(function() {
-        return ko.utils.arrayMap(self.questionsJSON().QuestionList, function(item) {
-            var newQuestion = new Question(item);
-            return newQuestion;
-        });
+    self.questions = ko.observableArray();
+
+    ko.computed(function() {
+      console.log("Loading questions");
+      $.getJSON(window.backendURL + '/questions/').success(function(data) {
+        data = data.QuestionList;
+        for (var i = data.length - 1; i >= 0; i--) {
+                  self.questions.push(new Question(data[i]));
+        };
+      });
     });
-    
+
     self.viewedQuestion = ko.computed(function() {
         var newID = self.viewingID();
 
@@ -105,14 +104,14 @@ ko.utils.extend(QuestionViewModel.prototype, {
         }
     },
     deleteQuestion: function(question) {
-       this.questions.remove(question);
+        this.questions.remove(question);
         var qid = question.id();
         $.ajax({
             url: window.backendURL + '/questions/' + qid + '/',
             type: 'DELETE',
             success: function(result) {
-                alert("deleted question " + qid);
-
+                //alert("deleted question " + qid);
+                reloadquestion
             }
         });
     },
@@ -123,11 +122,9 @@ ko.utils.extend(QuestionViewModel.prototype, {
             return;
             
         console.log("Updating higlight and updating QuestionView top-offset: " + newID);
-        
-        var elem = $("#question_" + newID)
-        
-
         $("#questionList li").removeAttr('style');
+
+        var elem = $("#question_" + newID)
         elem.css({'background-color': '#b9ecff'});
         
         var position = elem.position();
