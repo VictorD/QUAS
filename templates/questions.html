@@ -36,8 +36,11 @@
 </div>
 
 <div id="questionView" class="col-xs-6 clearfix"  data-bind="with: viewedQuestion">
-    <div id="author-options-menu">
+    <div id="author-options-menu" data-bind="click:toggleVerticalMenu">
       <span class="glyphicon glyphicon-list-alt"></span>&nbsp;<span>Show author options</span>
+   </div>
+   <div class="filterStuff" style="display:none">
+	<h1> tmp </h1>
    </div>
     <div class="currentQuestion clearfix">
         <div class="col-xs-1" style="padding-top: 20px;">
