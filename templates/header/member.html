@@ -1,26 +1,36 @@
 <div id="header" class="col-xs-12">
-	<div class="brand col-xs-1"><img src="img/logo.png"/></div>
-     <div id="search-bar" class="col-xs-5">
+
+	<div class="brand col-xs-6 col-lg-2"><img src="img/logo.png"/></div>
+
+	<div id="search-bar" class="col-xs-6 col-lg-3">
 		<span class="glyphicon glyphicon-search"></span>
 		<span data-bind="with: user">
 			Logged in as <span data-bind="text: username"></span>
 		</span>
 	</div>
-     
-     <div id="sign-in" class="button col-xs-1 right">
-		<a href="#" data-bind="click: logout">Logout</a>
-	</div>
-     <div class="button col-xs-1 right">
-		<a data-bind="click: changePage('profile')" class="orange">
-			<span style="color: #eee;" class="glyphicon glyphicon-question-sign"></span>
+   <div class="orange button col-xs-5 col-md-1">
+		<a data-bind="click: changePage('profile')" >
+			<span style="color: #eee;" class="glyphicon glyphicon-home"></span>
 			Profile
 		</a>
 	</div>
-     
-	<div class="button col-xs-1 right">
-		<a data-bind="click: changePage('questions')" class="blue">
+	<div class="blue button col-xs-6 col-md-1">
+		<a data-bind="click: changePage('questions')">
 			<span style="color: #eee;" class="glyphicon glyphicon-question-sign"></span>
 			Questions
+		</a>
+	</div>
+	<div id="ask-question" class="green button col-xs-5 col-md-1">
+		<div style="width: 100%">
+		<a data-bind="click: changePage('questions')">
+			<span style="color: #eee;" class="glyphicon glyphicon-question-sign"></span>
+			Ask Question
+		</a></div>
+	</div>
+	<div class="logout button col-xs-6 col-md-1">
+		<a data-bind="click: logout">
+			<span style="color: #eee;" class="glyphicon glyphicon-minus"></span>
+			<span>Logout</span>
 		</a>
 	</div>
 </div>

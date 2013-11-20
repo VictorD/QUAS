@@ -12,7 +12,8 @@ var Question = function(data) {
 };
 
 Question.prototype.update = function(data) {
-   this.author(data.author ? data.author : "unknown");
+    console.log(data.author)
+   this.author(data.author || {username : "unknown"});
    this.id(data.id);
    this.body(data.body);
    this.title(data.title);
@@ -107,7 +108,6 @@ ko.utils.extend(QuestionViewModel.prototype, {
     },
     updateSelection: function() {
         var newID = this.viewingID();
-
         if (!newID)
             return;
             

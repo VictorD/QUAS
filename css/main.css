@@ -24,37 +24,29 @@ body {
    border-bottom: 1px solid #444;
 }
 
+#header, #header div {
+   padding: 0;
+}
+
 #header div.button {
-      float: left;
-      width: 115px;
       margin-right: 10px;
 }
 
 #search-bar {
-    font-size: 150%;
-    font-family: helvetica;
-   margin-left: 20px;
-}
-
-.right {
-   float: right !important;
+   font-size: 150%;
+   font-family: helvetica;
+   overflow:hidden;
 }
 
 #header div.button a {
    display: block;
-   width: 120px;
    height: 60px;
-   line-height: 60px;
    text-align: center;
    font-size: 100%;
    color: #FFF; 
    text-decoration: none;
 }
 
-
-.brand {
-    min-width: 200px;
-}
 .blue {
    background-color: #82cce7; 
    color: #82cce7; 
@@ -64,7 +56,15 @@ body {
   background-color: #e7a382; 
 }
 
-.blue:hover, .orange:hover {
+.green {
+  background-color: #a3e782; 
+}
+
+.logout {
+   
+}
+
+.blue:hover, .orange:hover, .green:hover, .logout:hover {
    background-color: #ccc; 
    color: #ccc;
    cursor: pointer;
@@ -88,6 +88,10 @@ body {
     border: 1px solid #aaa;
     border-left: none;
     border-bottom: none;
+}
+
+#ask-question {
+   line-height: 60px;
 }
 
 .question-block {
