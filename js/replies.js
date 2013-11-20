@@ -5,6 +5,8 @@ var Reply = function(data) {
    this.id        = ko.observable();
    this.body      = ko.observable("Body placeholder");
    this.timestamp = ko.observable("undefined time");
+   this.madeByMe  = ko.observable(false);
+
    if (data)
       this.update(data);
 };
@@ -22,11 +24,9 @@ Reply.prototype.submitReply = function(question) {
       question_id: question.id()
    });
 
-   console.log("SENDING REPLY");
-   console.log(data);
    postJSON(window.backendURL + '/replies/', 'POST', data).done(
       function(response) {
-         console.log("POSTED TERRIBLE REPLY");
+         console.log("Sent Reply");
          question.replies.push(new Reply(response.Reply));
       }
    ); 

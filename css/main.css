@@ -47,6 +47,7 @@ body {
    text-decoration: none;
 }
 
+
 .blue {
    background-color: #82cce7; 
    color: #82cce7; 
@@ -61,7 +62,7 @@ body {
 }
 
 .logout {
-   
+
 }
 
 .blue:hover, .orange:hover, .green:hover, .logout:hover {

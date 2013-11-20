@@ -54,7 +54,7 @@ $(function() {
         });
         
         self.pages = {
-            'questions' : new QuestionViewModel(),
+            'questions' : new QuestionViewModel(this),
             'profile'   : new ProfileModel(this)
         }
 
@@ -72,8 +72,6 @@ $(function() {
                 self.loggedIn(false);
             });
         }
-
-
 
         self.currentHeader = ko.computed(function() {
             var folder = 'header/';
