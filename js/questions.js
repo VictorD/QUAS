@@ -20,16 +20,43 @@ Question.prototype.update = function(data) {
    this.timestamp(data.timestamp);
 };
 
+// bryt ut i ny .js fil
+var qFilter = function(){
+	var self = this;
+	self.orderby = ko.observable(false);
+	self.filtername = ko.observable();
+	/*
+	
+	self.filterTest3 = ko.observable(false);
+	*/
+	
+}
+// == 
+
+
 var QuestionViewModel = function(parent) {
     var self = this;
     self.parent = parent;
     self.viewingID = ko.observable();
     self.questions = ko.observableArray();
-
+	self.qfilter = ko.observable(new qFilter());
+	
+	ko.computed(function() {
+		var x = self.qfilter().orderby();
+		self.questions(self.questions.slice(0).reverse())
+	});
+	
     ko.computed(function() {
       console.log("Loading questions");
+	  var tmp = self.qfilter().filtername();
+	  var options ={};
+	  if (tmp)
+		options = {
+			filter_by:'author',
+			filter_data: tmp
+		};
 
-      $.getJSON(window.backendURL + '/questions/').success(function(data) {
+      $.getJSON(window.backendURL + '/questions/', options).success(function(data) {
         data = data.QuestionList;
         for (var i = data.length - 1; i >= 0; i--) {
           self.questions.push(new Question(data[i]));
