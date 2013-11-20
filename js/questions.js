@@ -12,7 +12,6 @@ var Question = function(data) {
 };
 
 Question.prototype.update = function(data) {
-    console.log(data.author)
    this.author(data.author || {username : "unknown"});
    this.id(data.id);
    this.body(data.body);
@@ -21,26 +20,15 @@ Question.prototype.update = function(data) {
    this.timestamp(data.timestamp);
 };
 
-var Filter = function(){
-	this.items = ko.observableArray([
-		{ id:"Author"},
-		{ id: "Popularity"},
-		{ id: "Tag"},
-	]);
-	this.checked = ko.observableArray();
-	this.checked.subscribe(function(){
-	
-	});
-}
-
-
-var QuestionViewModel = function() {
+var QuestionViewModel = function(parent) {
     var self = this;
+    self.parent = parent;
     self.viewingID = ko.observable();
     self.questions = ko.observableArray();
 
     ko.computed(function() {
       console.log("Loading questions");
+
       $.getJSON(window.backendURL + '/questions/').success(function(data) {
         data = data.QuestionList;
         for (var i = data.length - 1; i >= 0; i--) {
@@ -66,6 +54,7 @@ var QuestionViewModel = function() {
     self.findQuestion       = self.findQuestion.bind(this);
     self.deleteQuestion     = self.deleteQuestion.bind(this);
     self.updateSelection    = self.updateSelection.bind(this);
+    self.loadReplies        = self.loadReplies.bind(this);
 
     // Bind to State Change
     History.Adapter.bind(window,'statechange',function(){
@@ -73,7 +62,6 @@ var QuestionViewModel = function() {
         var qid = getParameterByName('viewingID', State.hash);
         if (qid && qid != '')
             self.viewingID(qid);
-        console.log(State);
     });
 };
 
@@ -83,6 +71,9 @@ ko.utils.extend(QuestionViewModel.prototype, {
             return id == item.id();
         });
     },
+    isReplyAuthor: function(reply) {
+        return (this.parent.user().id() == reply.author().id());
+    },
     isQuestionSelected: function(question) {
         if (this.viewedQuestion() == undefined) {
           return false;
@@ -90,20 +81,30 @@ ko.utils.extend(QuestionViewModel.prototype, {
         return this.viewedQuestion.id() == question.id();
     },
     loadReplies: function(question) {
+        var qid = question.id();
+        var currentUser = this.parent.user();
+
         question.replies = ko.observableArray();
+
         ko.computed(function() {
-          var qid = question.id();
           $.getJSON(window.backendURL + "/questions/" + qid + "/replies/").success(function(data) {
+            console.log(data);
             data = data.ReplyList;
             for (var i = data.length - 1; i >= 0; i--)
-              question.replies.push(new Reply(data[i]));
+              var thisReply = new Reply(data[i]);
+              console.log(thisReply);
+
+              if (currentUser && thisReply.author())
+                thisReply.madeByMe = (thisReply.author().id == currentUser.id());
+
+              question.replies.push(thisReply);
+
           });
         });
     },
     viewQuestion: function(item, event) {
         if (item) {
             id = item.id()
-            console.log("Pushing state with id " + id);
             History.pushState({pageName: 'questions', rnd:Math.random()}, "Viewing Question: " + id, "/?viewingID=" + id);
         }
     },
@@ -124,14 +125,12 @@ ko.utils.extend(QuestionViewModel.prototype, {
         if (!newID)
             return;
             
-        console.log("Updating higlight and updating QuestionView top-offset: " + newID);
         $("#questionList li").removeAttr('style');
 
         var elem = $("#question_" + newID)
         elem.css({'background-color': '#b9ecff'});
         
         var position = elem.position();
-        console.log("Position: " + position);
         if (position) {
             var offset = position.top + 19;
             var viewBox = $("#questionView");
