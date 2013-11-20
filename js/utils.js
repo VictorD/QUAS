@@ -74,5 +74,7 @@ ko.bindingHandlers.fadeVisible = {
 		console.log(toggleBox);
 		
 //		viewBox.hide();
-		toggleBox.slideToggle(7000, function(){});
+		toggleBox.slideToggle(500, function(){});
 }
+
+

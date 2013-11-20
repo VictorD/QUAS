@@ -21,6 +21,19 @@ Question.prototype.update = function(data) {
    this.timestamp(data.timestamp);
 };
 
+var Filter = function(){
+	this.items = ko.observableArray([
+		{ id:"Author"},
+		{ id: "Popularity"},
+		{ id: "Tag"},
+	]);
+	this.checked = ko.observableArray();
+	this.checked.subscribe(function(){
+	
+	});
+}
+
+
 var QuestionViewModel = function() {
     var self = this;
     self.viewingID = ko.observable();
@@ -137,5 +150,5 @@ ko.utils.extend(QuestionViewModel.prototype, {
     
 });
 
-$('.btn-group').button('toggle');
+
 
