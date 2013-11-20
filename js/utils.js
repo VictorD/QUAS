@@ -1,3 +1,34 @@
+function secureAjax(uri, method, data){
+    var request = {
+          url: uri,
+          type: method,
+          cache: false,
+          xhrFields: {
+                withCredentials: true
+             },
+          data: data
+            };
+
+    return $.ajax(request);
+}
+
+function secureAjaxJSON(uri, method, data){
+    var request = {
+          url: uri,
+          type: method,
+          contentType: "application/json",
+          accepts: "application/json",
+          cache: false,
+          dataType: 'json',
+          xhrFields: {
+                withCredentials: true
+             },
+          data: data
+    };
+
+    return $.ajax(request);
+}
+
 function spinnerLoader(page, element) {
     var loader = {};
     var txt = $('<img class="loader" src="img/loader.gif"/>');

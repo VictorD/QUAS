@@ -42,9 +42,14 @@ $(function() {
         self.user = ko.observable();
 
         ko.computed(function() {
-            postJSON(window.backendURL + '/u/me/', 'GET').success(function(data) {
-                console.log("wat");
-                self.user(new User(data.User));
+            secureAjax(window.backendURL + '/u/amiloggedin/', 'GET').done(function(data) {
+                self.loggedIn(data.Status);
+                if (data.Status) {
+                    secureAjax(window.backendURL + '/u/me/', 'GET').done(function(data) {
+                        self.user(new User(data.User));
+                        
+                    });
+                }
             });
         });
         
@@ -58,17 +63,17 @@ $(function() {
             return self.pages[self.currentPage()];
         });
 
-        self.loggedIn = ko.computed(function() {
-            return (self.user());
-        });
+        self.loggedIn = ko.observable(false);
 
         self.logout = function() {
-            postJSON(window.backendURL + '/u/logout', 'GET').done(function() {
+            secureAjaxJSON(window.backendURL + '/u/logout', 'GET').done(function() {
                 console.log("LOGGED OUT");
                 History.replaceState({}, null, '/');
-                self.user();
+                self.loggedIn(false);
             });
         }
+
+
 
         self.currentHeader = ko.computed(function() {
             var folder = 'header/';
