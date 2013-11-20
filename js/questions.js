@@ -137,5 +137,5 @@ ko.utils.extend(QuestionViewModel.prototype, {
     
 });
 
-	
+$('.btn-group').button('toggle');
 

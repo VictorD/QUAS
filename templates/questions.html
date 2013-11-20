@@ -6,6 +6,17 @@
    </div>
    <div class="filterStuff" style="display:none">
 			<h1>Deal with it.</h1>
+			<div class="btn-group" data-toggle="buttons">
+			  <label class="btn btn-primary">
+				<input type="checkbox"> Option 1
+			  </label>
+			  <label class="btn btn-primary">
+				<input type="checkbox"> Option 2
+			  </label>
+			  <label class="btn btn-primary">
+				<input type="checkbox"> Option 3
+			  </label>
+			</div>
 	</div>
    <ul id="questionList" data-bind="foreach: questions">
        <li class="question-block clearfix" data-bind="click: $parent.viewQuestion, attr: {'id': 'question_' + id()}">
