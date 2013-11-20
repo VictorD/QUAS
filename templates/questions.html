@@ -1,37 +1,22 @@
 
 <div id="rightColumn" class="col-xs-5">
-   <div id="nav-filter-menu" data-bind="click:toggleVerticalMenu">
+    <div id="nav-filter-menu" data-bind="click:toggleVerticalMenu">
       <span class="glyphicon glyphicon-list-alt"></span>&nbsp;<span>Filter questions</span>	  
-   </div>
-   
-   <div data-bind="template: { name:'filters/questionFilter' }" class="filterStuff" style="display:none"></div>
-   
-   <ul id="questionList" data-bind="foreach: questions">
-       <li class="question-block clearfix" data-bind="click: $parent.viewQuestion, attr: {'id': 'question_' + id()}">
-        <div class="col-xs-1">
-            <span class="upvote glyphicon glyphicon-arrow-up"></span>
-            <span class="current-score">2</span>
-            <span class="downvote glyphicon glyphicon-arrow-down"></span>            
-        </div>            
-         <div class="col-xs-1" data-bind="with: author">
-            <span data-bind="text: username">AuthorNameHere</span>
-            <div style="background-color: #aaa;width:64px;height:64px;float: left;margin-top: 10px;margin-left: 8px;"></div>
-        </div>
-        <div class="col-xs-8" style="padding-top: 20px;">
-            <ul>
-               <li class="question-header">
-               </li>
-               <li class="question-body">
-                  <span data-bind="text: title"></span>
-               </li>
-            </ul>
-         </div>
-         <div class="col-xs-2 question-tags" style="overflow-x:hidden;">
-            <span data-bind="text: tags"></span>
-         </div>
+    </div>
 
-      </li>
+    <div data-bind="template: { name:'filters/questionFilter' }" class="filterStuff" style="display:none"></div>
+
+    <ul id="questionList" data-bind="template: {name: 'question/listEntry', foreach: questions}">
    </ul>
+
+   <div class="add-question col-xs-6" data-bind="visible: $root.loggedIn, with: new Question()">
+        <h4>Tell us what you're thinking!</h4>
+        <form>
+        <input type="text" data-bind="value: title"/>
+        <textarea data-bind="value: body" class="form-control animated" cols="50" placeholder="Enter a new question here!" rows="5"></textarea>
+        <button  data-bind="click: function(question) { submitQuestion(question, $parent) }" class="btn btn-success btn-lg" type="submit">Send in question!</button>
+        </form>
+    </div>
 </div>
 
 <div id="questionView" class="col-xs-6 clearfix"  data-bind="with: viewedQuestion">
@@ -42,11 +27,7 @@
 	<h1> tmp </h1>
    </div>
     <div class="currentQuestion clearfix">
-        <div class="col-xs-1" style="padding-top: 20px;">
-            <div style="background-color: #afa;width:16px;height:16px;"></div>
-            <span>&nbsp;2</span>
-            <div style="background-color: #faa;width:16px;height:16px;"></div>
-        </div>            
+        <div data-bind="template: { name: 'voting/column', data: vote()}"></div>          
         <div class="col-xs-7">
              <h4 data-bind="text:title"></h4>
              <p data-bind="text: timestamp"></p>
@@ -58,10 +39,10 @@
              </p>
         </div>
       </div>
-      <div id="replyList" data-bind="foreach: replies">
-          <div data-bind="template: { name: 'reply/view' }"></div>
+      <div id="replyList">
+          <div data-bind="template: { name: 'reply/view', foreach: replies }"></div>
       </div>
-      <div class="add-reply" data-bind="with: new Reply()">
+      <div class="add-reply" data-bind="visible: $root.loggedIn, with: new Reply()">
           <h4>Do you know the answer?</h4>
           <form>
             <textarea data-bind="value: body" class="form-control animated" cols="50" id="new-review" 
@@ -69,4 +50,7 @@
             <button  data-bind="click: function() { submitReply($parent) }" class="btn btn-success btn-lg" style="margin-top: 20px;" type="submit">Submit reply</button>
           </form>
       </div>
+      
+
+
 </div>

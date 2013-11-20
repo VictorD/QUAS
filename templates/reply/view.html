@@ -1,9 +1,5 @@
 <div class="reply clearfix">
-  <div class="col-xs-1" style="padding-top: 20px;">
-      <div style="background-color: #afa;width:16px;height:16px;"></div>
-      <span>&nbsp;2</span>
-      <div style="background-color: #faa;width:16px;height:16px;"></div>
-  </div>            
+  <div data-bind="template: { name: 'voting/column', data: new Vote()}"></div>     
   <div class="col-xs-7">
        <span data-bind="text:author().username">asdf</span> responded:
        <p data-bind="text: timestamp"></p>

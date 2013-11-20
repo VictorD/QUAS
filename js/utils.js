@@ -17,13 +17,13 @@ function secureAjaxJSON(uri, method, data){
           url: uri,
           type: method,
           contentType: "application/json",
-          accepts: "application/json",
+          accept: "application/json",
           cache: false,
           dataType: 'json',
           xhrFields: {
                 withCredentials: true
-             },
-          data: data
+          },
+          data: JSON.stringify(data)
     };
 
     return $.ajax(request);

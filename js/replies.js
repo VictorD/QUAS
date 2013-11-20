@@ -1,5 +1,3 @@
-window.backendURL = 'http://130.240.5.168:5000';
-
 var Reply = function(data) {
    this.author    = ko.observable();
    this.id        = ko.observable();
@@ -19,12 +17,12 @@ Reply.prototype.update = function(data) {
 };
 
 Reply.prototype.submitReply = function(question) {
-   var data = JSON.stringify({
+   var data = {
       body: this.body(),
       question_id: question.id()
-   });
+   };
 
-   postJSON(window.backendURL + '/replies/', 'POST', data).done(
+   secureAjaxJSON('http://130.240.5.168:5000' + '/replies/', 'POST', data).done(
       function(response) {
          console.log("Sent Reply");
          question.replies.push(new Reply(response.Reply));

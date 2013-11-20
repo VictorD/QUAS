@@ -1,15 +1,11 @@
-window.backendURL = 'http://130.240.5.168:5000';
 
 var ProfileModel = function(parent){
-	var self = this;
-
-    $.support.cors = true;
-	
+	var self = this;	
     self.submitUsername = function(){
 		self.profile().commit();
         var data = JSON.stringify(ko.toJS(self.profile));
         self.editMode(false);
-        postJSON(window.backendURL + '/u/'+ parent.user().id() +'/', 'PUT', data).done(function(response) {
+        postJSON(parent.backendURL + '/u/'+ parent.user().id() +'/', 'PUT', data).done(function(response) {
           console.log("POSTED BAD REQUEST?");
         }); 
     }

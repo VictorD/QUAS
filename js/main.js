@@ -1,4 +1,5 @@
 $(function() {
+    $.support.cors = true;
     infuser.defaults.templateUrl = "templates";
 
     var User = function(data) {
@@ -38,14 +39,14 @@ $(function() {
 
 	var ViewModel = function() {
         self = this;
-
+        self.backendURL = 'http://130.240.5.168:5000';
         self.user = ko.observable();
 
         ko.computed(function() {
-            secureAjax(window.backendURL + '/u/amiloggedin/', 'GET').done(function(data) {
+            secureAjax(self.backendURL + '/u/amiloggedin/', 'GET').done(function(data) {
                 self.loggedIn(data.Status);
                 if (data.Status) {
-                    secureAjax(window.backendURL + '/u/me/', 'GET').done(function(data) {
+                    secureAjax(self.backendURL + '/u/me/', 'GET').done(function(data) {
                         self.user(new User(data.User));
                         
                     });
@@ -66,7 +67,7 @@ $(function() {
         self.loggedIn = ko.observable(false);
 
         self.logout = function() {
-            secureAjaxJSON(window.backendURL + '/u/logout', 'GET').done(function() {
+            secureAjaxJSON(self.backendURL + '/u/logout', 'GET').done(function() {
                 console.log("LOGGED OUT");
                 History.replaceState({}, null, '/');
                 self.loggedIn(false);

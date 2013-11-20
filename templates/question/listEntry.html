@@ -1,0 +1,20 @@
+<li class="question-block clearfix"  data-bind="click: $parent.viewQuestion, attr: {'id': 'question_' + id()}">
+    <div data-bind="template: { name: 'voting/column', data: vote}"></div>
+    <div class="col-xs-1" data-bind="with: author">
+        <span data-bind="text: username">AuthorNameHere</span>
+        <div style="background-color: #aaa;width:64px;height:64px;float: left;margin-top: 10px;margin-left: 8px;"></div>
+    </div>
+    <div class="col-xs-8" style="padding-top: 20px;">
+        <ul>
+           <li class="question-header">
+            <strong data-bind="text: timestamp">AuthorNameHere</strong>
+           </li>
+           <li class="question-body">
+              <h4 data-bind="text: title"></h4>
+           </li>
+        </ul>
+     </div>
+     <div class="col-xs-2 question-tags" style="overflow-x:hidden;">
+        <span data-bind="text: tags"></span>
+     </div>
+</li>
