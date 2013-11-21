@@ -27,9 +27,12 @@ private:
 		<div data-bind="template: { name: $parent.profileView }"></div>
     </div>
 </div>
-
-
-	<p> Recent questions I wrote </p>
+	
+	<div data-bind="click:toggleVerticalMenu"><p>Show my stuff </p></div>
+	<div class="filterStuff" style="display:none">
+	<ul id="questionList" data-bind="template: {name: 'question/listEntry', foreach: questions}">
+	</ul>
+	</div>
+	
 	<p> Recent replies I wrote</p>
-	<p> Replies to my posts update </p>
 </div>
