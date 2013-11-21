@@ -80,11 +80,7 @@ var QuestionViewModel = function(parent) {
     self.lastViewedID = ko.observable();
     
     self.questions = ko.observableArray();
-<<<<<<< HEAD
-      self.qfilter = ko.observable(new qFilter());
-=======
 	self.qfilter = ko.observable(new qFilter());
->>>>>>> 1c014f42409490c87796398cbf592bba929a696d
 
     // SORT questions by votes live
     ko.computed(function() {
