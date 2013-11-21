@@ -7,7 +7,7 @@ var ProfileModel = function(parent){
 		self.profile().commit();
         var data = JSON.stringify(ko.toJS(self.profile));
         self.editMode(false);
-        postJSON(parent.backendURL + '/u/'+ parent.user().id() +'/', 'PUT', data).done(function(response) {
+        secureAjaxJSON(parent.backendURL + '/u/'+ parent.user().id() +'/', 'PUT', data).done(function(response) {
           console.log("POSTED BAD REQUEST?");
         }); 
     }

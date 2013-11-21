@@ -1,8 +1,8 @@
 var Reply = function(data) {
    this.author    = ko.observable();
    this.id        = ko.observable();
-   this.body      = ko.observable("Body placeholder");
-   this.timestamp = ko.observable("undefined time");
+   this.body      = ko.observable();
+   this.timestamp = ko.observable();
    this.madeByMe  = ko.observable(false);
 
    if (data)
