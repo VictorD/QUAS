@@ -38,19 +38,6 @@ Question.prototype.submitQuestion = function(question, parent) {
    ); 
 }
 
-// bryt ut i ny .js fil
-var qFilter = function(){
-    var self = this;
-    self.orderby = ko.observable(false);
-    self.filtername = ko.observable();
-    self.orderByVotes = ko.observable(true);
-    
-    /*
-    
-    self.filterTest3 = ko.observable(false);
-    */
-}
-
 var Vote = function(question, initValue) {
     var self = this;
 
@@ -93,7 +80,11 @@ var QuestionViewModel = function(parent) {
     self.lastViewedID = ko.observable();
     
     self.questions = ko.observableArray();
+<<<<<<< HEAD
       self.qfilter = ko.observable(new qFilter());
+=======
+	self.qfilter = ko.observable(new qFilter());
+>>>>>>> 1c014f42409490c87796398cbf592bba929a696d
 
     // SORT questions by votes live
     ko.computed(function() {
