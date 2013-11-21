@@ -67,7 +67,7 @@ var QuestionViewModel = function(parent) {
     self.lastViewedID = ko.observable();
     
     self.questions = ko.observableArray();
-	self.qfilter = ko.observable(new qFilter());
+	  self.qfilter = ko.observable(new qFilter());
 
     // SORT questions by votes live
     ko.computed(function() {
@@ -94,15 +94,17 @@ var QuestionViewModel = function(parent) {
 	
     ko.computed(function() {
       console.log("Loading questions");
-	  var tmp = self.qfilter().filtername();
-	  var options ={};
-	  if (tmp)
-		options = {
-			filter_by:'author',
-			filter_data: tmp
-		};
+  	  var tmp = self.qfilter().filtername();
+  	  var options ={};
+  	  if (tmp)
+    		options = {
+             paginate:1,
+    			   filter_by:  'author',
+    			   filter_data: tmp
+		    };
 
       $.getJSON(self.backendURL + '/questions/', options).success(function(data) {
+        self.questions([]);
         data = data.QuestionList;
         for (var i = data.length - 1; i >= 0; i--) {
           self.questions.push(new Question(data[i]));
