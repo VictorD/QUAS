@@ -2,11 +2,11 @@
 var Question = function(data) {
    this.author    = ko.observable();
    this.id        = ko.observable();
-   this.body      = ko.observable("Body placeholder");
-   this.title     = ko.observable("Title placeholder");
+   this.body      = ko.observable();
+   this.title     = ko.observable();
    this.tags      = ko.observable();
-   this.vote      = ko.observable(new Vote());
-   this.timestamp = ko.observable("undefined time");
+   this.vote      = ko.observable();
+   this.timestamp = ko.observable();
 
    if (data)
         this.update(data);
@@ -17,12 +17,13 @@ Question.prototype.update = function(data) {
    this.id(data.id);
    this.body(data.body);
    this.title(data.title);
+   this.vote(new Vote(this, data.score));
+   console.log(this.vote().score());
    this.tags(data.tags);
    this.timestamp(data.timestamp);
 };
 
 Question.prototype.submitQuestion = function(question, parent) {
-
    var data = {
       body: question.body(),
       title: question.title()
@@ -39,24 +40,49 @@ Question.prototype.submitQuestion = function(question, parent) {
 
 // bryt ut i ny .js fil
 var qFilter = function(){
-	var self = this;
-	self.orderby = ko.observable(false);
-	self.filtername = ko.observable();
+    var self = this;
+    self.orderby = ko.observable(false);
+    self.filtername = ko.observable();
     self.orderByVotes = ko.observable(true);
-	
-	/*
-	
-	self.filterTest3 = ko.observable(false);
-	*/
-	
+    
+    /*
+    
+    self.filterTest3 = ko.observable(false);
+    */
 }
 
-var Vote = function() {
+var Vote = function(question, initValue) {
     var self = this;
-    self.currentScore = ko.observable(0);
-    self.add = function() { self.currentScore(self.currentScore()+1)}
-    self.sub = function() { self.currentScore(self.currentScore()-1)}
+
+    self.voteCast = 0;
+    self.question = question;
+    self.score = ko.observable(initValue);
+
+    self.upvote = function() {
+        if (self.voteCast < 1)
+            self.submitVote(1);
+    }
+    self.downvote = function() { 
+        if (self.voteCast > -1) 
+            self.submitVote(-1)
+    }
+    
+    self.submitVote = function(v) {
+        self.voteCast = v;
+
+        var data = {
+          question_id: self.question.id(),
+          value: v
+        };
+
+        secureAjaxJSON('http://130.240.5.168:5000/vote/q/', 'POST', data).done(
+          function(response) {
+            self.score(v);
+            console.log("YOUR VOTE HAS BEEN CAST.");
+          }); 
+    }
 }
+
 // == 
 
 var QuestionViewModel = function(parent) {
@@ -67,15 +93,15 @@ var QuestionViewModel = function(parent) {
     self.lastViewedID = ko.observable();
     
     self.questions = ko.observableArray();
-	  self.qfilter = ko.observable(new qFilter());
+      self.qfilter = ko.observable(new qFilter());
 
     // SORT questions by votes live
     ko.computed(function() {
         if (self.qfilter().orderByVotes()) {
             var x = self.questions();
             self.questions.sort(function(l,r) {   
-                var leftScore  = l.vote().currentScore(),
-                    rightScore = r.vote().currentScore(),
+                var leftScore  = l.vote().score(),
+                    rightScore = r.vote().score(),
                     order = leftScore > rightScore;
                 if (leftScore == rightScore) {
                     var leftTime = new Date(l.timestamp.peek()).getTime();
@@ -87,21 +113,21 @@ var QuestionViewModel = function(parent) {
         }
     });
     
-	ko.computed(function() {
-		var x = self.qfilter().orderby();
-		self.questions(self.questions().reverse())
-	});
-	
+    ko.computed(function() {
+        var x = self.qfilter().orderby();
+        self.questions(self.questions().reverse())
+    });
+    
     ko.computed(function() {
       console.log("Loading questions");
-  	  var tmp = self.qfilter().filtername();
-  	  var options ={};
-  	  if (tmp)
-    		options = {
+      var tmp = self.qfilter().filtername();
+      var options ={};
+      if (tmp)
+            options = {
              paginate:1,
-    			   filter_by:  'author',
-    			   filter_data: tmp
-		    };
+                   filter_by:  'author',
+                   filter_data: tmp
+            };
 
       $.getJSON(self.backendURL + '/questions/', options).success(function(data) {
         self.questions([]);
@@ -204,7 +230,7 @@ ko.utils.extend(QuestionViewModel.prototype, {
         if (position) {
             var offset = position.top + 19;
             var viewBox = $("#questionView");
-			viewBox.offset({ top: offset});
+            viewBox.offset({ top: offset});
             viewBox.hide();
             viewBox.effect('slide', {'direction':'left', 'mode':'show'}, 400);
             
