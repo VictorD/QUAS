@@ -19,25 +19,27 @@ var ProfileModel = function(parent){
 		//alert(parent.user.email);
 		self.profile(parent.user());
 		
-		ko.computed(function() {
-		console.log("Loading questions");
-		// Load current users questions in profile.
-		  var options ={
-				paginate:1,
-				filter_by:'author',
-				filter_data: self.parent.user().username()
-			};
-  	  
+      if (self.profile()) {
+   		ko.computed(function() {
+            console.log("Loading questions");
+            // Load current users questions in profile.
+            var options = {
+            	paginate:1,
+            	filter_by:'author',
+            	filter_data: self.profile().username()
+            };
 
-		  $.getJSON(parent.backendURL + '/questions/', options).success(function(data) {
-			self.questions([]);
-			data = data.QuestionList;
-			for (var i = data.length - 1; i >= 0; i--) {
-			  self.questions.push(new Question(data[i]));
-			};
-		  });
-		});
-		
+
+            $.getJSON(parent.backendURL + '/questions/', options).success(function(data) {
+            self.questions([]);
+            data = data.QuestionList;
+            for (var i = data.length - 1; i >= 0; i--) {
+              self.questions.push(new Question(data[i]));
+            };
+            });
+   		});
+      }
+   		
 	}
 
 //	if edit==True: profile/edit, else profile/view
