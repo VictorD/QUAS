@@ -1,0 +1,56 @@
+<div class="row" data-bind="visible: isSelected">
+    <div id="author-options-menu" class="col-xs-5" style="height: 30px;" data-bind="click:toggleVerticalMenu">
+        <span class="glyphicon glyphicon-list-alt"></span>&nbsp;<span>Show author options</span>
+    </div>
+    <div class="filterStuff col-xs-8" style="display:none">
+        <h1> tmp </h1>
+        <form data-bind="visible: $root.loggedIn, submit: $parent.deleteQuestion.bind('question', $data)">
+                <button>Delete question</button>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="question-block col-xs-5"  data-bind="css: { selected: isSelected }, click: $parent.viewQuestion, attr: {'id': 'question_' + id()}">
+        
+        <div class="col-xs-1" data-bind="template: { name: 'voting/column', data: vote}"></div>        
+        
+        <div class="col-xs-1" data-bind="with: author">
+            <span data-bind="text: username">AuthorNameHere</span>
+            <div style="background-color: #aaa;width:64px;height:64px;padding: 10px;float: left;margin-top: 10px;margin-left: 8px;"> place-holder</div>
+        </div>
+
+        <div class="col-xs-8" style="padding-top: 20px;">
+            <ul>
+               <li class="question-header">
+                <strong data-bind="text: timestamp">AuthorNameHere</strong>
+               </li>
+               <li class="question-body">
+                  <h4 data-bind="text: title"></h4>
+               </li>
+            </ul>
+         </div>
+         <div class="col-xs-2" style="overflow-x:hidden;">
+            <span data-bind="text: tags"></span>
+         </div>
+         <div style="clear: both;width: 100%" class="col-xs-12" data-bind="visible: isSelected">
+            <p id="question-body" data-bind="text: body"></p>
+            <p>
+                
+            </p>
+        </div>
+    </div>
+    <div class="rightColumn col-xs-5 clearfix" data-bind="fadeVisible: isSelected">
+        <div class="col-xs-12">
+            <ul class="replyList" data-bind="template: { name: 'reply/view', foreach: replies }"></ul>
+        </div>
+        <div class="add-reply" data-bind="visible: $root.loggedIn(), with: new Reply()">
+            <h4>Do you know the answer?</h4>
+            <form>
+            <textarea data-bind="value: body" class="form-control animated" cols="50" id="new-review" 
+              name="comment" placeholder="Enter your reply here..." rows="5"></textarea>
+            <button  data-bind="click: function() { submitReply($parent) }" class="btn btn-success btn-lg" style="margin-top: 20px;" type="submit">Submit reply</button>
+            </form>
+        </div>
+    </div>
+</div>

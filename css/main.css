@@ -1,4 +1,17 @@
+body { 
+   margin: 0;
+   padding: 0;
+   margin-top: 60px; 
+   font-family: tahoma, verdana, sans-serif; 
+}
 
+@media screen and (max-width: 991px) {
+    body { margin-top: 120px; }
+}
+
+@media screen and (max-width: 768px) {
+    body { margin-top: 180px; }
+}
 
 .full-width-container {
     padding-left: 15px;
@@ -7,12 +20,7 @@
     margin-right: auto;
 }
 
-body { 
-   margin: 0;
-   margin-top: 60px; 
-   padding: 0;
-   font-family: tahoma, verdana, sans-serif; 
-}
+/* --------------------------------- Header & Search --------------------------------- */
 
 #header {
    position:fixed;
@@ -47,6 +55,8 @@ body {
    text-decoration: none;
 }
 
+/* --------------------------------- Colors --------------------------------- */
+
 
 .blue {
    background-color: #82cce7; 
@@ -71,6 +81,8 @@ body {
    cursor: pointer;
 }
 
+/* --------------------------------- Filters --------------------------------- */
+
 #nav-filter-menu, #author-options-menu {
    background-color: #f0f0f0;
    text-align: right;
@@ -91,6 +103,8 @@ body {
     border-bottom: none;
 }
 
+/* --------------------------------- Questions --------------------------------- */
+
 #ask-question {
    line-height: 60px;
 }
@@ -102,6 +116,10 @@ body {
    padding: 20px 0 20px 20px;
    background-color: #eee;
    border-top: 1px solid #aaa;
+}
+
+.selected {
+    background-color: #b9ecff;
 }
 
 .question-block:hover {
@@ -136,13 +154,6 @@ body {
    padding: 0;
    }
 
-#rightColumn {
-    border-right: 1px solid #aaa;
-    float: left;
-    padding: 0;
-    margin: 0;
-}
-
 #questionList  {
     list-style: none;
     margin: 0;
@@ -160,13 +171,31 @@ body {
     padding: 10px;
 }
 
-#questionView .reply {
+/* --------------------------------- Replies --------------------------------- */
+
+.rightColumn {
+    padding: 0;
+    margin: 0;
+    position:absolute;
+    left: 42%;
+    height: 100%;
+}
+
+.replyList {
+    padding: 0;
+    margin: 0;
+    list-style:none;
+}
+
+.replyList .reply {
     background: #eee;
-    margin: 10px;
-    padding: 10px 20px;
+    margin: 10px 0 0 0;
+    padding: 10px 10px 0 10px;
 }
 
-.add-reply {
-    padding: 10px 20px;
+.add-reply { 
+    width: 100%;
+    background: #eee;
+    bottom: 0;
+    padding: 20px;
 }
-

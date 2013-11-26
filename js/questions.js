@@ -1,15 +1,28 @@
 
-var Question = function(data) {
-   this.author    = ko.observable();
-   this.id        = ko.observable();
-   this.body      = ko.observable();
-   this.title     = ko.observable();
-   this.tags      = ko.observable();
-   this.vote      = ko.observable();
-   this.timestamp = ko.observable();
+var Question = function(parent, data) {
+    var self = this ;
+    self.parent    = parent;
+    self.author    = ko.observable();
+    self.id        = ko.observable();
+    self.body      = ko.observable();
+    self.title     = ko.observable();
+    self.tags      = ko.observable();
+    self.vote      = ko.observable();
+    self.timestamp = ko.observable();
+    self.replies   = ko.observableArray();
 
-   if (data)
-        this.update(data);
+    if (data)
+        self.update(data);
+        
+    self.isSelected = ko.computed(function() {
+        if (!self.parent) return false;
+
+        console.log(self.parent);
+        var vq = self.parent.viewingID();
+        if (!vq) return false;
+
+        return (self.parent.viewingID() == self.id());
+    });
 };
 
 Question.prototype.update = function(data) {
@@ -18,10 +31,10 @@ Question.prototype.update = function(data) {
    this.body(data.body);
    this.title(data.title);
    this.vote(new Vote(this, data.score));
-   console.log(this.vote().score());
    this.tags(data.tags);
    this.timestamp(data.timestamp);
 };
+
 
 Question.prototype.submitQuestion = function(question, parent) {
    var data = {
@@ -120,7 +133,8 @@ var QuestionViewModel = function(parent) {
         self.questions([]);
         data = data.QuestionList;
         for (var i = data.length - 1; i >= 0; i--) {
-          self.questions.push(new Question(data[i]));
+          var q = new Question(self, data[i]);
+          self.questions.push(q);
         };
       });
     });
@@ -135,12 +149,11 @@ var QuestionViewModel = function(parent) {
 
         if (self.viewedQuestion())
             console.log("Updating viewed question: " + q.id() + " vs " + self.viewedQuestion().id());
-        
-        if (!q.replies) {
+
+        if (q.replies().length < 1) {
             console.log("Loading replies for question: " + q.id());
             self.loadReplies(q);
         }
-        self.updateSelection();
         self.viewedQuestion(q);
     });
 
@@ -149,7 +162,6 @@ var QuestionViewModel = function(parent) {
     self.isQuestionSelected = self.isQuestionSelected.bind(this);
     self.findQuestion       = self.findQuestion.bind(this);
     self.deleteQuestion     = self.deleteQuestion.bind(this);
-    self.updateSelection    = self.updateSelection.bind(this);
     self.loadReplies        = self.loadReplies.bind(this);
 
     // Bind to State Change
@@ -177,7 +189,6 @@ ko.utils.extend(QuestionViewModel.prototype, {
     },
     loadReplies: function(question) {
         var self = this;
-        question.replies = ko.observableArray();
         ko.computed(function() {
             var qid = question.id();        
             $.getJSON(self.backendURL + "/questions/" + qid + "/replies/").success(function(data) {
@@ -202,26 +213,6 @@ ko.utils.extend(QuestionViewModel.prototype, {
         secureAjaxJSON(this.backendURL + '/questions/' + qid + '/', 'DELETE').done(function(result) {
             self.questions.remove(question);
         });
-    },
-    updateSelection: function() {
-        var newID = this.viewingID();
-        if (!newID)
-            return;
-            
-        $("#questionList li").removeAttr('style');
-
-        var elem = $("#question_" + newID)
-        elem.css({'background-color': '#b9ecff'});
-        
-        var position = elem.position();
-        if (position) {
-            var offset = position.top + 19;
-            var viewBox = $("#questionView");
-            viewBox.offset({ top: offset});
-            viewBox.hide();
-            viewBox.effect('slide', {'direction':'left', 'mode':'show'}, 400);
-            
-        }
     },
     afterRenderCallback: function() { 
         $('#profileView').fadeOut(600); 

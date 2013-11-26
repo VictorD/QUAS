@@ -1,26 +1,24 @@
-
-<div id="rightColumn" class="col-xs-5">
-    <div id="nav-filter-menu" data-bind="click:toggleVerticalMenu">
-      <span class="glyphicon glyphicon-list-alt"></span>&nbsp;<span>Filter questions</span>	  
-    </div>
-
-    <div data-bind="template: { name:'filters/questionFilter' }" class="filterStuff" style="display:none"></div>
-
-    <ul id="questionList" data-bind="template: {name: 'question/listEntry', foreach: questions}">
-   </ul>
-
-   <div class="add-question col-xs-6" data-bind="visible: $root.loggedIn, with: new Question()">
-        <h4>Tell us what you're thinking!</h4>
-        <form>
-        <input type="text" data-bind="value: title"/>
-        <textarea data-bind="value: body" class="form-control animated" cols="50" placeholder="Enter a new question here!" rows="5"></textarea>
-        <button  data-bind="click: function(question) { submitQuestion(question, $parent) }" class="btn btn-success btn-lg" type="submit">Send in question!</button>
-        </form>
+<div class="row">
+    <div class="col-xs-6">
+        <div id="nav-filter-menu" data-bind="click:toggleVerticalMenu">
+        <span class="glyphicon glyphicon-list-alt"></span>&nbsp;<span>Filter questions</span>	  
+        </div>
+        <div data-bind="template: { name:'filters/questionFilter' }" class="filterStuff" style="display:none"></div>
     </div>
 </div>
 
-<div id="questionView" class="col-xs-6 clearfix" data-bind="with: viewedQuestion">
+<div id="questionList"data-bind="template: {name: 'question/entry', foreach: questions}"></div>
 
+<div class="add-question col-xs-6" data-bind="visible: $root.loggedIn, with: new Question()">
+    <h4>Tell us what you're thinking!</h4>
+    <form>
+    <input type="text" data-bind="value: title"/>
+    <textarea data-bind="value: body" class="form-control animated" cols="50" placeholder="Enter a new question here!" rows="5"></textarea>
+    <button  data-bind="click: function(question) { submitQuestion(question, $parent) }" class="btn btn-success btn-lg" type="submit">Send in question!</button>
+    </form>
+</div>
+
+<div id="questionView" class="col-xs-6 clearfix" style="display: none;" data-bind="with: viewedQuestion">
     <div id="author-options-menu" data-bind="click:toggleVerticalMenu">
       <span class="glyphicon glyphicon-list-alt"></span>&nbsp;<span>Show author options</span>
    </div>
@@ -40,19 +38,5 @@
                 <button>Delete question</button>
              </p>
         </div>
-      </div>
-      <div id="replyList">
-          <div data-bind="template: { name: 'reply/view', foreach: replies }"></div>
-      </div>
-      <div class="add-reply" data-bind="visible: $root.loggedIn, with: new Reply()">
-          <h4>Do you know the answer?</h4>
-          <form>
-            <textarea data-bind="value: body" class="form-control animated" cols="50" id="new-review" 
-              name="comment" placeholder="Enter your reply here..." rows="5"></textarea>
-            <button  data-bind="click: function() { submitReply($parent) }" class="btn btn-success btn-lg" style="margin-top: 20px;" type="submit">Submit reply</button>
-          </form>
-      </div>
-      
-
-
+    </div>
 </div>

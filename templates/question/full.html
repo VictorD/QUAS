@@ -1,0 +1,18 @@
+<div>
+    <div id="author-options-menu" data-bind="click:toggleVerticalMenu">
+          <span class="glyphicon glyphicon-list-alt"></span>&nbsp;<span>Show author options</span>
+    </div>
+    <div class="filterStuff" style="display:none">
+        <h1> tmp </h1>
+    </div>
+    <div class="col-xs-7">
+         <h4 data-bind="text:title"></h4>
+         <p data-bind="text: timestamp"></p>
+         <p id="question-body" data-bind="text: body"></p>
+
+         <p>
+            <form data-bind="visible: $root.loggedIn, submit: $parent.deleteQuestion.bind('question', $data)">
+            <button>Delete question</button>
+         </p>
+    </div>
+</div>

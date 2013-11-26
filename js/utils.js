@@ -49,24 +49,19 @@ function getParameterByName(name, hash) {
     return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
-// Here's a custom Knockout binding that makes elements shown/hidden via jQuery's fadeIn()/fadeOut() methods
-// Could be stored in a separate utility library
-ko.bindingHandlers.fadeVisible = {
-    init: function(element, valueAccessor, allBindings) {
+function slide(element, valueAccessor) {
+    var selected = ko.unwrap(valueAccessor());
+
+    if (selected) {
         $(element).hide();
-        // Whenever the value subsequently changes, slowly fade the element in or out
-        var value = valueAccessor();
-        //ko.unwrap(value) ? $(element).fadeIn() : $(element).fadeOut();
-        var show = ko.unwrap(value) ? 'show' : 'hide';
-        $(element).effect('slide', {'direction':'left', 'mode':show}, 4000);
-        console.log(element);
-        console.log("wadup");
-
+        $(element).effect('slide', {'direction':'left', 'mode': 'show'}, 800);
     }
-};
+    else {
+        $(element).effect('slide', {'direction':'right', 'mode': 'hide'}, 800);
+    }
+}
 
-
- function toggleVerticalMenu(data, event){
+function toggleVerticalMenu(data, event){
 		
 		var viewBox = $(event.currentTarget);
 		var toggleBox = viewBox.next(".filterStuff:first");
@@ -76,5 +71,13 @@ ko.bindingHandlers.fadeVisible = {
 //		viewBox.hide();
 		toggleBox.slideToggle(500, function(){});
 }
+
+// Here's a custom Knockout binding that makes elements shown/hidden via jQuery's fadeIn()/fadeOut() methods
+// Could be stored in a separate utility library
+ko.bindingHandlers.fadeVisible = {
+  //  init: slide,
+    update: slide
+};
+
 
 

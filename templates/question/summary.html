@@ -1,0 +1,18 @@
+<div class="col-xs-1" data-bind="with: author">
+    <span data-bind="text: username">AuthorNameHere</span>
+    <div style="background-color: #aaa;width:64px;height:64px;padding: 10px;float: left;margin-top: 10px;margin-left: 8px;"> place-holder</div>
+</div>
+
+<div class="col-xs-8" style="padding-top: 20px;">
+    <ul>
+       <li class="question-header">
+        <strong data-bind="text: timestamp">AuthorNameHere</strong>
+       </li>
+       <li class="question-body">
+          <h4 data-bind="text: title"></h4>
+       </li>
+    </ul>
+ </div>
+ <div class="col-xs-2 question-tags" style="overflow-x:hidden;">
+    <span data-bind="text: tags"></span>
+ </div>
