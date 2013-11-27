@@ -71,11 +71,16 @@ body {
   background-color: #a3e782; 
 }
 
-.logout {
-
+.logout a {
+  color: #eee;
+}
+.logout a:hover {
+  text-decoration: none;
+  cursor:pointer;
+  color: #eee;
 }
 
-.blue:hover, .orange:hover, .green:hover, .logout:hover {
+.blue:hover, .orange:hover, .green:hover {
    background-color: #ccc; 
    color: #ccc;
    cursor: pointer;
@@ -84,7 +89,7 @@ body {
 /* --------------------------------- Filters --------------------------------- */
 
 #nav-filter-menu, #author-options-menu {
-   background-color: #f0f0f0;
+   background-color: #fafafa;
    text-align: right;
    color: #444;
    text-transform: uppercase;
@@ -114,7 +119,6 @@ body {
    cursor:pointer;
    margin: 0;
    padding: 20px 0 20px 20px;
-   background-color: #eee;
    border-top: 1px solid #aaa;
 }
 
@@ -156,7 +160,7 @@ body {
 
 #questionList  {
     list-style: none;
-    margin: 0;
+    margin: 0 15px;
     padding: 0;
     min-height:100px;
 }
@@ -188,14 +192,35 @@ body {
 }
 
 .replyList .reply {
-    background: #eee;
     margin: 10px 0 0 0;
     padding: 10px 10px 0 10px;
 }
 
 .add-reply { 
     width: 100%;
-    background: #eee;
     bottom: 0;
     padding: 20px;
+}
+
+.fixed {
+  display: block;
+  position: fixed;
+}
+
+.sidebar {
+  margin-top: 100px;
+  line-height: 50pt;
+}
+
+.sidebar span {
+  float: left;
+}
+
+.sidebar span.glyphicon {
+  font-size: 40pt;
+}
+
+.right {
+  float: right;
+  text-align: right;
 }

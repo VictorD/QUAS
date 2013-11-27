@@ -1,13 +1,58 @@
-<div class="row">
-    <div class="col-xs-6">
-        <div id="nav-filter-menu" data-bind="click:toggleVerticalMenu">
-        <span class="glyphicon glyphicon-list-alt"></span>&nbsp;<span>Filter questions</span>	  
-        </div>
-        <div data-bind="template: { name:'filters/questionFilter' }" class="filterStuff" style="display:none"></div>
+<div style="margin: 0 30px"> 
+  <div class="col-xs-2">
+    <div class="fixed sidebar" data-bind="visible: isViewingQuestion()">
+      <span class="glyphicon glyphicon-chevron-left"></span>
+      <span>Back</span>  
     </div>
+  </div>
+  <div class="col-xs-8">
+    <div class="row">
+          <div id="nav-filter-menu" data-bind="click:toggleVerticalMenu">
+              <span class="glyphicon glyphicon-list-alt"></span>&nbsp;<span>Filter questions</span>
+          </div>
+
+      <div data-bind="template: { name:'filters/questionFilter' }" class="filterStuff" style="display:none"></div>
+    </div>
+
+    <div class="row" style="margin-top: 35px" data-bind="visible: isViewingQuestion() == false">
+      <div id="questionList"data-bind="template: {name: 'question/entry', foreach: questions}">
+      </div>
+    </div>
+
+    <div class="row">
+      <div id="questionView" class="col-xs-6 clearfix" style="display: none;" 
+           data-bind="visible: isViewingQuestion, with: viewedQuestion">
+          <div id="author-options-menu" data-bind="click:toggleVerticalMenu">
+            <span class="glyphicon glyphicon-list-alt"></span>&nbsp;<span>Show author options</span>
+         </div>
+         <div class="filterStuff" style="display:none">
+        <h1> tmp </h1>
+         </div>
+         
+          <div class="currentQuestion clearfix">
+              <div data-bind="template: { name: 'voting/column', data: vote()}"></div>          
+              <div class="col-xs-7">
+                   <h4 data-bind="text:title"></h4>
+                   <p data-bind="text: timestamp"></p>
+                   <p id="question-body" data-bind="text: body"></p>
+                  
+                   <p>
+                      <form data-bind="visible: $root.loggedIn, submit: $parent.deleteQuestion.bind('question', $data)">
+                      <button>Delete question</button>
+                   </p>
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>
+ <div class="col-xs-2">
+    <div class="fixed sidebar" style="margin-left: 100px">
+      <span>View</span>
+      <span class="glyphicon glyphicon-chevron-right"></span>
+    </div>
+  </div>
 </div>
 
-<div id="questionList"data-bind="template: {name: 'question/entry', foreach: questions}"></div>
 
 <div class="add-question col-xs-6" data-bind="visible: $root.loggedIn, with: new Question()">
     <h4>Tell us what you're thinking!</h4>
@@ -16,27 +61,4 @@
     <textarea data-bind="value: body" class="form-control animated" cols="50" placeholder="Enter a new question here!" rows="5"></textarea>
     <button  data-bind="click: function(question) { submitQuestion(question, $parent) }" class="btn btn-success btn-lg" type="submit">Send in question!</button>
     </form>
-</div>
-
-<div id="questionView" class="col-xs-6 clearfix" style="display: none;" data-bind="with: viewedQuestion">
-    <div id="author-options-menu" data-bind="click:toggleVerticalMenu">
-      <span class="glyphicon glyphicon-list-alt"></span>&nbsp;<span>Show author options</span>
-   </div>
-   <div class="filterStuff" style="display:none">
-	<h1> tmp </h1>
-   </div>
-   
-    <div class="currentQuestion clearfix">
-        <div data-bind="template: { name: 'voting/column', data: vote()}"></div>          
-        <div class="col-xs-7">
-             <h4 data-bind="text:title"></h4>
-             <p data-bind="text: timestamp"></p>
-             <p id="question-body" data-bind="text: body"></p>
-            
-             <p>
-                <form data-bind="visible: $root.loggedIn, submit: $parent.deleteQuestion.bind('question', $data)">
-                <button>Delete question</button>
-             </p>
-        </div>
-    </div>
 </div>

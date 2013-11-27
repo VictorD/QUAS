@@ -89,11 +89,15 @@ var QuestionViewModel = function(parent) {
     var self = this;
     self.backendURL = parent.backendURL;
     self.parent = parent;
-    self.viewingID = ko.observable();
+    self.viewingID = ko.observable(0);
     self.lastViewedID = ko.observable();
     
     self.questions = ko.observableArray();
 	self.qfilter = ko.observable(new qFilter());
+
+    self.isViewingQuestion = ko.computed(function() {
+        return (self.viewingID() > 0) ;
+    });
 
     // SORT questions by votes live
     ko.computed(function() {

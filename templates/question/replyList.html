@@ -1,0 +1,13 @@
+   <div class="rightColumn col-xs-5 clearfix" data-bind="fadeVisible: isSelected">
+        <div class="col-xs-12">
+            <ul class="replyList" data-bind="template: { name: 'reply/view', foreach: replies }"></ul>
+        </div>
+        <div class="add-reply" data-bind="visible: $root.loggedIn(), with: new Reply()">
+            <h4>Do you know the answer?</h4>
+            <form>
+            <textarea data-bind="value: body" class="form-control animated" cols="50" id="new-review" 
+              name="comment" placeholder="Enter your reply here..." rows="5"></textarea>
+            <button  data-bind="click: function() { submitReply($parent) }" class="btn btn-success btn-lg" style="margin-top: 20px;" type="submit">Submit reply</button>
+            </form>
+        </div>
+    </div>
