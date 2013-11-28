@@ -52,18 +52,17 @@ function getParameterByName(name, hash) {
 function slide(element, valueAccessor, allBindings) {
     var selected = ko.unwrap(valueAccessor());
     var slideDirection = allBindings.get('slideDirection') == 'left' ? 'left' : 'right';
-;
+
     if (selected) {
         $(element).hide();
-        $(element).effect('slide', {'direction': slideDirection, 'mode': 'show'}, 800);
+        $(element).effect('slide', {'direction': slideDirection, 'mode': 'show'}, 400);
     }
     else {
-        $(element).effect('slide', {'direction': slideDirection, 'mode': 'hide'}, 800);
+        $(element).effect('slide', {'direction': slideDirection, 'mode': 'hide'}, 400);
     }
 }
 
 function toggleVerticalMenu(data, event){
-		
 		var viewBox = $(event.currentTarget);
 		var toggleBox = viewBox.next(".filterStuff:first");
 		console.log("toggleBox");

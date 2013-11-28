@@ -1,20 +1,19 @@
 <div style="margin: 0 30px"> 
-  <div class="col-xs-2">
+  <div style="width: 180px;">
     <div class="fixed sidebar" data-bind="visible: isViewingQuestion()">
+      <a href="#" data-bind="click: returnToResults">
       <span class="glyphicon glyphicon-chevron-left"></span>
-      <a href="#" data-bind="click: returnToResults">Back</a>  
+      Back</a>  
     </div>
   </div>
-  <div class="col-xs-8">
-    <div class="row">
-          <div id="nav-filter-menu" data-bind="click:toggleVerticalMenu">
+  <div style="width: 960px; margin: 0 auto">
+    <div id="nav-filter-menu" data-bind="click:toggleVerticalMenu">
               <span class="glyphicon glyphicon-list-alt"></span>&nbsp;<span>Filter questions</span>
           </div>
           <div data-bind="template: { name:'filters/questionFilter' }" class="filterStuff" style="display:none"></div>
-    </div>
 
     <div class="row">
-      <div id="questionView" style="height: 5000px;position: absolute;left:0;" data-bind="slideVisible: isViewingQuestion, slideDirection: 'right', with: viewedQuestion">
+      <div id="questionView" data-bind="slideVisible: isViewingQuestion, slideDirection: 'right', with: viewedQuestion">
 
           <div id="author-options-menu" data-bind="click:toggleVerticalMenu">
             <span class="glyphicon glyphicon-list-alt"></span>&nbsp;<span>Show author options</span>
@@ -22,8 +21,8 @@
          <div class="filterStuff" style="display:none">
         <h1> tmp </h1>
          </div>
-         
-          <div class="currentQuestion clearfix">
+        
+        <div class="currentQuestion clearfix">
               <div data-bind="template: { name: 'voting/column', data: vote()}"></div>          
               <div class="col-xs-7">
                    <h4 data-bind="text:title"></h4>
@@ -35,27 +34,25 @@
                       <button>Delete question</button>
                    </p>
               </div>
-          </div>
-          <div class="add-question col-xs-6" data-bind="visible: $root.loggedIn, with: new Question()">
-              <h4>Tell us what you're thinking!</h4>
-              <form>
-              <input type="text" data-bind="value: title"/>
-              <textarea data-bind="value: body" class="form-control animated" cols="50" placeholder="Enter a new question here!" rows="5"></textarea>
-              <button  data-bind="click: function(question) { submitQuestion(question, $parent) }" class="btn btn-success btn-lg" type="submit">Send in question!</button>
-              </form>
-          </div>
+        </div>
+        <div class="col-xs-12">
+          <ul class="replyList" data-bind="template: { name: 'reply/view', foreach: replies }">
+          </ul>
+        </div>
+        <div class="add-reply" data-bind="visible: $root.loggedIn(), with: new Reply()">
+            <h4>Do you know the answer?</h4>
+            <form>
+            <textarea data-bind="value: body" class="form-control animated" cols="50" id="new-review" 
+              name="comment" placeholder="Enter your reply here..." rows="5"></textarea>
+            <button  data-bind="click: function() { submitReply($parent) }" class="btn btn-success btn-lg" style="margin-top: 20px;" type="submit">Submit reply</button>
+            </form>
+        </div>
       </div>
     </div>
     <div class="row" style="float: left; margin-top: 35px" data-bind="slideVisible: isViewingQuestion() == false, slideDirection: 'left'">
       <div id="questionList"data-bind="template: {name: 'question/entry', foreach: questions}">
       </div>
     </div>
-  </div>
-  <div class="col-xs-2">
-      <div class="fixed sidebar" style="margin-left: 100px" data-bind="visible: function() { return !isViewingQuestion()}">
-        <a href="#" data-bind="click: returnToQuestion">View</a>
-        <span class="glyphicon glyphicon-chevron-right"></span>
-      </div>
   </div>
 </div>
 

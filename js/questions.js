@@ -15,7 +15,7 @@ var Question = function(parent, data) {
         self.update(data);
         
     self.isSelected = ko.computed(function() {
-        if (!self.parent) return false;
+        if (!self.parent || !self.parent.viewingID) return false;
 
         var vq = self.parent.viewingID();
         if (!vq) return false;
@@ -146,7 +146,8 @@ var QuestionViewModel = function(parent) {
     });
     
     self.viewedQuestion = ko.observable();
-    
+
+    // Detect change to viewingID and fetch new question to show!
     ko.computed(function() {
         var newID = self.viewingID();
         if (newID <= 0 || newID == self.lastViewedID())
@@ -167,6 +168,7 @@ var QuestionViewModel = function(parent) {
         }
 
         self.viewedQuestion(q);
+
         self.lastViewedID(q.id());
     });
 
@@ -184,6 +186,7 @@ var QuestionViewModel = function(parent) {
         var qid = getParameterByName('viewingID', State.hash);
         if (qid && qid != '' && qid != self.viewingID()) {
             self.viewingID(qid);
+            $(document).scrollTop(0);
         }
     });
 };

@@ -2,7 +2,9 @@ body {
    margin: 0;
    padding: 0;
    margin-top: 60px; 
-   font-family: tahoma, verdana, sans-serif; 
+
+
+  font-family: tahoma, verdana, sans-serif; 
 }
 
 @media screen and (max-width: 991px) {
@@ -32,12 +34,18 @@ body {
    border-bottom: 1px solid #444;
 }
 
+#header .brand {
+  float: left;
+  width: 200px;
+  margin-left: -20px;
+}
+
 #header, #header div {
    padding: 0;
 }
 
 #header div.button {
-      margin-right: 10px;
+   
 }
 
 #search-bar {
@@ -93,7 +101,7 @@ body {
    text-align: right;
    color: #444;
    text-transform: uppercase;
-   padding: 10px;
+   padding: 10px 0;
    margin: 0;
 }
 
@@ -151,10 +159,9 @@ body {
 }
 
 #questionView {
-   position: relative;
-   top: 0;
-   right: 0;
-   margin: 0;
+   width: 960px;
+   margin: 0 auto;
+   height: 100%;
    padding: 0;
    }
 
