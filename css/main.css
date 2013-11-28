@@ -26,71 +26,111 @@ body {
 
 #header {
    position:fixed;
+   width: 100%;
    top:0px;
    z-index: 999;
-   background-color: #333; 
    color: #EEE;
-   line-height: 60px;
    border-bottom: 1px solid #444;
 }
 
+#header-top {
+  line-height: 35px;
+  background-color: #666; 
+}
+
+#header-bot {
+   height: 60px;
+   line-height: 60px;
+   background-color: #333;  
+   border-bottom: 1px solid #444;
+}
 #header .brand {
   float: left;
   width: 200px;
-  margin-left: -20px;
-}
-
-#header, #header div {
-   padding: 0;
+  margin-top: 10px;
 }
 
 #header div.button {
-   
+  float: right;
+  margin-right: 1px;
 }
 
 #search-bar {
-   font-size: 150%;
-   font-family: helvetica;
-   overflow:hidden;
+  float: left;
+  width: 450px; 
+  font-size: 120%;
+  font-family: helvetica;
+  overflow:hidden;
+}
+
+#search-bar input {
+  width: 400px; 
+  padding: 7px 10px;
+  height: 32px;
 }
 
 #header div.button a {
    display: block;
-   height: 60px;
    text-align: center;
    font-size: 100%;
-   color: #FFF; 
+   color: #eee; 
    text-decoration: none;
+   line-height: 50px;
 }
 
+
+#menu {
+  width: 960px; 
+  margin: 0 auto; 
+}
 /* --------------------------------- Colors --------------------------------- */
 
 
 .blue {
-   background-color: #82cce7; 
+   border-bottom: 10px solid #9FDBF8; 
    color: #82cce7; 
 }
 
+.blue:hover {
+   border-bottom: 10px solid #60B9E4; 
+}
+
 .orange {
-  background-color: #e7a382; 
+  border-bottom: 10px solid #FFE59E; 
 }
 
-.green {
-  background-color: #a3e782; 
+.orange:hover {
+   border-bottom: 10px solid #FFD564; 
 }
 
-.logout a {
+
+.red {
+  border-bottom: 10px solid #FFB19E; 
+}
+
+.red:hover {
+   border-bottom: 10px solid #FF8264; 
+}
+
+
+#logout-box {
+  text-align: left;
+  float: right;
+  position:absolute;
+  z-index: 999;
+  right: 0;
+  top:0;
+}
+#logout-box a {
   color: #eee;
 }
-.logout a:hover {
-  text-decoration: none;
+
+#logout-box:hover {
   cursor:pointer;
-  color: #eee;
 }
 
 .blue:hover, .orange:hover, .green:hover {
-   background-color: #ccc; 
-   color: #ccc;
+   color: #222 !important;
    cursor: pointer;
 }
 
@@ -117,10 +157,6 @@ body {
 }
 
 /* --------------------------------- Questions --------------------------------- */
-
-#ask-question {
-   line-height: 60px;
-}
 
 .question-block {
    display: block;
