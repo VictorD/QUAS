@@ -49,15 +49,16 @@ function getParameterByName(name, hash) {
     return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
-function slide(element, valueAccessor) {
+function slide(element, valueAccessor, allBindings) {
     var selected = ko.unwrap(valueAccessor());
-
+    var slideDirection = allBindings.get('slideDirection') == 'left' ? 'left' : 'right';
+;
     if (selected) {
         $(element).hide();
-        $(element).effect('slide', {'direction':'left', 'mode': 'show'}, 800);
+        $(element).effect('slide', {'direction': slideDirection, 'mode': 'show'}, 800);
     }
     else {
-        $(element).effect('slide', {'direction':'right', 'mode': 'hide'}, 800);
+        $(element).effect('slide', {'direction': slideDirection, 'mode': 'hide'}, 800);
     }
 }
 
@@ -74,7 +75,7 @@ function toggleVerticalMenu(data, event){
 
 // Here's a custom Knockout binding that makes elements shown/hidden via jQuery's fadeIn()/fadeOut() methods
 // Could be stored in a separate utility library
-ko.bindingHandlers.fadeVisible = {
+ko.bindingHandlers.slideVisible = {
   //  init: slide,
     update: slide
 };

@@ -17,7 +17,6 @@ var Question = function(parent, data) {
     self.isSelected = ko.computed(function() {
         if (!self.parent) return false;
 
-        console.log(self.parent);
         var vq = self.parent.viewingID();
         if (!vq) return false;
 
@@ -87,19 +86,21 @@ var Vote = function(question, initValue) {
 
 var QuestionViewModel = function(parent) {
     var self = this;
-    self.backendURL = parent.backendURL;
     self.parent = parent;
+    self.backendURL = parent.backendURL;
+
     self.viewingID = ko.observable(0);
-    self.lastViewedID = ko.observable();
-    
-    self.questions = ko.observableArray();
-	self.qfilter = ko.observable(new qFilter());
+    self.lastViewedID = ko.observable(0);
 
     self.isViewingQuestion = ko.computed(function() {
-        return (self.viewingID() > 0) ;
+        return self.viewingID() > 0;
     });
 
+    self.questions = ko.observableArray();
+    
     // SORT questions by votes live
+    self.qfilter = ko.observable(new qFilter());
+
     ko.computed(function() {
         if (self.qfilter().orderByVotes()) {
             var x = self.questions();
@@ -121,7 +122,8 @@ var QuestionViewModel = function(parent) {
         var x = self.qfilter().orderby();
         self.questions(self.questions().reverse())
     });
-    
+
+
     ko.computed(function() {
       console.log("Loading questions");
       var tmp = self.qfilter().filtername();
@@ -147,18 +149,25 @@ var QuestionViewModel = function(parent) {
     
     ko.computed(function() {
         var newID = self.viewingID();
-        var q = self.findQuestion(newID);
-        if (!q || (self.viewedQuestion() && self.viewedQuestion().id() == q.id()))
+        if (newID <= 0 || newID == self.lastViewedID())
             return;
 
+        var q = self.findQuestion(newID);
+        if (!q) {
+            console.log("Error: Question with ID " + newID + " not found");
+            return;
+        }
+
         if (self.viewedQuestion())
-            console.log("Updating viewed question: " + q.id() + " vs " + self.viewedQuestion().id());
+            console.log("Updating viewed question from " + self.lastViewedID() + " to " + newID);
 
         if (q.replies().length < 1) {
             console.log("Loading replies for question: " + q.id());
             self.loadReplies(q);
         }
+
         self.viewedQuestion(q);
+        self.lastViewedID(q.id());
     });
 
     self.viewQuestion       = self.viewQuestion.bind(this);
@@ -167,6 +176,7 @@ var QuestionViewModel = function(parent) {
     self.findQuestion       = self.findQuestion.bind(this);
     self.deleteQuestion     = self.deleteQuestion.bind(this);
     self.loadReplies        = self.loadReplies.bind(this);
+    self.returnToQuestion   = self.returnToQuestion.bind(this);
 
     // Bind to State Change
     History.Adapter.bind(window,'statechange',function(){
@@ -205,11 +215,20 @@ ko.utils.extend(QuestionViewModel.prototype, {
             });
         });
     },
+    pushID: function(id) {
+        History.pushState({pageName: 'questions', rnd:Math.random()}, "Viewing Question: " + id, "/?viewingID=" + id);
+    },
+    returnToQuestion: function() {
+        this.pushID(this.lastViewedID());
+    },
+    returnToResults: function() {
+        var v = this.viewingID();
+        this.lastViewedID(v);
+        this.pushID(0);
+    },
     viewQuestion: function(item, event) {
-        if (item) {
-            id = item.id()
-            History.pushState({pageName: 'questions', rnd:Math.random()}, "Viewing Question: " + id, "/?viewingID=" + id);
-        }
+        if (item)
+            this.pushID(item.id());
     },
     deleteQuestion: function(question) {
         var self = this;

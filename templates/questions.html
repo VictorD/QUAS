@@ -2,7 +2,7 @@
   <div class="col-xs-2">
     <div class="fixed sidebar" data-bind="visible: isViewingQuestion()">
       <span class="glyphicon glyphicon-chevron-left"></span>
-      <span>Back</span>  
+      <a href="#" data-bind="click: returnToResults">Back</a>  
     </div>
   </div>
   <div class="col-xs-8">
@@ -10,18 +10,12 @@
           <div id="nav-filter-menu" data-bind="click:toggleVerticalMenu">
               <span class="glyphicon glyphicon-list-alt"></span>&nbsp;<span>Filter questions</span>
           </div>
-
-      <div data-bind="template: { name:'filters/questionFilter' }" class="filterStuff" style="display:none"></div>
-    </div>
-
-    <div class="row" style="margin-top: 35px" data-bind="visible: isViewingQuestion() == false">
-      <div id="questionList"data-bind="template: {name: 'question/entry', foreach: questions}">
-      </div>
+          <div data-bind="template: { name:'filters/questionFilter' }" class="filterStuff" style="display:none"></div>
     </div>
 
     <div class="row">
-      <div id="questionView" class="col-xs-6 clearfix" style="display: none;" 
-           data-bind="visible: isViewingQuestion, with: viewedQuestion">
+      <div id="questionView" style="height: 5000px;position: absolute;left:0;" data-bind="slideVisible: isViewingQuestion, slideDirection: 'right', with: viewedQuestion">
+
           <div id="author-options-menu" data-bind="click:toggleVerticalMenu">
             <span class="glyphicon glyphicon-list-alt"></span>&nbsp;<span>Show author options</span>
          </div>
@@ -42,23 +36,28 @@
                    </p>
               </div>
           </div>
+          <div class="add-question col-xs-6" data-bind="visible: $root.loggedIn, with: new Question()">
+              <h4>Tell us what you're thinking!</h4>
+              <form>
+              <input type="text" data-bind="value: title"/>
+              <textarea data-bind="value: body" class="form-control animated" cols="50" placeholder="Enter a new question here!" rows="5"></textarea>
+              <button  data-bind="click: function(question) { submitQuestion(question, $parent) }" class="btn btn-success btn-lg" type="submit">Send in question!</button>
+              </form>
+          </div>
+      </div>
+    </div>
+    <div class="row" style="float: left; margin-top: 35px" data-bind="slideVisible: isViewingQuestion() == false, slideDirection: 'left'">
+      <div id="questionList"data-bind="template: {name: 'question/entry', foreach: questions}">
       </div>
     </div>
   </div>
- <div class="col-xs-2">
-    <div class="fixed sidebar" style="margin-left: 100px">
-      <span>View</span>
-      <span class="glyphicon glyphicon-chevron-right"></span>
-    </div>
+  <div class="col-xs-2">
+      <div class="fixed sidebar" style="margin-left: 100px" data-bind="visible: function() { return !isViewingQuestion()}">
+        <a href="#" data-bind="click: returnToQuestion">View</a>
+        <span class="glyphicon glyphicon-chevron-right"></span>
+      </div>
   </div>
 </div>
 
 
-<div class="add-question col-xs-6" data-bind="visible: $root.loggedIn, with: new Question()">
-    <h4>Tell us what you're thinking!</h4>
-    <form>
-    <input type="text" data-bind="value: title"/>
-    <textarea data-bind="value: body" class="form-control animated" cols="50" placeholder="Enter a new question here!" rows="5"></textarea>
-    <button  data-bind="click: function(question) { submitQuestion(question, $parent) }" class="btn btn-success btn-lg" type="submit">Send in question!</button>
-    </form>
-</div>
+
