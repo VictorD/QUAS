@@ -6,53 +6,61 @@
       Back</a>  
     </div>
   </div>
-  <div style="width: 960px; margin: 0 auto">
-    <div id="nav-filter-menu" data-bind="click:toggleVerticalMenu">
+  <div id="inner-container">
+  	<div id="search-bar" class="clearfix">
+        <form class="form-inline">
+            <div class="form-group">
+               <input type="text" class="form-control" placeholder="Search questions..."/>
+            </div>
+            <label><span class="glyphicon glyphicon-search"></span></label>
+         </form>
+        <div>
+            <div id="nav-filter-menu" data-bind="click:toggleVerticalMenu">
               <span class="glyphicon glyphicon-list-alt"></span>&nbsp;<span>Filter questions</span>
-          </div>
-          <div data-bind="template: { name:'filters/questionFilter' }" class="filterStuff" style="display:none"></div>
-
-    <div class="row">
-      <div id="questionView" data-bind="slideVisible: isViewingQuestion, slideDirection: 'right', with: viewedQuestion">
-
-          <div id="author-options-menu" data-bind="click:toggleVerticalMenu">
-            <span class="glyphicon glyphicon-list-alt"></span>&nbsp;<span>Show author options</span>
-         </div>
-         <div class="filterStuff" style="display:none">
-        <h1> tmp </h1>
-         </div>
+            </div>
+            <div class="filterStuff" data-bind="template: { name:'filters/questionFilter' }"></div>
+        </div>
+    </div>
+    <div id="question-container">
+        <table id="questionList" data-bind="slideVisible: isViewingQuestion() == false, slideDirection: 'left'">
+            <tbody data-bind="template: {name: 'question/entry', foreach: questions}">
+            </tbody>
+        </table>
+        <div id="questionView" data-bind="slideVisible: isViewingQuestion, slideDirection: 'right', with: viewedQuestion">
+            <div id="author-options-menu" data-bind="click:toggleVerticalMenu">
+                <span class="glyphicon glyphicon-list-alt"></span>&nbsp;<span>Show author options</span>
+            </div>
+            <div class="filterStuff" style="display:none">
+                <h1>tmp</h1>
+            </div>
+            <div class="currentQuestion clearfix">
+                  <div data-bind="template: { name: 'voting/column', data: vote()}"></div>          
+                  <div class="col-xs-7">
+                       <h4 data-bind="text:title"></h4>
+                       <p data-bind="text: timestamp"></p>
+                       <p id="question-body" data-bind="text: body"></p>
+                      
+                       <p>
+                          <form data-bind="visible: $root.loggedIn, submit: $parent.deleteQuestion.bind('question', $data)">
+                          <button>Delete question</button>
+                       </p>
+                  </div>
+            </div>
+            <div class="col-xs-12">
+              <ul class="replyList" data-bind="template: { name: 'reply/view', foreach: replies }">
+              </ul>
+            </div>
+            <div class="add-reply" data-bind="visible: $root.loggedIn(), with: new Reply()">
+                <h4>Do you know the answer?</h4>
+                <form>
+                <textarea data-bind="value: body" class="form-control animated" cols="50" id="new-review" 
+                  name="comment" placeholder="Enter your reply here..." rows="5"></textarea>
+                <button  data-bind="click: function() { submitReply($parent) }" class="btn btn-success btn-lg" style="margin-top: 20px;" type="submit">Submit reply</button>
+                </form>
+            </div>
+        </div>
         
-        <div class="currentQuestion clearfix">
-              <div data-bind="template: { name: 'voting/column', data: vote()}"></div>          
-              <div class="col-xs-7">
-                   <h4 data-bind="text:title"></h4>
-                   <p data-bind="text: timestamp"></p>
-                   <p id="question-body" data-bind="text: body"></p>
-                  
-                   <p>
-                      <form data-bind="visible: $root.loggedIn, submit: $parent.deleteQuestion.bind('question', $data)">
-                      <button>Delete question</button>
-                   </p>
-              </div>
-        </div>
-        <div class="col-xs-12">
-          <ul class="replyList" data-bind="template: { name: 'reply/view', foreach: replies }">
-          </ul>
-        </div>
-        <div class="add-reply" data-bind="visible: $root.loggedIn(), with: new Reply()">
-            <h4>Do you know the answer?</h4>
-            <form>
-            <textarea data-bind="value: body" class="form-control animated" cols="50" id="new-review" 
-              name="comment" placeholder="Enter your reply here..." rows="5"></textarea>
-            <button  data-bind="click: function() { submitReply($parent) }" class="btn btn-success btn-lg" style="margin-top: 20px;" type="submit">Submit reply</button>
-            </form>
-        </div>
-      </div>
-    </div>
-    <div class="row" style="float: left; margin-top: 35px" data-bind="slideVisible: isViewingQuestion() == false, slideDirection: 'left'">
-      <div id="questionList"data-bind="template: {name: 'question/entry', foreach: questions}">
-      </div>
-    </div>
+    </div>    
   </div>
 </div>
 

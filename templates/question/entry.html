@@ -1,15 +1,15 @@
-<div class="row" style="margin: 0">
-    <div class="question-block clearfix"  data-bind="css: { selected: isSelected }, 
+<tr class="question-block clearfix"  data-bind="css: { selected: isSelected }, 
                                                      click: $parent.viewQuestion, 
                                                      attr: {'id': 'question_' + id()}">
-        <div class="col-xs-1" style="line-height: 120px">0</div>
-
-        <div class="col-xs-1" data-bind="with: author">
-            <span data-bind="text: username">AuthorNameHere</span>
+        <td class="col-xs-2">
             <div style="background-color: #aaa;width:64px;height:64px;padding: 10px;float: left;margin-top: 10px;margin-left: 8px;"> place-holder</div>
-        </div>
-
-        <div class="col-xs-8" style="padding-top: 20px;">
+        </td>
+        <td class="col-xs-2" data-bind="with: author">
+            <span data-bind="text: username">AuthorNameHere</span>
+        </td>
+        <td class="col-xs-1">0</td>
+        
+        <td class="col-xs-5">
             <ul>
                <li class="question-header">
                 <strong data-bind="text: timestamp">AuthorNameHere</strong>
@@ -18,15 +18,17 @@
                   <h4 data-bind="text: title"></h4>
                </li>
             </ul>
-         </div>
-         <div class="col-xs-2" style="overflow-x:hidden;">
-            <span data-bind="text: tags"></span>
-         </div>
-         <div style="clear: both;width: 100%" class="col-xs-12" data-bind="visible: isSelected">
+         </td>
+         <td class="col-xs-2" style="overflow-x:hidden;">
+            
+            <ul data-bind="foreach: { data: tags, as: 't' }">
+                <li data-bind="text: t"></li>
+            </ul>
+         </td>
+         <td style="clear: both;width: 100%" class="col-xs-12" data-bind="visible: isSelected">
             <p id="question-body" data-bind="text: body"></p>
             <p>
                 
             </p>
-        </div>
-    </div>
-</div>
+        </td>
+</tr>

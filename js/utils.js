@@ -55,10 +55,10 @@ function slide(element, valueAccessor, allBindings) {
 
     if (selected) {
         $(element).hide();
-        $(element).effect('slide', {'direction': slideDirection, 'mode': 'show'}, 400);
+        $(element).effect('slide', {'direction': slideDirection, 'mode': 'show'}, 700);
     }
     else {
-        $(element).effect('slide', {'direction': slideDirection, 'mode': 'hide'}, 400);
+        $(element).effect('slide', {'direction': slideDirection, 'mode': 'hide'}, 700);
     }
 }
 
