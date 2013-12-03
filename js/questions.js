@@ -171,6 +171,12 @@ var QuestionViewModel = function(parent) {
 
         self.lastViewedID(q.id());
     }).extend({ throttle: 200 });
+	
+	self.texFunction = function(){
+		console.log("nya funktionen kallas");
+		var x = self.viewedQuestion();
+		MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+	}
 
     self.viewQuestion       = self.viewQuestion.bind(this);
     self.isReplyAuthor      = self.isReplyAuthor.bind(this);
@@ -241,6 +247,7 @@ ko.utils.extend(QuestionViewModel.prototype, {
         });
     },
     afterRenderCallback: function() { 
+		console.log("afterRenderCallback function");
         $('#profileView').fadeOut(600); 
         $('#questionView').hide(); 
         $('#questionView').fadeIn(1200);

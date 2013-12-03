@@ -36,7 +36,7 @@
               </div>
         </div>
         <div class="col-xs-12">
-          <ul class="replyList" data-bind="template: { name: 'reply/view', foreach: replies }">
+          <ul class="replyList" data-bind="template: { name: 'reply/view', foreach: replies, afterRender:$parent.texFunction }">
           </ul>
         </div>
         <div class="add-reply" data-bind="visible: $root.loggedIn(), with: new Reply()">
