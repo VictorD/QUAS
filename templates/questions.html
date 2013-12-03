@@ -49,7 +49,8 @@
         </div>
       </div>
     </div>
-    <div class="row" style="float: left; margin-top: 35px" data-bind="slideVisible: isViewingQuestion() == false, slideDirection: 'left'">
+    <div class="row" style="float: left; margin-top: 35px" 
+         data-bind="slideVisible: isViewingQuestion() == false, slideDirection: 'left'">
       <div id="questionList"data-bind="template: {name: 'question/entry', foreach: questions}">
       </div>
     </div>
