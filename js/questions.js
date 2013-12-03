@@ -170,7 +170,7 @@ var QuestionViewModel = function(parent) {
         self.viewedQuestion(q);
 
         self.lastViewedID(q.id());
-    });
+    }).extend({ throttle: 200 });
 
     self.viewQuestion       = self.viewQuestion.bind(this);
     self.isReplyAuthor      = self.isReplyAuthor.bind(this);
