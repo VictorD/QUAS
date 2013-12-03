@@ -54,12 +54,16 @@ $(function() {
             });
         });
         
+        var questionView = new QuestionViewModel(this);
+        var questionAdd  = new QuestionAddModel(this);
+
         self.pages = {
-            'questions' : new QuestionViewModel(this),
-            'profile'   : new ProfileModel(this)
+            'viewQuestions' : questionView,
+            'askQuestion'   : questionAdd,
+            'profile'       : new ProfileModel(this)
         }
 
-        self.currentPage  = ko.observable('questions');
+        self.currentPage  = ko.observable('viewQuestions');
         self.currentModel = ko.computed(function() {
             return self.pages[self.currentPage()];
         });
@@ -75,12 +79,8 @@ $(function() {
         }
 
         self.currentHeader = ko.computed(function() {
-            var folder = 'header/';
-            var file = 'guest';
-            if (self.loggedIn()) {
-                file = 'member'
-            }
-            return folder + file;
+            var file = self.loggedIn() ? 'member' : 'guest';
+            return 'header/' + file;
         });
 
         self.changePage = function(pageName) {
@@ -93,12 +93,11 @@ $(function() {
             
             var newPage = State.data.pageName;
             var newModel = self.pages[newPage];
+            console.log(newPage);
             if (newModel) {
+                console.log(newPage);
                 self.currentPage(newPage);
             }
-
-
-            
         });
     };
     

@@ -7,7 +7,6 @@
 		<div id="menu" class="clearfix">
 			<div id="search-bar">
 			 <form class="form-inline">
-			  
 			    <div class="form-group">
 			       <input type="text" class="form-control" placeholder="Search questions..."/>
 			    </div>
@@ -15,13 +14,13 @@
 			 </form>
 			</div>
 			<div id="ask-question" class="red button col-xs-2">
-				<a data-bind="click: changePage('questions')">
+				<a data-bind="click: function() { changePage('askQuestion') }">
 					<span style="color: #eee;" class="glyphicon glyphicon-pencil"></span>
 					Ask question
 				</a>
 			</div>	 
 			<div class="blue button col-xs-2">
-				<a data-bind="click: function() { changePage('questions') }">
+				<a data-bind="click: function() { changePage('viewQuestions') }">
 					<span style="color: #eee;" class="glyphicon glyphicon-question-sign"></span>
 					Questions
 				</a>
