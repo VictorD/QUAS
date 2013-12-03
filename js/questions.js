@@ -170,7 +170,7 @@ var QuestionViewModel = function(parent) {
         self.viewedQuestion(q);
 
         self.lastViewedID(q.id());
-    });
+    }).extend({ throttle: 200 });
 	
 	self.afterRenderUpdate = function(){
 		console.log("nya funktionen kallas");
@@ -179,7 +179,6 @@ var QuestionViewModel = function(parent) {
 		var x = self.viewedQuestion();
 		MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 	}
-
 
     self.viewQuestion       = self.viewQuestion.bind(this);
     self.isReplyAuthor      = self.isReplyAuthor.bind(this);
