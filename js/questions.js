@@ -172,8 +172,10 @@ var QuestionViewModel = function(parent) {
         self.lastViewedID(q.id());
     });
 	
-	self.texFunction = function(){
+	self.afterRenderUpdate = function(){
 		console.log("nya funktionen kallas");
+		
+		// latex kallas vid uppdatering
 		var x = self.viewedQuestion();
 		MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 	}
