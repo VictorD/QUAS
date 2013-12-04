@@ -5,11 +5,9 @@
   <input type="text" data-bind="value: title"/>
   <textarea data-bind="value: body" class="form-control animated" cols="50" placeholder="Enter a new question here!" rows="5"></textarea>
   <br/>
-  <label data-bind="text: currentTags"></label>
-  <input type="text" data-bind="value: tags"/><button data-bind="click: addTag">Add tag</button>
+  <label data-bind="text: $parent.currentTags"></label><br/>
+  <input type="text" data-bind="value: $parent.newTag"/><button data-bind="click: $parent.addTag">Add tag</button>
   <br/><br/>
-  <button  data-bind="click: function(question) { submitQuestion(question, $parent) }" class="btn btn-success btn-lg" type="submit">Send in question!</button>
+  <button  data-bind="click: function(question) { $parent.submitQuestion(question, $parent) }" class="btn btn-success btn-lg" type="submit">Send in question!</button>
   </form>
 </div>
-
-<div style="margin: 30px 0; colo: #ccc"> Tips: use Latex ! <code>$$centered latexcodestuff$$ , \(code\) for inline</code></div>  

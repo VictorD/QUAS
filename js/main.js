@@ -1,7 +1,7 @@
 function changePage(pageName, hash) {
    console.log("Changing page: " + pageName);
    console.log(hash);
-   
+
    if (!hash) { 
        hash = ""; 
    }
@@ -31,7 +31,7 @@ $(function() {
         });
 
         self.pageModels = {
-            'askQuestion'   : AddQuestionModel,
+            'askQuestion'   : AskQuestionModel,
             'viewQuestion'  : ViewQuestionModel,
             'listQuestions' : ListQuestionsModel,
             'viewProfile'   : ProfileModel
@@ -61,11 +61,15 @@ $(function() {
         
         // Bind to State Change
         History.Adapter.bind(window,'statechange',function(){
-            var State    = History.getState();
-            var newPage  = State.data.pageName;
-            var newModel = self.pageModels[newPage];
-            if (newModel) {
-                self.currentPage(newPage);
+            if (!self.loggedIn()) {
+               self.currentPage('listQuestions');
+            } else {
+               var State    = History.getState();
+               var newPage  = State.data.pageName;
+               var newModel = self.pageModels[newPage];
+               if (newModel) {
+                   self.currentPage(newPage);
+               }
             }
         });
     };

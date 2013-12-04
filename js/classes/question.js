@@ -24,19 +24,3 @@ Question.prototype.update = function(data) {
    this.tags(data.tags);
    this.timestamp(data.timestamp);
 };
-
-Question.prototype.submitQuestion = function(question, parent) {
-   var data = {
-      body: question.body(),
-      title: question.title()
-   };
-
-   var self = this;
-   secureAjaxJSON('http://130.240.5.168:5000' + '/questions/', 'POST', data).success(
-      function(response) {
-         console.log("Created new question");
-         console.log(response);   
-         changePage('viewQuestion', "/?viewedID=" + response.Question.id);
-      }
-   ); 
-}

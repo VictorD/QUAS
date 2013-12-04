@@ -7,14 +7,6 @@ body {
   font-family: tahoma, verdana, sans-serif; 
 }
 
-@media screen and (max-width: 991px) {
-    body { margin-top: 120px; }
-}
-
-@media screen and (max-width: 768px) {
-    body { margin-top: 180px; }
-}
-
 .full-width-container {
     padding-left: 15px;
     padding-right: 15px;
@@ -124,9 +116,18 @@ body {
 
 
 #menu {
-  width: 960px; 
+  width: 460px; 
   margin: 0 auto; 
 }
+
+@media screen and (max-width: 991px) {
+  #menu {}
+}
+
+@media screen and (max-width: 768px) {
+}
+
+
 /* --------------------------------- Colors --------------------------------- */
 
 
@@ -159,7 +160,7 @@ body {
 
 #sign-in, #logout-box {
   float: right;
-  position: absolute; top:0;
+
   
   line-height: 20px;
   margin:10px 50px;

@@ -21,7 +21,9 @@
                <h4 data-bind="text:title"></h4>
                <p data-bind="text: timestamp"></p>
                <p id="question-body" data-bind="text: body"></p>
-
+               <ul data-bind="foreach: { data: tags, as: 't' }">
+                  <li data-bind="text: t"></li>
+               </ul>
           </div>
     </div>
     <div class="col-xs-12">
