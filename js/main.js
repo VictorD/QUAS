@@ -33,9 +33,9 @@ $(function() {
 
         ko.computed(function() {
             secureAjax(self.backendURL + '/u/amiloggedin/', 'GET').done(function(data) {
-                self.loggedIn(data.Status);
                 if (data.Status) {
                     secureAjax(self.backendURL + '/u/me/', 'GET').success(function(data) {
+                        self.loggedIn(true);
                         self.user(new User(data.User));
                     });
                 }

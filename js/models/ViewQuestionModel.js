@@ -24,11 +24,11 @@ var ViewQuestionModel = function(parent) {
             }
             console.log("Loaded question: " + qid);
             self.viewedQuestion(q);
+            self.afterRenderUpdate();
         });
     });
 	
 	self.afterRenderUpdate = function(){
-        var x = self.viewedQuestion();
 		console.log("Scan for latex code");
 		MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 	}
@@ -38,10 +38,13 @@ var ViewQuestionModel = function(parent) {
             return false;
 
         var currentUser = self.parent.user();
+        if (!currentUser)
+            return false;
+            
+        console.log(currentUser);
         if (!self.viewedQuestion())
             return false;
 
-        console.log("isAuthor" + self.viewedQuestion().author().id == currentUser.id());
         return self.viewedQuestion().author().id == currentUser.id();
     });
 
@@ -67,6 +70,7 @@ ko.utils.extend(ViewQuestionModel.prototype, {
     },
     afterRenderCallback: function() { 
 		console.log("view question render callback");
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
         $('#questionView').hide(); 
         $('#questionView').fadeIn(1200);
     }
