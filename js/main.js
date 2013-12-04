@@ -1,9 +1,8 @@
 function changePage(pageName, hash) {
    console.log("Changing page: " + pageName);
-   console.log(hash);
-
    if (!hash) { 
-       hash = ""; 
+        console.log(hash);
+        hash = ""; 
    }
 
    History.pushState({pageName: pageName}, null, "/" + hash);
@@ -13,6 +12,19 @@ $(function() {
     $.support.cors = true;
     infuser.defaults.templateUrl = "templates";
 
+    function initPage() {
+        // Go to starting page
+        var newPage = 'listQuestions',
+            hash = "";
+            
+        var qid = getIDFromHash();
+        if (qid > 0) {
+            newPage = 'viewQuestion';
+            hash = '?viewedID=' + qid;
+        }
+        changePage(newPage, hash);
+    }
+    
 	var ViewModel = function() {
         self = this;
         self.user       = ko.observable();
@@ -56,12 +68,18 @@ $(function() {
 
         self.goBack = function() { 
             console.log("backing up");
-            History.back(); 
+            var previousPages = History.savedStates;
+            console.log(previousPages);
+            if (previousPages[previousPages.length-2].data.pageName)
+                History.back(); 
+            else
+                changePage('listQuestions');
          }
         
         // Bind to State Change
         History.Adapter.bind(window,'statechange',function(){
-            if (!self.loggedIn()) {
+            console.log("Statechange");
+            if (!self.loggedIn() && self.currentPage() == 'viewProfile') {
                self.currentPage('listQuestions');
             } else {
                var State    = History.getState();
@@ -72,6 +90,8 @@ $(function() {
                }
             }
         });
+        
+        initPage();
     };
 
     var viewModel = new ViewModel();

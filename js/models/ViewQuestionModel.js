@@ -13,7 +13,6 @@ var ViewQuestionModel = function(parent) {
 
     ko.computed(function() {
         var qid = getIDFromHash();
-    
         console.log("Loading question... " + qid);
         $.getJSON(self.parent.backendURL + '/questions/' + qid + "/").success(function(data) {
             var q = new Question(data['Question']);
@@ -53,7 +52,6 @@ var ViewQuestionModel = function(parent) {
 ko.utils.extend(ViewQuestionModel.prototype, {
     isReplyAuthor: function(reply) {
         var currentUser = this.parent.user();
-        console.log("currentUser")
         return (currentUser && reply && reply.author() && reply.author().id == currentUser.id());
     },
     deleteQuestion: function() {
