@@ -1,17 +1,49 @@
-<!--<div>
-			
-				<div class="btn-group" data-toggle="buttons" data-bind="with:qfilter">
-				<label class="btn btn-primary">
-					Author search<input type="text" name="options" id="filtername" data-bind="value:filtername" >
-				</label>
-				<label class="btn btn-primary">
-					Tag search<input type="text" name="options" id="filtertags" data-bind="value:filtertags" >
-				</label>
-				  <label class="btn btn-primary">
-					<input type="checkbox" name="options" id="option2" data-bind="checked:orderby"> Reverse List
-				  </label>
-				  <label class="btn-primary">
-					<input type="checkbox" name="options" id="option3" data-bind="checked:orderByVotes"> OrderByVotes
-				  </label>
-				</div>
-</div>-->
+<div>
+<div data-bind="with:qfilter">
+<div class="btn-group">
+  Page view: <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+    <p data-bind="text:pageSize()"></p><span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" role="menu">
+    <li><a href="#" data-bind="click:function(){pageSize(5);}">5 lolz</a></li>
+    <li><a href="#" data-bind="click:function(){pageSize(15);}">15</a></li>
+    <li><a href="#" data-bind="click:function(){pageSize(25);}">25</a></li>
+  </ul>
+ </div>
+ 
+ 
+ 
+ 
+ <div class="btn-group">
+  Order by: <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+     <p data-bind="text:orderBy()"></p><span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" role="menu">
+    <li><a href="#" data-bind="click:function(){orderBy('date');}">Date</a></li>
+    <li><a href="#" data-bind="click:function(){orderBy('vote');}">Vote</a></li>
+    <li><a href="#" data-bind="click:function(){orderBy('name');}">Topic</a></li>
+  </ul>
+ </div>
+ 
+
+
+
+<div class="row">
+  <div class="col-lg-6">
+    <div class="input-group">
+      <div class="input-group-btn">
+		Filter by:<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><p data-bind="text:filterBy()"></p><span class="caret"></span></button>
+        <ul class="dropdown-menu" >
+          <li><a href="#" data-bind="click: function(){filterBy('author');}">Author</a></li>
+          <li><a href="#" data-bind="click:function(){filterBy('tags');}">Tag</a></li>
+        </ul>
+      </div><!-- /btn-group -->
+      <input type="text" class="form-control" data-bind="value:filterData">
+    </div><!-- /input-group -->
+  </div><!-- /.col-lg-6 -->
+</div>
+	<div>
+		<button data-bind="click:reset">Reset</button>
+	</div>
+</div>
+</div>
