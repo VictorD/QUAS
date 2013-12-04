@@ -80,11 +80,17 @@ body {
     margin-top: 5px;
 }
 
+#nav-filter-menu button { float: left; }
+
 #nav-filter-menu, #author-options-menu {
    color: #444;
    text-transform: uppercase;
 }
 
+#nav-filter-menu:hover {
+    cursor:pointer;
+    color: #888;
+}
 #author-options-menu:hover {
    background-color: #ccc;
    cursor:pointer;
@@ -97,8 +103,7 @@ body {
 }
 
 .filterStuff {
-	
-	
+	float: left;
     display:none;
 }
 

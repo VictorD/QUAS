@@ -1,11 +1,13 @@
-<div>
+<div style="margin-top: 20px">
 <div data-bind="with:qfilter">
+<label>Questions per page:</label>
 <div class="btn-group">
-  Page view: <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-    <p data-bind="text:pageSize()"></p><span class="caret"></span>
+  <button type="button" style="width: 110px;" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+    <span data-bind="text:pageSize()"></span> <span class="caret"></span>
   </button>
   <ul class="dropdown-menu" role="menu">
     <li><a href="#" data-bind="click:function(){pageSize(5);}">5 lolz</a></li>
+    <li><a href="#" data-bind="click:function(){pageSize(10);}">10</a></li>
     <li><a href="#" data-bind="click:function(){pageSize(15);}">15</a></li>
     <li><a href="#" data-bind="click:function(){pageSize(25);}">25</a></li>
   </ul>
@@ -13,10 +15,11 @@
  
  
  
- 
+
+<label>Order by: </label> 
  <div class="btn-group">
-  Order by: <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-     <p data-bind="text:orderBy()"></p><span class="caret"></span>
+  <button type="button" style="width: 150px;" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+     <span data-bind="text:orderBy()"></span> <span class="caret"></span>
   </button>
   <ul class="dropdown-menu" role="menu">
     <li><a href="#" data-bind="click:function(){orderBy('date');}">Date</a></li>
@@ -32,13 +35,13 @@
   <div class="col-lg-6">
     <div class="input-group">
       <div class="input-group-btn">
-		Filter by:<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><p data-bind="text:filterBy()"></p><span class="caret"></span></button>
+		Filter by:<button type="button" style="width: 150px;margin: 10px;" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span data-bind="text:filterBy()"></span><span class="caret"></span></button>
         <ul class="dropdown-menu" >
           <li><a href="#" data-bind="click: function(){filterBy('author');}">Author</a></li>
           <li><a href="#" data-bind="click:function(){filterBy('tags');}">Tag</a></li>
         </ul>
       </div><!-- /btn-group -->
-      <input type="text" class="form-control" data-bind="value:filterData">
+      <input type="text" class="form-control" data-bind="value:filterData, disable: filterBy() == ''">
     </div><!-- /input-group -->
   </div><!-- /.col-lg-6 -->
 </div>

@@ -1,13 +1,14 @@
 var qFilter = function(){
 	var self = this;
 	self.filterBy = ko.observable("");
-	self.filterData = ko.observable();
-	self.pageSize = ko.observable();
+	self.filterData = ko.observable("");
+	self.pageSize = ko.observable(10);
 	self.orderBy = ko.observable();
 	
 	
 	self.reset = function(){
 		self.filterBy('');
+        self.filterData('');
 		self.pageSize(10);
 		self.orderBy(undefined);
 	}
