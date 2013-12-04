@@ -68,6 +68,7 @@ function toggleVerticalMenu(data, event){
 		console.log(toggleBox);
 		
 //		viewBox.hide();
+//		toggleBox.css({"height":"auto"});
 		toggleBox.slideToggle(500, function(){});
 }
 

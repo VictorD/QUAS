@@ -98,8 +98,8 @@ body {
 }
 
 .filterStuff {
-    width: 500px;
-    float: right;
+	
+	
     display:none;
 }
 
@@ -228,7 +228,6 @@ body {
     clear: both;
 }
 #questionList , #questionView {
-    position: absolute;
     top: 0;
     left:0;
     width: 100%;
