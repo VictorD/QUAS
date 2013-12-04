@@ -35,7 +35,8 @@ Question.prototype.submitQuestion = function(question, parent) {
    secureAjaxJSON('http://130.240.5.168:5000' + '/questions/', 'POST', data).success(
       function(response) {
          console.log("Created new question");
-         History.pushState({pageName: 'viewQuestions'}, null, "/?viewingID=" + response.Question.id);
+         console.log(response);   
+         changePage('viewQuestion', "/?viewedID=" + response.Question.id);
       }
    ); 
 }

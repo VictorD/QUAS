@@ -1,8 +1,6 @@
-<tr class="question-block clearfix"  data-bind="css: { selected: isSelected }, 
-                                                     click: $parent.viewQuestion, 
-                                                     attr: {'id': 'question_' + id()}">
-        <td class="col-xs-2">
-            <div style="background-color: #aaa;width:64px;height:64px;padding: 10px;float: left;margin-top: 10px;margin-left: 8px;"> place-holder</div>
+<tr class="question-block clearfix"  data-bind="click: function() { changePage('viewQuestion', '?viewedID=' + id()); }">
+        <td class="col-xs-2" data-bind="with: author">
+           <img class="img-circle" style="width: 64px; height: 64px;" data-bind="attr: { src: avatar }" alt="User Pic">
         </td>
         <td class="col-xs-2" data-bind="with: author">
             <span data-bind="text: username">AuthorNameHere</span>

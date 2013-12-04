@@ -4,6 +4,7 @@ var User = function(data) {
    this.created   = ko.observable();
    this.last_seen = ko.observable();
    this.posts     = ko.observable();
+   this.avatar    = ko.observable();
    this.username  = ko.observable();
    this.description = ko.observable();
    this.votesum   = ko.observable();
@@ -19,6 +20,7 @@ User.prototype, {
    this.email(data.email);
    this.created(data.created);
    this.last_seen(data.last_seen);
+   this.avatar(data.avatar);
    this.posts(data.posts);
    this.username(data.username);
    this.description(data.description);

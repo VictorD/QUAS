@@ -1,16 +1,23 @@
 
-var ProfileModel = function(parent){
-
+var ProfileModel = function(parent) {
 	var self = this;	
 	self.parent = parent;
-    self.submitUsername = function(){
-		self.profile().commit();
-        var data = JSON.stringify(ko.toJS(self.profile));
-        self.editMode(false);
-        secureAjaxJSON(parent.backendURL + '/u/'+ parent.user().id() +'/', 'PUT', data).done(function(response) {
-          console.log("POSTED BAD REQUEST?");
-        }); 
-    }
+
+  self.submitProfile = function(){
+	  self.profile().commit();
+
+    var data = {
+      'username': self.profile().username(),
+      'description' : self.profile().description(),
+      'avatar': self.profile().avatar()
+    };
+
+    self.editMode(false);
+    secureAjaxJSON(parent.backendURL + '/u/'+ parent.user().id() +'/', 'PUT', data).done(function(response) {
+      console.log("Updated profile");
+    }); 
+  }
+
 	self.questions = ko.observableArray();
     self.profile = ko.observable();
     self.afterRenderCallback = function() { 

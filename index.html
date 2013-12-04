@@ -23,8 +23,9 @@
 <script src="js/classes/reply.js"></script>
 <script src="js/classes/vote.js"></script>
 
-<script src="js/models/QuestionViewModel.js"></script>
-<script src="js/models/QuestionAddModel.js"></script>
+<script src="js/models/ViewQuestionModel.js"></script>
+<script src="js/models/AddQuestionModel.js"></script>
+<script src="js/models/ListQuestionsModel.js"></script>
 
 <script src="js/models/ProfileModel.js"></script>
 <script src="js/main.js"></script>
@@ -46,7 +47,7 @@
             <div data-bind="template: { name: currentHeader }"></div>
         </div>
         <div class="row" id="pages">
-            <div data-bind="template: { name: currentPage, data: currentModel, afterRender: currentModel().afterRenderCallback }"</div>
+            <div id="inner-container" data-bind="template: { name: currentPage, data: currentModel, afterRender: currentModel().afterRenderCallback }"</div>
         </div>
     </div>
 </body>
