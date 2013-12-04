@@ -1,89 +1,3 @@
-
-var Question = function(parent, data) {
-    var self = this ;
-    self.parent    = parent;
-    self.author    = ko.observable();
-    self.id        = ko.observable();
-    self.body      = ko.observable();
-    self.title     = ko.observable();
-    self.tags      = ko.observable();
-    self.vote      = ko.observable();
-    self.timestamp = ko.observable();
-    self.replies   = ko.observableArray();
-
-    if (data)
-        self.update(data);
-        
-    self.isSelected = ko.computed(function() {
-        if (!self.parent || !self.parent.viewingID) return false;
-
-        var vq = self.parent.viewingID();
-        if (!vq) return false;
-
-        return (self.parent.viewingID() == self.id());
-    });
-};
-
-Question.prototype.update = function(data) {
-   this.author(data.author || {username : "unknown"});
-   this.id(data.id);
-   this.body(data.body);
-   this.title(data.title);
-   this.vote(new Vote(this, data.score));
-   this.tags(data.tags);
-   this.timestamp(data.timestamp);
-};
-
-
-Question.prototype.submitQuestion = function(question, parent) {
-   var data = {
-      body: question.body(),
-      title: question.title()
-   };
-
-   var self = this;
-   secureAjaxJSON('http://130.240.5.168:5000' + '/questions/', 'POST', data).done(
-      function(response) {
-         console.log("Created new question");
-         parent.questions.push(new Question(response.Question));
-      }
-   ); 
-}
-
-var Vote = function(question, initValue) {
-    var self = this;
-
-    self.voteCast = 0;
-    self.question = question;
-    self.score = ko.observable(initValue);
-
-    self.upvote = function() {
-        if (self.voteCast < 1)
-            self.submitVote(1);
-    }
-    self.downvote = function() { 
-        if (self.voteCast > -1) 
-            self.submitVote(-1)
-    }
-    
-    self.submitVote = function(v) {
-        self.voteCast = v;
-
-        var data = {
-          question_id: self.question.id(),
-          value: v
-        };
-
-        secureAjaxJSON('http://130.240.5.168:5000/vote/q/', 'POST', data).done(
-          function(response) {
-            self.score(v);
-            console.log("YOUR VOTE HAS BEEN CAST.");
-          }); 
-    }
-}
-
-// == 
-
 var QuestionViewModel = function(parent) {
     var self = this;
     self.parent = parent;
@@ -174,8 +88,6 @@ var QuestionViewModel = function(parent) {
 	
 	self.afterRenderUpdate = function(){
 		console.log("nya funktionen kallas");
-		
-		// latex kallas vid uppdatering
 		var x = self.viewedQuestion();
 		MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 	}

@@ -11,14 +11,14 @@ var ProfileModel = function(parent){
           console.log("POSTED BAD REQUEST?");
         }); 
     }
-
+	self.questions = ko.observableArray();
     self.profile = ko.observable();
     self.afterRenderCallback = function() { 
         $('#profileView').hide(); 
         $('#profileView').fadeIn(500);//effect('slide', {'direction':'left', 'mode':'show'}, 400); 
 		//alert(parent.user.email);
 		self.profile(parent.user());
-		
+	
       if (self.profile()) {
    		ko.computed(function() {
             console.log("Loading questions");
@@ -31,11 +31,15 @@ var ProfileModel = function(parent){
 
 
             $.getJSON(parent.backendURL + '/questions/', options).success(function(data) {
+			
             self.questions([]);
             data = data.QuestionList;
             for (var i = data.length - 1; i >= 0; i--) {
-              self.questions.push(new Question(data[i]));
+			console.log(i);
+			
+              self.questions.push(new Question(undefined, data[i]));
             };
+			
             });
    		});
       }

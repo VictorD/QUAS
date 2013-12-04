@@ -18,21 +18,25 @@ private:
 	
 -->
 <div class="panel-body" data-bind="with: profile">
+  <div style="width: 960px; margin: 0 auto">
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-2">
             <img class="img-circle"
                  src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=100"
                  alt="User Pic">
         </div>
 		<div data-bind="template: { name: $parent.profileView }"></div>
     </div>
-</div>
+	
+
 	
 	<div data-bind="click:toggleVerticalMenu"><p>Show my stuff </p></div>
-	<div class="filterStuff" style="display:none">
-	<ul id="questionList" data-bind="template: {name: 'question/listEntry', foreach: questions}">
+	<div class="filterStuff" style="display:none"> 
+	<ul id="questionList" data-bind="template: {name: 'question/entry', foreach: $parent.questions}">
 	</ul>
 	</div>
 	
 	<p> Recent replies I wrote</p>
+	</div>
 </div>
+

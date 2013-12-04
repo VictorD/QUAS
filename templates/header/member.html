@@ -1,38 +1,28 @@
-
-
 <div id="header">
-	<div id="header-bot">
-		<div class="brand"><a href="/"><img src="img/logo.png" width="130px"/></a></div>
-		<div id="menu" class="clearfix">
-			<div id="ask-question" class="red button col-xs-2">
-				<a data-bind="click: changePage('questions')">
-					<span style="color: #eee;" class="glyphicon glyphicon-pencil"></span>
-					Ask question
-				</a>
-			</div>	 
-			<div class="blue button col-xs-2">
-				<a data-bind="click: function() { changePage('questions') }">
-					<span style="color: #eee;" class="glyphicon glyphicon-question-sign"></span>
-					Questions
-				</a>
-			</div>
+    <div class="brand"><a href="/"><img src="img/logo.png" width="130px"/></a></div>
+    <div id="menu" class="clearfix">
+        <div id="ask-question" class="red button col-xs-2">
+            <a data-bind="click: function(e) { changePage('askQuestion') }">
+                <span style="color: #eee;" class="glyphicon glyphicon-pencil"></span>
+                Ask question
+            </a>
+        </div>	 
+        <div class="blue button col-xs-2">
+            <a data-bind="click: function(e) { changePage('viewQuestions') }">
+                <span style="color: #eee;" class="glyphicon glyphicon-question-sign"></span>
+                Questions
+            </a>
+        </div>
 
-	 		<div class="orange button col-xs-2">
-				<a data-bind="click: function() { changePage('profile') }" >
-					<span style="color: #eee;" class="glyphicon glyphicon-home"></span>
-					Profile
-				</a>
-			</div>
-
-			<div id="logout-box" style="line-height: 20px;margin:10px;">
-					<a data-bind="click: logout">
-						<span style="color: #eee;" class="glyphicon glyphicon-minus"></span>
-						<span >Logout </span>
-						<div data-bind="with: user">
-							<span data-bind="text: username"></span>
-						</div>
-					</a>
-			</div>
-		</div>
-	</div>
+        <div class="orange button col-xs-2">
+            <a data-bind="click: function(e) { changePage('profile') }" >
+                <span style="color: #eee;" class="glyphicon glyphicon-home"></span>
+                Profile
+            </a>
+        </div>
+    </div>
+    <div id="logout-box">
+        <span data-bind="with: user">Logged in as <span data-bind="text: username"></span></span>
+        <p><a data-bind="click: logout"><span style="color: #eee;" class="glyphicon glyphicon-minus"></span> Logout</a></p>
+    </div>       
 </div>
