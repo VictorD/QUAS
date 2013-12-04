@@ -49,6 +49,7 @@ body {
 
 #header div.button {
   float: right;
+  width: 150px;
   margin-right: 1px;
 }
 
@@ -116,16 +117,10 @@ body {
 
 
 #menu {
-  width: 460px; 
+  width: 960px; 
   margin: 0 auto; 
 }
 
-@media screen and (max-width: 991px) {
-  #menu {}
-}
-
-@media screen and (max-width: 768px) {
-}
 
 
 /* --------------------------------- Colors --------------------------------- */
@@ -160,13 +155,22 @@ body {
 
 #sign-in, #logout-box {
   float: right;
-
-  
+  position: absolute;
   line-height: 20px;
   margin:10px 50px;
   right: 0;
   top:0;
   z-index: 999;
+  width: 200px;
+}
+
+@media screen and (max-width: 1500px) {
+    #menu {position:absolute; right: 350px;}
+}
+
+@media screen and (max-width: 960px) {
+    #menu { width: 480px;margin: 0; left: 130px;}
+    #logout-box { left: 600px; }
 }
 
 #logout-box span { 
