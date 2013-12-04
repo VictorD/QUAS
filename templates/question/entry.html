@@ -5,8 +5,9 @@
         <td class="col-xs-2" data-bind="with: author">
             <span data-bind="text: username">AuthorNameHere</span>
         </td>
-        <td class="col-xs-1">0</td>
-        
+        <td class="col-xs-1">
+            <span class="badge" data-bind="css: vote().fromScore, text: vote().score"></span>
+        </td>
         <td class="col-xs-5">
             <ul>
                <li class="question-header">

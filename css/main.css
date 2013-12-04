@@ -29,6 +29,9 @@ body {
 #backButton {
   margin: 20px 0;
 }
+
+.votedBad {background-color:#b94a48;}
+.votedGood {background-color:#82cce7;}
 /* --------------------------------- Header & Search --------------------------------- */
 
 #header {

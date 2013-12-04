@@ -6,6 +6,18 @@ var Vote = function(question, initValue) {
     self.question = question;
     self.score = ko.observable(initValue);
 
+    self.fromScore = ko.computed(function() {
+        var x = self.score();
+        var s = "votedNeutral"
+
+        if (x > 0)
+            s = "votedGood";
+        else if (x < 0)
+            s = "votedBad";
+
+        return s;
+    });
+
     self.upvote = function() {
         if (self.voteCast < 1)
             self.submitVote(1);
@@ -25,7 +37,7 @@ var Vote = function(question, initValue) {
 
         secureAjaxJSON('http://130.240.5.168:5000/vote/q/', 'POST', data).done(
           function(response) {
-            self.score(v);
+            self.score(response.score);
             console.log("YOUR VOTE HAS BEEN CAST.");
           }); 
     }
