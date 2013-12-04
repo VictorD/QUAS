@@ -50,9 +50,8 @@ function getParameterByName(name, hash) {
 }
 
 function slide(element, valueAccessor, allBindings) {
-    var selected = ko.unwrap(valueAccessor());
     var slideDirection = allBindings.get('slideDirection') == 'left' ? 'left' : 'right';
-
+    var selected = ko.unwrap(valueAccessor());
     if (selected) {
         $(element).hide();
         $(element).effect('slide', {'direction': slideDirection, 'mode': 'show'}, 700);

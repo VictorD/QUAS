@@ -45,6 +45,10 @@ body {
   margin-top: 10px;
 }
 
+#header .brand img {
+    width: 130px;
+}
+
 #header div.button {
   float: right;
   margin-right: 1px;
@@ -171,7 +175,7 @@ body {
   cursor:pointer;
 }
 
-.blue:hover, .orange:hover, .green:hover {
+.blue:hover, .orange:hover, .green:hover, .red:hover {
    color: #222 !important;
    cursor: pointer;
 }
@@ -232,6 +236,8 @@ body {
     height: auto;
     background-color: #fff;
 }
+
+#questionView { display: none; }
 
 .currentQuestion {
     border: 1px solid #aaa;
