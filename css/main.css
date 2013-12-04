@@ -194,11 +194,12 @@ body {
 /* --------------------------------- Questions --------------------------------- */
 
 .question-block {
-   display: block;
    cursor:pointer;
-   margin: 0;
-   padding: 10px;
    border-top: 1px solid #aaa;
+}
+
+.question-block td {
+    padding: 10px;
 }
 
 .selected {
