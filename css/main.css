@@ -153,6 +153,7 @@ body {
   padding-left: 100px;
   line-height: 20px;
   margin:10px;
+  margin-right: 50px;
   right: 0;
   top:0;
   z-index: 999;
@@ -162,11 +163,11 @@ body {
     color: #ccc;
 }
 
-#sign-in, #logout-box a {
+#sign-in a, #logout-box a {
   color: #eee;
 }
 
-#sign-in, #logout-box:hover {
+#logout-box:hover {
   cursor:pointer;
 }
 
