@@ -9,50 +9,9 @@ function arrayFromJSON(data, headerName, objName) {
     return arr;
 }
 
- /*
-    // SORT questions by votes live
-    self.qfilter = ko.observable(new qFilter());
-
-    ko.computed(function() {
-        if (self.qfilter().orderByVotes()) {
-            var x = self.questions();
-            self.questions.sort(function(l,r) {   
-                var leftScore  = l.vote().score(),
-                    rightScore = r.vote().score(),
-                    order = leftScore > rightScore;
-                if (leftScore == rightScore) {
-                    var leftTime = new Date(l.timestamp.peek()).getTime();
-                    var rightTime = new Date(r.timestamp.peek()).getTime();
-                    order =  leftTime > rightTime;
-                }
-                return order ? 1:-1;
-            });
-        }
-    });*/
-    
-    /*
-    ko.computed(function() {
-        var x = self.qfilter().orderby();
-        self.questions(self.questions().reverse())
-    });*/
-
-function getFilterOptions() {
-    /*
-    var tmp = self.qfilter().filtername();
-        var options ={};
-        if (tmp) {
-            options = {
-             paginate:1,
-                   filter_by:  'author',
-                   filter_data: tmp
-            };
-        }
-    */
-    return {};
-}
-
 var ListQuestionsModel = function(parent) {
     var self = this;
+	self.qfilter = ko.observable(new qFilter());
     self.parent     = parent;
     self.backendURL = parent.backendURL;
 
@@ -61,23 +20,15 @@ var ListQuestionsModel = function(parent) {
 
     ko.computed(function() {
         console.log("Loading questions");
-        var options = getFilterOptions();
-        
+		
+        var options = self.qfilter().options();
+
         $.getJSON(self.backendURL + '/questions/', options).success(function(data) {
             var newQuestions = arrayFromJSON(data, 'QuestionList', Question);
             if (newQuestions)
                 self.questions(newQuestions);
         });
     });
-    
-    // Bind to State Change
-   /* History.Adapter.bind(window,'statechange',function(){
-        var State = History.getState();
-        var qid = getParameterByName('viewedID', State.hash);
-        if (qid && qid != '' && qid != self.viewedID()) {
-            self.viewedID(qid);
-        }
-    });*/
 	
 	self.afterRenderUpdate = function(){
         var x = self.viewedQuestion();
