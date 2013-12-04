@@ -1,0 +1,20 @@
+<div id="search-bar" class="clearfix">
+    <form class="form-inline">
+        <div class="form-group">
+           <input type="text" class="form-control" placeholder="Search questions..."/>
+        </div>
+        <label><span class="glyphicon glyphicon-search"></span></label>
+    </form>
+    <div>
+        <div id="nav-filter-menu" data-bind="click:toggleVerticalMenu">
+            <span class="glyphicon glyphicon-list-alt"></span>&nbsp;<span>Filter questions</span>
+        </div>
+        <div data-bind="template: { name:'filters/questionFilter' }" class="filterStuff" style="display:none"></div>
+    </div>
+</div>
+<div id="question-container">
+    <table id="questionList">
+        <tbody data-bind="template: {name: 'question/entry', foreach: questions}">
+        </tbody>
+    </table>
+</div>

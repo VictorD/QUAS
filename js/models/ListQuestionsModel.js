@@ -9,69 +9,26 @@ function arrayFromJSON(data, headerName, objName) {
     return arr;
 }
 
-
-
-
-var QuestionViewModel = function(parent) {
+var ListQuestionsModel = function(parent) {
     var self = this;
 	self.qfilter = ko.observable(new qFilter());
     self.parent     = parent;
     self.backendURL = parent.backendURL;
 
     self.viewedID      = ko.observable(0);
-    self.viewedQuestion = ko.observable();
-    self.lastViewedID   = ko.observable(0);
-
-    self.isViewingQuestion = ko.computed(function() {
-        return self.viewedID() > 0;
-    });
-
     self.questions = ko.observableArray();
 
     ko.computed(function() {
         console.log("Loading questions");
-        
+		
         var options = self.qfilter().options();
-        
+
         $.getJSON(self.backendURL + '/questions/', options).success(function(data) {
             var newQuestions = arrayFromJSON(data, 'QuestionList', Question);
             if (newQuestions)
                 self.questions(newQuestions);
         });
     });
-    
-    // Bind to State Change
-    History.Adapter.bind(window,'statechange',function(){
-        var State = History.getState();
-        var qid = getParameterByName('viewedID', State.hash);
-        if (qid && qid != '' && qid != self.viewedID()) {
-            self.viewedID(qid);
-        }
-    });
-
-    // Detect change to viewedID and fetch new question to show!
-    ko.computed(function() {
-        console.log("Viewed ID changed. Updating");
-        var newID = self.viewedID();
-        if (newID <= 0)
-            return;
-
-        var q = self.findQuestion(newID);
-        if (!q) {
-            console.log("Error: Question with ID " + newID + " not found");
-            return;
-        }
-
-        if (q.replies.peek().length < 1) {
-            console.log("Loading replies for question: " + q.id());
-            self.loadReplies(q);
-        }
-
-        self.viewedQuestion(q);
-        self.lastViewedID(q.id());
-
-        $(document).scrollTop(0);
-    }).extend({ throttle: 200 });
 	
 	self.afterRenderUpdate = function(){
         var x = self.viewedQuestion();
@@ -90,7 +47,7 @@ var QuestionViewModel = function(parent) {
  
 };
 
-ko.utils.extend(QuestionViewModel.prototype, {
+ko.utils.extend(ListQuestionsModel.prototype, {
     findQuestion: function(id) {
         return ko.utils.arrayFirst(this.questions.slice(0), function(item) {
             return id == item.id();
@@ -140,13 +97,11 @@ ko.utils.extend(QuestionViewModel.prototype, {
         });
     },
     afterRenderCallback: function() { 
-		console.log("afterRenderCallback function");
-        $('#profileView').fadeOut(600); 
-        $('#questionView').hide(); 
-        $('#questionView').fadeIn(1200);
-        $('#rightColumn').hide(); 
-        $('#rightColumn').fadeIn(1200);//('slide', {'direction':'left', 'mode':'show'}, 400); 
+        console.log("view question render callback");
+        $('#questionList').hide(); 
+        $('#questionList').fadeIn(1200);
     }
+    
     
 });
 

@@ -21,15 +21,10 @@ private:
     <div id="inner-container">
     <div class="row">
         <div class="col-md-2">
-            <img class="img-circle"
-                 src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=100"
-                 alt="User Pic">
+            <img width="80px" data-bind="attr: { src: avatar }" alt="User Pic">
         </div>
 		<div data-bind="template: { name: $parent.profileView }"></div>
-    </div>
-	
-
-	
+   </div>
 	<div data-bind="click:toggleVerticalMenu"><p>Show my stuff </p></div>
 	<div class="filterStuff"> 
 		 <div id="question-container">

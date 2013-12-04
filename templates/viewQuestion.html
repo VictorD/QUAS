@@ -1,0 +1,39 @@
+<div id="questionView" data-bind="with: viewedQuestion">
+<div id="backButton">
+    <a href="#" data-bind="click: $root.goBack">
+      <span class="glyphicon glyphicon-chevron-left"></span>
+      Back
+    </a>    
+</div>
+    <div id="author-options-menu" data-bind="visible: $parent.isAuthor, click:toggleVerticalMenu">
+        <span class="glyphicon glyphicon-list-alt"></span>&nbsp;<span>Show author options</span>
+    </div>
+    <div class="filterStuff" style="display:none">
+      <p>
+        <form data-bind="visible: $parent.isAuthor, submit: $parent.deleteQuestion">
+          <button>Delete question</button>
+        </form>
+      </p>
+    </div>
+    <div class="currentQuestion clearfix">
+          <div data-bind="template: { name: 'voting/column', data: vote()}"></div>          
+          <div class="col-xs-7">
+               <h4 data-bind="text:title"></h4>
+               <p data-bind="text: timestamp"></p>
+               <p id="question-body" data-bind="text: body"></p>
+
+          </div>
+    </div>
+    <div class="col-xs-12">
+      <ul class="replyList" data-bind="template: { name: 'reply/view', foreach: replies, afterRender:$parent.afterRenderUpdate }">
+      </ul>
+    </div>
+    <div class="add-reply" data-bind="visible: $root.loggedIn(), with: new Reply()">
+        <h4>Do you know the answer?</h4>
+        <form>
+        <textarea data-bind="value: body" class="form-control animated" cols="50" id="new-review" 
+          name="comment" placeholder="Enter your reply here..." rows="5"></textarea>
+        <button  data-bind="click: function() { submitReply($parent) }" class="btn btn-success btn-lg" style="margin-top: 20px;" type="submit">Submit reply</button>
+        </form>
+    </div>
+</div>

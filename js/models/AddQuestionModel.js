@@ -1,0 +1,3 @@
+
+var AddQuestionModel = function(parent) {
+};
