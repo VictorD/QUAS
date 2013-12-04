@@ -154,10 +154,9 @@ body {
 #sign-in, #logout-box {
   float: right;
   position: absolute; top:0;
-  padding-left: 100px;
+  
   line-height: 20px;
-  margin:10px;
-  margin-right: 50px;
+  margin:10px 50px;
   right: 0;
   top:0;
   z-index: 999;

@@ -1,7 +1,7 @@
 
-var Question = function(parent, data) {
+var Question = function(data, parent) {
     var self = this ;
-    self.parent    = parent;
+    self.isSelected = ko.observable(false);
     self.author    = ko.observable();
     self.id        = ko.observable();
     self.body      = ko.observable();
@@ -13,15 +13,6 @@ var Question = function(parent, data) {
 
     if (data)
         self.update(data);
-        
-    self.isSelected = ko.computed(function() {
-        if (!self.parent || !self.parent.viewingID) return false;
-
-        var vq = self.parent.viewingID();
-        if (!vq) return false;
-
-        return (self.parent.viewingID() == self.id());
-    });
 };
 
 Question.prototype.update = function(data) {
@@ -33,7 +24,6 @@ Question.prototype.update = function(data) {
    this.tags(data.tags);
    this.timestamp(data.timestamp);
 };
-
 
 Question.prototype.submitQuestion = function(question, parent) {
    var data = {

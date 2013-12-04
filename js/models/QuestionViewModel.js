@@ -1,17 +1,15 @@
-var QuestionViewModel = function(parent) {
-    var self = this;
-    self.parent = parent;
-    self.backendURL = parent.backendURL;
+function arrayFromJSON(data, headerName, objName) {
+    var arr = []
+    var lst = data[headerName];
+    if (lst) {
+        for (var i = lst.length - 1; i >= 0; i--) {
+            arr.push(new objName(lst[i]));
+        }
+    }
+    return arr;
+}
 
-    self.viewingID = ko.observable(0);
-    self.lastViewedID = ko.observable(0);
-
-    self.isViewingQuestion = ko.computed(function() {
-        return self.viewingID() > 0;
-    });
-
-    self.questions = ko.observableArray();
-    
+ /*
     // SORT questions by votes live
     self.qfilter = ko.observable(new qFilter());
 
@@ -30,41 +28,70 @@ var QuestionViewModel = function(parent) {
                 return order ? 1:-1;
             });
         }
-    });
+    });*/
     
+    /*
     ko.computed(function() {
         var x = self.qfilter().orderby();
         self.questions(self.questions().reverse())
-    });
+    });*/
 
-
-    ko.computed(function() {
-      console.log("Loading questions");
-      var tmp = self.qfilter().filtername();
-      var options ={};
-      if (tmp)
+function getFilterOptions() {
+    /*
+    var tmp = self.qfilter().filtername();
+        var options ={};
+        if (tmp) {
             options = {
              paginate:1,
                    filter_by:  'author',
                    filter_data: tmp
             };
+        }
+    */
+    return {};
+}
 
-      $.getJSON(self.backendURL + '/questions/', options).success(function(data) {
-        self.questions([]);
-        data = data.QuestionList;
-        for (var i = data.length - 1; i >= 0; i--) {
-          var q = new Question(self, data[i]);
-          self.questions.push(q);
-        };
-      });
+var QuestionViewModel = function(parent) {
+    var self = this;
+    self.parent     = parent;
+    self.backendURL = parent.backendURL;
+
+    self.viewedID      = ko.observable(0);
+    self.viewedQuestion = ko.observable();
+    self.lastViewedID   = ko.observable(0);
+
+    self.isViewingQuestion = ko.computed(function() {
+        return self.viewedID() > 0;
+    });
+
+    self.questions = ko.observableArray();
+
+    ko.computed(function() {
+        console.log("Loading questions");
+        
+        var options = getFilterOptions();
+        
+        $.getJSON(self.backendURL + '/questions/', options).success(function(data) {
+            var newQuestions = arrayFromJSON(data, 'QuestionList', Question);
+            if (newQuestions)
+                self.questions(newQuestions);
+        });
     });
     
-    self.viewedQuestion = ko.observable();
+    // Bind to State Change
+    History.Adapter.bind(window,'statechange',function(){
+        var State = History.getState();
+        var qid = getParameterByName('viewedID', State.hash);
+        if (qid && qid != '' && qid != self.viewedID()) {
+            self.viewedID(qid);
+        }
+    });
 
-    // Detect change to viewingID and fetch new question to show!
+    // Detect change to viewedID and fetch new question to show!
     ko.computed(function() {
-        var newID = self.viewingID();
-        if (newID <= 0 || newID == self.lastViewedID())
+        console.log("Viewed ID changed. Updating");
+        var newID = self.viewedID();
+        if (newID <= 0)
             return;
 
         var q = self.findQuestion(newID);
@@ -73,22 +100,20 @@ var QuestionViewModel = function(parent) {
             return;
         }
 
-        if (self.viewedQuestion())
-            console.log("Updating viewed question from " + self.lastViewedID() + " to " + newID);
-
-        if (q.replies().length < 1) {
+        if (q.replies.peek().length < 1) {
             console.log("Loading replies for question: " + q.id());
             self.loadReplies(q);
         }
 
         self.viewedQuestion(q);
-
         self.lastViewedID(q.id());
+
+        $(document).scrollTop(0);
     }).extend({ throttle: 200 });
 	
 	self.afterRenderUpdate = function(){
-		console.log("nya funktionen kallas");
-		var x = self.viewedQuestion();
+        var x = self.viewedQuestion();
+		console.log("Scan for latex code");
 		MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 	}
 
@@ -100,15 +125,7 @@ var QuestionViewModel = function(parent) {
     self.loadReplies        = self.loadReplies.bind(this);
     self.returnToQuestion   = self.returnToQuestion.bind(this);
 
-    // Bind to State Change
-    History.Adapter.bind(window,'statechange',function(){
-        var State = History.getState();
-        var qid = getParameterByName('viewingID', State.hash);
-        if (qid && qid != '' && qid != self.viewingID()) {
-            self.viewingID(qid);
-            $(document).scrollTop(0);
-        }
-    });
+ 
 };
 
 ko.utils.extend(QuestionViewModel.prototype, {
@@ -139,13 +156,13 @@ ko.utils.extend(QuestionViewModel.prototype, {
         });
     },
     pushID: function(id) {
-        History.pushState({pageName: 'questions', rnd:Math.random()}, "Viewing Question: " + id, "/?viewingID=" + id);
+        History.pushState({pageName: 'questions', rnd:Math.random()}, "Viewing Question: " + id, "/?viewedID=" + id);
     },
     returnToQuestion: function() {
         this.pushID(this.lastViewedID());
     },
     returnToResults: function() {
-        var v = this.viewingID();
+        var v = this.viewedID();
         this.lastViewedID(v);
         this.pushID(0);
     },
