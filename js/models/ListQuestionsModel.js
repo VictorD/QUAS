@@ -2,7 +2,7 @@ function arrayFromJSON(data, headerName, objName) {
     var arr = []
     var lst = data[headerName];
     if (lst) {
-        for (var i = lst.length - 1; i >= 0; i--) {
+        for (var i = 0; i < lst.length - 1; i++) {
             arr.push(new objName(lst[i]));
         }
     }
@@ -17,6 +17,23 @@ var ListQuestionsModel = function(parent) {
 
     self.viewedID      = ko.observable(0);
     self.questions = ko.observableArray();
+    
+    self.searchData = ko.observable();
+    
+    ko.computed(function() {
+        if (!self.searchData())
+            return;
+            
+        var options = {
+            search : self.searchData()
+        }
+
+        $.getJSON(self.backendURL + '/search/', options).success(function(data) {
+            var newQuestions = arrayFromJSON(data['Search Result'], 'QuestionList', Question);
+            if (newQuestions)
+                self.questions(newQuestions);
+        });
+    });
 
     ko.computed(function() {
         console.log("Loading questions");

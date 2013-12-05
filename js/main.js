@@ -70,8 +70,10 @@ $(function() {
             console.log("backing up");
             var previousPages = History.savedStates;
             console.log(previousPages);
-            if (previousPages[previousPages.length-2].data.pageName)
+            if (previousPages[previousPages.length-2].data.pageName) {
+                console.log(previousPages[previousPages.length-2]);
                 History.back(); 
+            }
             else
                 changePage('listQuestions');
          }
