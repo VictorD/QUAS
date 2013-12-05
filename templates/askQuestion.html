@@ -1,13 +1,13 @@
-<div class="add-question col-xs-6" data-bind="visible: $root.loggedIn, with: new Question()">
+<div class="add-question col-xs-6" >
   <h4>Tell us what you're thinking!</h4>
   <form>
   <label>Title:</label> 
   <input type="text" data-bind="value: title"/>
   <textarea data-bind="value: body" class="form-control animated" cols="50" placeholder="Enter a new question here!" rows="5"></textarea>
   <br/>
-  <label data-bind="text: $parent.currentTags"></label><br/>
-  <input type="text" data-bind="value: $parent.newTag"/><button data-bind="click: $parent.addTag">Add tag</button>
+  <label data-bind="text:currentTags"></label><br/>
+  <input type="text" data-bind="value:newTag"/><button data-bind="click:addTag">Add tag</button>
   <br/><br/>
-  <button  data-bind="click: function(question) { $parent.submitQuestion(question, $parent) }" class="btn btn-success btn-lg" type="submit">Send in question!</button>
+  <button  data-bind="click:submitQuestion" class="btn btn-success btn-lg" type="submit">Send in question!</button>
   </form>
 </div>
