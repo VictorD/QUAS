@@ -20,9 +20,9 @@
           <div class="col-xs-7">
                <h4 data-bind="text:title"></h4>
                <p data-bind="text: timestamp"></p>
-               <p id="question-body" data-bind="text: body"></p>
-               <ul data-bind="foreach: { data: tags, as: 't' }">
-                  <li data-bind="text: t"></li>
+               <p id="question-body" data-bind="html: body"></p>
+               <ul id="questionTagList" data-bind="foreach: { data: tags, as: 't' }">
+                  <li class="badge"><a href="#" data-bind="text: t"></a></li>
                </ul>
           </div>
     </div>

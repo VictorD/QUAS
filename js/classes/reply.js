@@ -12,7 +12,9 @@ var Reply = function(data) {
 Reply.prototype.update = function(data) {
    this.author(data.author || "unknown");
    this.id(data.id);
-   this.body(data.body);
+
+   var parsed = new bbcode.Parser().toHTML(data.body);
+   this.body(parsed);
    this.timestamp(data.timestamp);
 };
 

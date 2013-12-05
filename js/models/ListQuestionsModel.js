@@ -2,7 +2,7 @@ function arrayFromJSON(data, headerName, objName) {
     var arr = []
     var lst = data[headerName];
     if (lst) {
-        for (var i = 0; i < lst.length - 1; i++) {
+        for (var i = 0; i < lst.length; i++) {
             arr.push(new objName(lst[i]));
         }
     }
@@ -15,8 +15,8 @@ var ListQuestionsModel = function(parent) {
     self.parent     = parent;
     self.backendURL = parent.backendURL;
 
-    self.viewedID      = ko.observable(0);
-    self.questions = ko.observableArray();
+    self.viewedID   = ko.observable(0);
+    self.questions  = ko.observableArray();
     
     self.searchData = ko.observable();
     
@@ -39,6 +39,7 @@ var ListQuestionsModel = function(parent) {
         console.log("Loading questions");
 		
         var options = self.qfilter().options();
+        options['asc'] = 0;
 
         $.getJSON(self.backendURL + '/questions/', options).success(function(data) {
             var newQuestions = arrayFromJSON(data, 'QuestionList', Question);
