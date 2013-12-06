@@ -16,12 +16,14 @@ var Question = function(data, parent) {
 };
 
 Question.prototype.update = function(data) {
-   this.author(data.author || {username : "unknown"});
-   this.id(data.id);
-   var parsed = new bbcode.Parser().toHTML(data.body);
-   this.body(parsed);
-   this.title(data.title);
-   this.vote(new Vote(this, data.score));
-   this.tags(data.tags);
-   this.timestamp(data.timestamp);
+    this.author(data.author || {username : "unknown"});
+    this.id(data.id);
+    if (data.body) {
+        var parsed = new bbcode.Parser().toHTML(data.body);
+        this.body(parsed);
+    }
+    this.title(data.title);
+    this.vote(new Vote(this, data.score));
+    this.tags(data.tags);
+    this.timestamp(data.timestamp);
 };

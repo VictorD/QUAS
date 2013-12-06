@@ -1,3 +1,6 @@
+
+/* AJAX */
+
 function secureAjax(uri, method, data){
     var request = {
           url: uri,
@@ -29,6 +32,22 @@ function secureAjaxJSON(uri, method, data){
     return $.ajax(request);
 }
 
+
+function arrayFromJSON(data, headerName, objName) {
+    var arr = []
+    var lst = data[headerName];
+    if (lst) {
+        for (var i = 0; i < lst.length; i++) {
+            arr.push(new objName(lst[i]));
+        }
+    }
+    return arr;
+}
+
+
+/* TRANSITIONS */
+
+
 function spinnerLoader(page, element) {
     var loader = {};
     var txt = $('<img class="loader" src="img/loader.gif"/>');
@@ -42,12 +61,24 @@ function spinnerLoader(page, element) {
     return loader;
 }
 
+function toggleVerticalMenu(data, event){
+		var viewBox = $(event.currentTarget);
+		var toggleBox = viewBox.next(".filterStuff:first");
+		console.log("toggleBox");
+		console.log(toggleBox);
+		toggleBox.slideToggle(500, function(){});
+}
+
+/* HISTORY */
+
 function getParameterByName(name, hash) {
     name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
     var results = regex.exec(hash);
     return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
+
+/* KNOCKOUT BINDINGS */
 
 function slide(element, valueAccessor, allBindings) {
     var slideDirection = allBindings.get('slideDirection') == 'left' ? 'left' : 'right';
@@ -61,19 +92,7 @@ function slide(element, valueAccessor, allBindings) {
     }
 }
 
-function toggleVerticalMenu(data, event){
-		var viewBox = $(event.currentTarget);
-		var toggleBox = viewBox.next(".filterStuff:first");
-		console.log("toggleBox");
-		console.log(toggleBox);
-		
-//		viewBox.hide();
-//		toggleBox.css({"height":"auto"});
-		toggleBox.slideToggle(500, function(){});
-}
 
-// Here's a custom Knockout binding that makes elements shown/hidden via jQuery's fadeIn()/fadeOut() methods
-// Could be stored in a separate utility library
 ko.bindingHandlers.slideVisible = {
   //  init: slide,
     update: slide

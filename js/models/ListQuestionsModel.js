@@ -1,14 +1,3 @@
-function arrayFromJSON(data, headerName, objName) {
-    var arr = []
-    var lst = data[headerName];
-    if (lst) {
-        for (var i = 0; i < lst.length; i++) {
-            arr.push(new objName(lst[i]));
-        }
-    }
-    return arr;
-}
-
 var ListQuestionsModel = function(parent) {
     var self = this;
 	self.qfilter = ko.observable(new qFilter());
@@ -16,36 +5,32 @@ var ListQuestionsModel = function(parent) {
     self.backendURL = parent.backendURL;
 
     self.viewedID   = ko.observable(0);
+
     self.questions  = ko.observableArray();
-    
     self.searchData = ko.observable();
     
+    self.updateQuestionsWithJSON = function(data) {
+        var newQuestions = arrayFromJSON(data, 'QuestionList', Question);
+        if (newQuestions)
+            self.questions(newQuestions);
+    }
+    
     ko.computed(function() {
-        if (!self.searchData())
-            return;
-            
-        var options = {
-            search : self.searchData()
+        if (self.searchData() && self.searchData() != "") {
+            BackendAPI.search(function(data) {
+               self.updateQuestionsWithJSON(data['Search Result']);
+            }, self.searchData());
         }
-
-        $.getJSON(self.backendURL + '/search/', options).success(function(data) {
-            var newQuestions = arrayFromJSON(data['Search Result'], 'QuestionList', Question);
-            if (newQuestions)
-                self.questions(newQuestions);
-        });
     });
 
     ko.computed(function() {
         console.log("Loading questions");
-		
-        var options = self.qfilter().options();
-        options['asc'] = 0;
-
-        $.getJSON(self.backendURL + '/questions/', options).success(function(data) {
-            var newQuestions = arrayFromJSON(data, 'QuestionList', Question);
-            if (newQuestions)
-                self.questions(newQuestions);
-        });
+        var filterOptions = self.qfilter().options();
+        //options['asc'] = 0;
+        
+        BackendAPI.getQuestions(function(data) {
+            self.updateQuestionsWithJSON(data);
+        }, filterOptions);
     });
 	
 	self.afterRenderUpdate = function(){
@@ -61,8 +46,6 @@ var ListQuestionsModel = function(parent) {
     self.deleteQuestion     = self.deleteQuestion.bind(this);
     self.loadReplies        = self.loadReplies.bind(this);
     self.returnToQuestion   = self.returnToQuestion.bind(this);
-
- 
 };
 
 ko.utils.extend(ListQuestionsModel.prototype, {

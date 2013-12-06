@@ -31,17 +31,6 @@ $(function() {
         self.backendURL = 'http://130.240.5.168:5000';
         self.loggedIn   = ko.observable(false);
 
-        ko.computed(function() {
-            secureAjax(self.backendURL + '/u/amiloggedin/', 'GET').done(function(data) {
-                if (data.Status) {
-                    secureAjax(self.backendURL + '/u/me/', 'GET').success(function(data) {
-                        self.loggedIn(true);
-                        self.user(new User(data.User));
-                    });
-                }
-            });
-        });
-
         self.pageModels = {
             'askQuestion'   : AskQuestionModel,
             'viewQuestion'  : ViewQuestionModel,
@@ -92,7 +81,16 @@ $(function() {
                }
             }
         });
-        
+
+        BackendAPI.isLoggedIn(function(data) {
+            if (data.Status) {
+                BackendAPI.getCurrentUser(function(data) {
+                    self.loggedIn(true);
+                    self.user(new User(data.User));
+                });
+            }
+        });
+
         initPage();
     };
 
