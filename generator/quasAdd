@@ -7,7 +7,7 @@ import quasTitle as Title
 import requests
 import json
 
-for i in xrange(25):
+for i in xrange(1):
    body=Body.generate()
    reply=Reply.generate()
    tag=Tag.generate()

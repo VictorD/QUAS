@@ -15,15 +15,15 @@ def tellThemEverythingWillBeOk(qid=0):
 
 @rmod.route('/', methods = ['POST'])
 @crossdomain
-#@requires_login
-def create_reply():   
+@requires_login
+def create_reply():
    if not request.json or not 'body' in request.json:
       abort(400)
    u = User.query.filter_by(email=session['email']).first()
    r = Reply(body = request.json['body'], timestamp = datetime.datetime.utcnow(), question_id=int(request.json['question_id']), author_id=u.id)
    db.session.add(r)
    db.session.commit()
-   return jsonify( {'Reply id': r.to_dict()} ), 201
+   return jsonify( {'Reply': r.to_dict()} ), 201
 
 
 @rmod.route('/', methods = ['GET'])
@@ -47,6 +47,7 @@ def get_reply(rid):
 
 @rmod.route('/<int:rid>/', methods = ['DELETE'])
 @crossdomain
+@requires_login
 def delete_reply(rid):
    r = Reply.query.get(rid)
    if r is None:
@@ -57,12 +58,15 @@ def delete_reply(rid):
 
 @rmod.route('/<int:rid>/', methods = ['PUT'])
 @crossdomain
+@requires_login
 def modify_reply(rid):
    if not request.json:
       return(400)
 
    if 'body' in request.json:
-      db.session.query(Reply).filter(Reply.id == rid).update({'body':request.json['body']})
-
+      db.session.query(Reply).filter(Reply.id == rid).update({'body':request.json['body'],})
+      #db.session.query(Reply).filter(Reply.id == rid).update({'body':request.json['body'],'edited'=datetime.datetime.utcnow() })
    db.session.commit()
-   return jsonify( {'Modified id':rid} ), 200
+   return jsonify( {'Reply':rid} ), 200
+
+

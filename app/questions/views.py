@@ -19,43 +19,55 @@ def tellThemEverythingWillBeOk(qid=0):
 @qmod.route('/', methods = ['GET'])
 @crossdomain
 def get_questions():
-   if request.json and 'paginate' in request.json:
-      paginate = request.json['paginate']
-      page_size=int(paginate.get('page_size', 5))
-      page=int(paginate.get('page', 1))
-      order_by=paginate.get('order_by', 'date')
-      filter_by=paginate.get('filter_by', '')
-      filter_data=paginate.get('filter_data','')
-      
-      qs = None
+   if 'paginate' in request.args:
+      page_size=int(request.args.get('page_size', 10))
+      page=int(request.args.get('page', 1))
+      order_by=request.args.get('order_by', 'date')
+      filter_by=request.args.get('filter_by', '')
+      filter_data=request.args.get('filter_data','')
+      asc = int(request.args.get('asc', '0'))
+   
+      qs = 'Question.query'
       qs_dict = []
 
+      sort_by = ''
+      if asc:
+         sort_by = '.asc()'
+      else:
+         sort_by = '.desc()'      
+      
       if filter_by == 'author':
-         qs = Question.query.filter(Question.author_id==int(filter_data))
-         if order_by == 'name':   
-            qs = qs.order_by(Question.title.desc())
+         u = User.query.filter(User.username.contains(filter_data)).first()
+         if u:
+            qs += '.filter(Question.author_id=='+str(u.id)+')'
+
+            if order_by == 'name':   
+               qs += '.order_by(Question.title'+sort_by+')'
          
-         elif order_by == 'vote':
-            qs = qs.order_by(Question.votesum.desc())
+            elif order_by == 'vote':
+               qs += '.order_by(Question.score'+sort_by+')'
      
+            else:
+               qs += '.order_by(Question.timestamp'+sort_by+')'
+
          else:
-            qs = qs.order_by(Question.timestamp.desc()) 
+            return jsonify( {'QuestionList': '', 'Pages': 0} )
       
       elif filter_by == 'tags':
-         qs = Question.query.filter(Question.tags.any(Tag.title == filter_data))
+         qs += '.filter(Question.tags.any(Tag.title == filter_data))'
       
       else:
-         qs = Question.query
          if order_by == 'name':   
-            qs = qs.order_by(Question.title.asc())
+            qs += '.order_by(Question.title'+sort_by+')'
          
-         elif order_by == 'vote':
-            qs = qs.order_by(Question.votesum.desc())
+         elif order_by == 'vote':       
+            qs += '.order_by(Question.score'+sort_by+')'
      
          else:
-            qs = qs.order_by(Question.timestamp.desc()) 
+            qs += '.order_by(Question.timestamp'+sort_by+')'
 
-      qs = qs.paginate(page,page_size,False)
+      qs += '.paginate(page,page_size,False)'
+      qs = eval(qs)
       for q in qs.items:
          qs_dict.append(q.to_dict())
       return jsonify( {'QuestionList': qs_dict, 'Pages':int(math.ceil(float(qs.total)/page_size))} )
@@ -65,17 +77,20 @@ def get_questions():
       all_q_dict = []
       tag_dict = []
       for q in all_q:   
-         all_q_dict.append(q.to_dict())
+         all_q_dict.append(q.to_dict(exclude_body=True))
       return jsonify( {'QuestionList':all_q_dict} )
 
 @qmod.route('/<int:qid>/', methods = ['GET'])
 @crossdomain
-#@requires_author
 def get_question(qid):
    q = Question.query.get(qid)
    if q is not None:   
       q_dict = q.to_dict()
-      return jsonify( {'Question': q_dict} )
+      r_list = q.replies
+      r_dict = []
+      for r in r_list:
+         r_dict.append(r.to_dict())
+      return jsonify( {'Question': q_dict, 'ReplyList' : r_dict} )
    else:
       abort(404)
       
@@ -86,14 +101,14 @@ def create_question():
    if not request.json or not 'title' in request.json or not 'body' in request.json:
       abort(400)
    u = User.query.filter_by(email=session['email']).first()
-   q = Question(title=request.json['title'], body=request.json['body'], timestamp=datetime.datetime.utcnow(), author_id=u.id)
+   q = Question(title=request.json['title'].title(), body=request.json['body'], timestamp=datetime.datetime.utcnow(), author_id=u.id)
 
    if request.json.get('tags'):
       tagList = request.json['tags']
       for tagName in tagList:
          t = get_tag(tagName)
          q.tags.append(t)
-   u.posts_eval()
+
    db.session.add(q)
    db.session.commit()
    q_dict = q.to_dict()
@@ -101,7 +116,7 @@ def create_question():
 
 @qmod.route('/<int:qid>/', methods = ['DELETE'])
 @crossdomain
-#TODO: require author or admin
+@requires_author
 def delete_question(qid):
    q = Question.query.get(qid)
    if q is None:
@@ -112,16 +127,19 @@ def delete_question(qid):
 
 @qmod.route('/<int:qid>/', methods = ['PUT'])
 @crossdomain
-#TODO: require author or admin
+@requires_author
 def modify_question(qid):
    if not request.json:
       return(400)
+   
+   now=datetime.datetime.utcnow()
 
    if 'title' in request.json:
-      db.session.query(Question).filter(Question.id == qid).update({'title':request.json['title']})
-
+      db.session.query(Question).filter(Question.id == qid).update({'title':request.json['title'].title()})
+      #db.session.query(Question).filter(Question.id == qid).update({'title':request.json['title'],edited=now})
    if 'body' in request.json:
       db.session.query(Question).filter(Question.id == qid).update({'body':request.json['body']})
+      #db.session.query(Question).filter(Question.id == qid).update({'body':request.json['body'],edited=now})
 
    if 'tags' in request.json:
       q = Question.query.get(qid)
@@ -130,7 +148,7 @@ def modify_question(qid):
       for tagName in tagList:
          t = get_tag(tagName)
          q.tags.append(t)
-
+   
    db.session.commit()
    return jsonify( {'Modified id':qid} ), 200
 
@@ -142,7 +160,7 @@ def get_question_replies(qid):
    for r in reply_list:
       reply_dict.append(r.to_dict())
 
-   return jsonify( {'ReplyToID':qid,'ReplyList':reply_dict} )
+   return jsonify( {'ReplyList':reply_dict} )
 
 @qmod.route('/<tagName>/', methods = ['GET'])
 @crossdomain

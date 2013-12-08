@@ -15,9 +15,11 @@ for i in xrange(25):
 
    s=requests.Session()
    headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-
+   ##questions
    payload={'body':body,'title':title,'tags':tag,'email':'admin@admin','token':'123456'}
+   ##replies   
    payload2={'body':reply,'question_id':i}
+
    r=s.post("http://localhost:5000/questions/",data=json.dumps(payload),headers=headers)
    print payload
    r2=r=s.post("http://localhost:5000/replies/",data=json.dumps(payload2),headers=headers)

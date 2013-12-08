@@ -10,10 +10,12 @@ umod = Blueprint('users', __name__, url_prefix='/u')
 @umod.route('/<int:qid>/', methods = ['OPTIONS'])
 @umod.route('/', methods = ['OPTIONS'])
 @umod.route('/me/', methods = ['OPTIONS'])
+@umod.route('/amiloggedin/', methods = ['OPTIONS'])
 @umod.route('/logout', methods = ['OPTIONS'])
 @crossdomain
 def tellThemEverythingWillBeOk(qid=0):
    return jsonify ( {'Allowed Methods':''} ), 200
+
 
 @umod.route('/', methods = ['GET'])
 @crossdomain
@@ -35,25 +37,43 @@ def get_user(id):
    abort(400)
 
 @umod.route('/me/', methods = ['GET'])
+@requires_login
 @crossdomain
 def get_self():
-   if g.user is not None:
-      return jsonify({'User':g.user.to_dict()})
-   else:
-      abort(403)
+   user=User.query.filter_by(email=session['email']).first()
+   if user is not None:
+      return jsonify({'User':user.to_dict()})
+   abort(403)
+
+@umod.route('/amiloggedin/', methods = ['GET'])
+@crossdomain
+def check_login_statusP():
+   if loggedIn():
+      return jsonify({'Status':True})
+   return jsonify({'Status':False})
+
+def loggedIn():
+   if 'email' and 'token' in session:
+      mail = session['email']
+      user = User.query.filter_by(email=mail).first()
+      if user and user.check_token(session['token']):
+         return True
+   return False
 
 @umod.route('/<int:id>/', methods = ['PUT'])
 @crossdomain
 def update_user(id):
+   pprint(request.json)
    u = User.query.get(id)
    if 'username' in request.json:
       u.username = request.json['username']
    if 'description' in request.json:
       u.description = request.json['description']
+   if 'avatar' in request.json:
+      u.avatar = request.json['avatar']
    db.session.commit()  
    return jsonify({'User': u.to_dict()})
       
-
 @umod.route('/<int:id>/q/')
 @crossdomain
 def get_user_questions(id):
@@ -68,8 +88,10 @@ def get_user_questions(id):
 @oid.loginhandler
 @crossdomain
 def login():
-   if g.user is not None:
-      return redirect(request.environ.get('HTTP_REFERER'))
+   if 'email' in session:
+      user = User.query.filter_by(email=session['email']).first()
+      if user and user.check_token(session['token']):
+         return redirect(request.environ.get('HTTP_REFERER'))
 
    if request.method == 'GET':
       return oid.try_login('https://www.google.com/accounts/o8/id', ask_for=['email'])
@@ -90,7 +112,8 @@ def create_or_login(resp):
    msg = 'Successful'
 
    if not user:
-      user = User(username='',description='', votesum=0, created_at=datetime.datetime.utcnow(), last_seen=datetime.datetime.utcnow(), email=resp.email, posts=0)
+      username = session['email'].split('@')[0]
+      user = User(username=username,description='', votesum=0, created_at=datetime.datetime.utcnow(), last_seen=datetime.datetime.utcnow(), email=resp.email, avatar='https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=100')
       db.session.add(user)
       msg = 'Created User'
 
@@ -99,13 +122,11 @@ def create_or_login(resp):
    user.last_seen = datetime.datetime.utcnow()
    session['token'] = user.token
    db.session.commit()
-   g.user = user
-   next = request.args.get('next')+'?user='+str(user.id)
-   return redirect(next)
+   return redirect(request.args.get('next'))
 
-@umod.before_request
-def before_request():
-   g.user = None
-   if 'email' and 'token' in session:
-      g.user = User.query.filter_by(email=session['email']).first()
+#@umod.before_request
+#def before_request():
+#   g.user = None
+#   if 'email' and 'token' in session:
+#      g.user = User.query.filter_by(email=session['email']).first()
 

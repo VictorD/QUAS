@@ -49,9 +49,9 @@
                             </td>
                             <td>
                                 <p>
-                                    If no parameters given returns all the questions currently in the database. Otherwise there are options for pagination, parameters are wrapped in a paginate key value i.e {'paginate': parameters}.
+                                    If no parameters given returns all the question titles(no question bodies) currently in the database. Otherwise there are options for pagination, to use this put a 'paginate' argument in the URL.
                                 </p>
-                                <h3>Pagination Parameters</h3>
+                                <h3>URL Parameters</h3>
                                 <table>
                                     <tbody>
                                     <tr>
@@ -79,6 +79,15 @@
                                         </td>
                                         <td>
                                             order results by date/vote/name
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 150px">
+                                            <strong>asc</strong><br/>
+                                            optional
+                                        </td>
+                                        <td>
+                                            bool(0 or 1) if ordered by ascending/descending
                                         </td>
                                     </tr>
                                     <tr>
@@ -364,6 +373,61 @@
                                 <p>
                                     Get all tags.
                                 </p>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span16">
+            <h2 id="tags">Search</h2>
+
+            <div class="row">
+                <div class="span16">
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th style="width: 300px;">Resource</th>
+                            <th>Usage</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                              <span class="label label-success">GET</span> /search/<br>
+                            </td>
+                            <td>
+                                <p>
+                                    Full text search
+                                </p>
+                                 <h3>Parameters</h3>
+                                <table>
+                                    <tbody>
+                                    <tr>
+                                        <td style="width: 150px">
+                                            <strong>search</strong><br/>
+                                            required
+                                        </td>
+                                        <td>
+                                            query string
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                       <td style="width: 150px">
+                                            <strong>exclude</strong><br/>
+                                            optional
+                                        </td>
+                                        <td>
+                                            List of ["tag","question","reply"] of things to exlude from the search
+
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </td>
                         </tr>
                         </tbody>

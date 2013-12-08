@@ -32,7 +32,9 @@ def api_doc():
 
 @app.route('/')
 def index():
-   return jsonify ( {'Index':'Welcome to QUAS backend! To see API documention go to /api/'} )
+   return jsonify ( {'Index':'Welcome to QUAS backend! To see API documention go to /api'} )
+
+
 
 from questions.views import qmod as QuestionModule
 app.register_blueprint(QuestionModule)

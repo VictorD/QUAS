@@ -3,9 +3,9 @@ from app import db
 class QVote(db.Model):
    id = db.Column(db.Integer, primary_key=True)
    value =db.Column(db.Integer) 
-   question_id = db.Column(db.Integer, db.ForeignKey('question.id'), nullable=False)
+   question_id = db.Column(db.Integer, db.ForeignKey('question.id', ondelete='CASCADE'), nullable=False)
    timestamp = db.Column(db.DateTime)
-   question = db.relationship('Question', backref='votes')   
+   question = db.relationship('Question', backref=db.backref('votes',cascade="all,delete"))   
    author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
    def to_dict(self):
@@ -20,13 +20,15 @@ class QVote(db.Model):
       return str(self.value)
    def __repr__(self):
       return '<Vote %r >' % (self.id)
+   def __add__(self,other):
+      return self.value+other.value
 
 class RVote(db.Model):
    id = db.Column(db.Integer, primary_key=True)
    value =db.Column(db.Integer) 
    reply_id = db.Column(db.Integer, db.ForeignKey('reply.id'), nullable=False)
    timestamp = db.Column(db.DateTime)
-   reply = db.relationship('Reply', backref='votes')   
+   reply = db.relationship('Reply', backref=db.backref('votes',cascade="all,delete"))   
    author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
    def to_dict(self):
@@ -41,6 +43,8 @@ class RVote(db.Model):
       return str(self.value)
    def __repr__(self):
       return '<Vote %r >' % (self.id)
-
+   def __add__(self,other):
+      return self.value+other.value
+      
 
 

@@ -9,12 +9,11 @@ from app.decorators import crossdomain,requires_login
 
 vmod = Blueprint('votes', __name__, url_prefix='/vote')
 
-#@vmod.route('/me/', methods = ['GET'])
-#@crossdomain
-#@requires_login
-#def my_vote_score():
-   
-
+@vmod.route('/r/', methods = ['OPTIONS'])
+@vmod.route('/q/', methods = ['OPTIONS'])
+@crossdomain
+def tellThemEverythingWillBeOk():
+   return jsonify ( {'Allowed Methods':''} ), 200
 
 ##___QUESTIONS________
 ##works as put or post
@@ -33,13 +32,13 @@ def create_vote_question():
    value=request.json['value']
    already = db.session.query(QVote).filter_by(question_id=qid,author_id=user.id).first()
    if not already:
-      r = QVote(value = value, timestamp = datetime.datetime.utcnow(),question_id=qid,author_id=user.id)
-      db.session.add(r)
-      db.session.commit()
-      return jsonify({"Status":"Created"}),200
+      already = QVote(value = value, timestamp = datetime.datetime.utcnow(),question_id=qid,author_id=user.id)
+      db.session.add(already)
    already.value=value
+   
    db.session.commit()
-   return jsonify({"Status":"Changed"}),200
+   new_score=db.session.query(Question).filter_by(id=qid).first().score()
+   return jsonify({"question_id":qid,"score":new_score}),200
 
 ##The score of the question with qid
 @vmod.route('/q/<int:qid>/', methods = ['GET'])
@@ -79,13 +78,14 @@ def create_vote_reply():
 
    already = db.session.query(RVote).filter_by(reply_id=rid,author_id=u.id).first()
    if not already:
-      r = RVote(value = value, timestamp = datetime.datetime.utcnow(),reply_id=rid,author_id=u.id)
-      db.session.add(r)
+      already = RVote(value = value, timestamp = datetime.datetime.utcnow(),reply_id=rid,author_id=u.id)
+      db.session.add(already)
       db.session.commit()
-      return jsonify({"Satus":"Created"}),200
-   already.value=value
+   else:
+      already.value=value
    db.session.commit()
-   return jsonify({"Status":"Changed"}),200
+   new_score=db.session.query(Reply).filter_by(id=rid).first().score()
+   return jsonify({"reply_id":rid,"score":new_score}),200
 
 
 ##The score of the reply with rid

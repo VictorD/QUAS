@@ -11,7 +11,5 @@ DATABASE_CONNECT_OPTIONS = {}
 
 THREADS_PER_PAGE = 8
 
-WHOOSH_BASE = os.path.join(_basedir, 'search.db')
-
 CSRF_ENABLED = True
 CSRF_SESSION_KEY = "somethingimpossibletoguess"

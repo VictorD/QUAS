@@ -6,6 +6,8 @@ from functools import wraps
 from pprint import pprint
 import datetime
 
+from app import app
+
 def crossdomain(func):
    @wraps(func)
    def wrapped_function(*args, **kwargs):
@@ -21,25 +23,24 @@ def crossdomain(func):
 
    return wrapped_function
 
-
+##login with admin no longer works since it wont timestamp the token
 def requires_login(f):
    @wraps(f)
    def decorated_function(*args, **kwargs):
-      if request.json:
-         try:
-            session['email']=request.json['email']
-            session['token']=request.json['token']
-         except:
-            pass
+      try:
+         session['email']=request.json['email']
+         session['token']=request.json['token']
+      except:
+         pass
       if 'email' and 'token' in session:
          mail=session['email']
          user = User.query.filter_by(email=mail).first()
          time = datetime.datetime.utcnow()
          if user and not user.check_token(session['token']):
             abort(403)
-         g.user = user
       else:
-            abort(403)
+         abort(403)
+      user.refresh_expiretime()
       return f(*args, **kwargs)
    return decorated_function
 
@@ -63,4 +64,7 @@ def requires_author(f):
 
       return f(*args, **kwargs)
    return decorated_function
+
+
+
 
