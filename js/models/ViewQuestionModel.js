@@ -53,15 +53,10 @@ var ViewQuestionModel = function(parent) {
         return self.viewedQuestion().author().id == currentUser.id();
     });
 
-    self.isReplyAuthor      = self.isReplyAuthor.bind(this);
-    self.deleteQuestion     = self.deleteQuestion.bind(this);
+    self.deleteQuestion = self.deleteQuestion.bind(this);
 };
 
 ko.utils.extend(ViewQuestionModel.prototype, {
-    isReplyAuthor: function(reply) {
-        var currentUser = this.parent.user();
-        return (currentUser && reply && reply.author() && reply.author().id == currentUser.id());
-    },
     deleteQuestion: function() {
          if (!this.viewedQuestion())
             return;

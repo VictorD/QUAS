@@ -1,10 +1,6 @@
 function changePage(pageName, hash) {
    console.log("Changing page: " + pageName);
-   if (!hash) { 
-        console.log(hash);
-        hash = ""; 
-   }
-
+   hash = hash || "";
    History.pushState({pageName: pageName}, null, "/" + hash);
 }
 
@@ -69,6 +65,7 @@ $(function() {
         
         // Bind to State Change
         History.Adapter.bind(window,'statechange',function(){
+
             console.log("Statechange");
             if (!self.loggedIn() && self.currentPage() == 'viewProfile') {
                self.currentPage('listQuestions');
