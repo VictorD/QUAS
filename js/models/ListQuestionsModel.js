@@ -17,9 +17,17 @@ var ListQuestionsModel = function(parent) {
             self.questionList.fromSearch(self.searchData());
         }
     });
-
-    self.onPageLoad = function() { 
-        console.log("view question render callback");
+   
+    self.onPageLoad = function() {
+        var State = History.getState();
+        var tags = getParameterByName('filterByTag', State.hash);
+        console.log("tags:" + tags);
+        if (tags) {
+            self.qfilter.filterBy("tags");
+            self.qfilter.filterData(tags);
+        }
+        
+        console.log("view question render callback");1
         $('#questionList').hide(); 
         $('#questionList').fadeIn(1200);
     }

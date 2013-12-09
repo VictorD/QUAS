@@ -12,19 +12,17 @@ var ViewQuestionModel = function(parent) {
     self.viewedQuestion = ko.observable();
 
     ko.computed(function() {
-        var qid = getIDFromHash();
-        var cid = 0;
         var currentUser = self.parent.user();
-        if (currentUser)
-            cid = currentUser.id();
+        var uid = (currentUser) ? currentUser.id() : 0;
+        var qid = getIDFromHash();
 
         console.log("Loading question... " + qid);
 
-        $.getJSON(self.parent.backendURL + '/questions/' + qid + "/").success(function(data) {
-            var q = new Question(data['Question']);
+        BackendAPI.getQuestion(qid, function(data) {
+            var q = new Question(data['Question'], uid);
             var rl = data.ReplyList;
             for (var i = rl.length - 1; i >= 0; i--) {
-                var r = new Reply(rl[i], cid);
+                var r = new Reply(rl[i], uid);
                 q.replies.push(r);
             }
             console.log("Loaded question: " + qid);
@@ -33,49 +31,18 @@ var ViewQuestionModel = function(parent) {
         });
     });
 	
-	self.afterRenderUpdate = function(){
+	self.afterRenderUpdate = function() {
 		console.log("Scan for latex code");
 		MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-	}
+	};
 
-    self.isAuthor = ko.computed(function() {
-        if (!self.parent.loggedIn())
-            return false;
-
-        var currentUser = self.parent.user();
-        if (!currentUser)
-            return false;
-            
-        console.log(currentUser);
-        if (!self.viewedQuestion())
-            return false;
-
-        return self.viewedQuestion().author().id == currentUser.id();
-    });
-
-    self.deleteQuestion = self.deleteQuestion.bind(this);
-};
-
-ko.utils.extend(ViewQuestionModel.prototype, {
-    deleteQuestion: function() {
-         if (!this.viewedQuestion())
-            return;
-
-        var qid = this.viewedQuestion().id();
-        if (qid > 0) {
-            secureAjaxJSON(this.parent.backendURL + '/questions/' + qid + '/', 'DELETE').done(function(result) {
-                changePage('listQuestions');
-            });
-        }
-    },
-    onPageLoad: function() { 
+    self.onPageLoad = function() { 
 		console.log("view question render callback");
         MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
         $('#questionView').hide(); 
         $('#questionView').fadeIn(1200);
-    }
-    
-});
+    };
+};
 
 
 

@@ -10,7 +10,6 @@ var Reply = function(data, currentUserID) {
 
    if (this.author() && currentUserID > 0) {
       this.madeByCurrentUser(this.author().id == currentUserID);
-      console.log("wadup");
    }
 };
 

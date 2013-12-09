@@ -5,15 +5,13 @@
       Back
     </a>    
 </div>
-    <div id="author-options-menu" data-bind="visible: $parent.isAuthor, click:toggleVerticalMenu">
+    <div id="author-options-menu" data-bind="visible: madeByCurrentUser,
+                                                click:toggleVerticalMenu">
         <span class="glyphicon glyphicon-list-alt"></span>&nbsp;<span>Show author options</span>
     </div>
     <div class="filterStuff">
-      <p>
-        <form data-bind="visible: $parent.isAuthor, submit: $parent.deleteQuestion">
-          <button>Delete question</button>
-        </form>
-      </p>
+      <button>Edit question</button>
+      <button data-bind="click: deleteSelf">Delete question</button>
     </div>
     <div class="currentQuestion clearfix">
           <div data-bind="template: { name: 'voting/column', data: vote()}"></div>          
@@ -22,7 +20,9 @@
                <p data-bind="text: timestamp"></p>
                <p id="question-body" data-bind="html: body"></p>
                <ul id="questionTagList" data-bind="foreach: { data: tags, as: 't' }">
-                  <li class="badge"><a href="#" data-bind="text: t"></a></li>
+                  <li class="badge">
+                    <a href="#" data-bind="click: function() {changePage('listQuestions', '?filterByTag='+$data)}, text: t"></a>
+                  </li>
                </ul>
           </div>
     </div>

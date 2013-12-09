@@ -20,7 +20,8 @@ var QuestionList = function() {
         if (!filterOptions)
             filterOptions = {}
             
-        console.log("Loading questions");
+        console.log("Loading questions with filter: ");
+        console.log(filterOptions);
         BackendAPI.getQuestions(function(data) {
             self.fromJSON(data);
         }, filterOptions);

@@ -35,8 +35,6 @@ var qFilter = function(){
 			options.page_size = self.pageSize();
 		}
 		
-		
-		console.log(options);
 		return options;
 	});
 	
