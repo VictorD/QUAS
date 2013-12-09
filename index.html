@@ -53,7 +53,7 @@
             <div data-bind="template: { name: currentHeader }"></div>
         </div>
         <div class="row" id="pages">
-            <div id="inner-container" data-bind="template: { name: currentPage, data: currentModel, afterRender: currentModel().afterRenderCallback }"</div>
+            <div id="inner-container" data-bind="template: { name: currentPage, data: currentModel, afterRender: currentModel().onPageLoad }"</div>
         </div>
     </div>
 </body>

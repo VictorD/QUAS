@@ -18,10 +18,9 @@ var Question = function(data, parent) {
 Question.prototype.update = function(data) {
     this.author(data.author || {username : "unknown"});
     this.id(data.id);
-    if (data.body) {
-        var parsed = new bbcode.Parser().toHTML(data.body);
-        this.body(parsed);
-    }
+    if (data.body)
+        this.body(new bbcode.Parser().toHTML(data.body));
+
     this.title(data.title);
     this.vote(new Vote(this, data.score));
     this.tags(data.tags);

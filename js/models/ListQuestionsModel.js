@@ -39,13 +39,8 @@ var ListQuestionsModel = function(parent) {
 		MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 	}
 
-    self.viewQuestion       = self.viewQuestion.bind(this);
-    self.isReplyAuthor      = self.isReplyAuthor.bind(this);
-    self.isQuestionSelected = self.isQuestionSelected.bind(this);
     self.findQuestion       = self.findQuestion.bind(this);
     self.deleteQuestion     = self.deleteQuestion.bind(this);
-    self.loadReplies        = self.loadReplies.bind(this);
-    self.returnToQuestion   = self.returnToQuestion.bind(this);
 };
 
 ko.utils.extend(ListQuestionsModel.prototype, {
@@ -54,42 +49,6 @@ ko.utils.extend(ListQuestionsModel.prototype, {
             return id == item.id();
         });
     },
-    isReplyAuthor: function(reply) {
-        var currentUser = this.parent.user();
-        return (currentUser && reply && reply.author() && reply.author().id == currentUser.id());
-    },
-    isQuestionSelected: function(question) {
-        return this.viewedQuestion() && this.viewedQuestion.id() == question.id();
-    },
-    loadReplies: function(question) {
-        var self = this;
-        ko.computed(function() {
-            var qid = question.id();        
-            $.getJSON(self.backendURL + "/questions/" + qid + "/replies/").success(function(data) {
-                data = data.ReplyList;
-                for (var i = data.length - 1; i >= 0; i--) {
-                    var thisReply = new Reply(data[i]);
-                    thisReply.madeByMe = self.isReplyAuthor(thisReply);
-                    question.replies.push(thisReply);
-                }
-            });
-        });
-    },
-    pushID: function(id) {
-        History.pushState({pageName: 'questions', rnd:Math.random()}, "Viewing Question: " + id, "/?viewedID=" + id);
-    },
-    returnToQuestion: function() {
-        this.pushID(this.lastViewedID());
-    },
-    returnToResults: function() {
-        var v = this.viewedID();
-        this.lastViewedID(v);
-        this.pushID(0);
-    },
-    viewQuestion: function(item, event) {
-        if (item)
-            this.pushID(item.id());
-    },
     deleteQuestion: function(question) {
         var self = this;
         var qid = question.id();
@@ -97,13 +56,11 @@ ko.utils.extend(ListQuestionsModel.prototype, {
             self.questions.remove(question);
         });
     },
-    afterRenderCallback: function() { 
+    onPageLoad: function() { 
         console.log("view question render callback");
         $('#questionList').hide(); 
         $('#questionList').fadeIn(1200);
     }
-    
-    
 });
 
 

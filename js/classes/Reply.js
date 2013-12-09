@@ -1,20 +1,25 @@
-var Reply = function(data) {
-   this.author    = ko.observable();
-   this.id        = ko.observable();
-   this.body      = ko.observable();
-   this.timestamp = ko.observable();
-   this.madeByMe  = ko.observable(false);
+var Reply = function(data, currentUserID) {
+   this.author     = ko.observable();
+   this.id         = ko.observable();
+   this.body       = ko.observable();
+   this.timestamp  = ko.observable();
+   this.madeByCurrentUser = ko.observable(false);
 
    if (data)
       this.update(data);
+
+   if (this.author() && currentUserID > 0) {
+      this.madeByCurrentUser(this.author().id == currentUserID);
+      console.log("wadup");
+   }
 };
 
 Reply.prototype.update = function(data) {
    this.author(data.author || "unknown");
    this.id(data.id);
+   if (data.body)
+     this.body(new bbcode.Parser().toHTML(data.body));
 
-   var parsed = new bbcode.Parser().toHTML(data.body);
-   this.body(parsed);
    this.timestamp(data.timestamp);
 };
 

@@ -1,11 +1,11 @@
 <li class="reply clearfix">
   <div data-bind="template: { name: 'voting/column', data: new Vote()}"></div>     
   <div class="col-xs-7">
-       <span data-bind="text:author().username">asdf</span> responded:
+       <span data-bind="text: author().username">unknown user</span> responded:
        <p data-bind="text: timestamp"></p>
-       <p id="question-body" data-bind="text: body"></p>
+       <p id="question-body" data-bind="html: body"></p>
    </div>
-   <div class="col-xs-2" data-bind="visible: madeByMe">
+   <div class="col-xs-2" data-bind="visible: madeByCurrentUser">
       <a data-bind="click: " href="#">edit</a>
    </div>
 </li>

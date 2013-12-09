@@ -13,13 +13,18 @@ var ViewQuestionModel = function(parent) {
 
     ko.computed(function() {
         var qid = getIDFromHash();
+        var cid = 0;
+        var currentUser = self.parent.user();
+        if (currentUser)
+            cid = currentUser.id();
+
         console.log("Loading question... " + qid);
+
         $.getJSON(self.parent.backendURL + '/questions/' + qid + "/").success(function(data) {
             var q = new Question(data['Question']);
             var rl = data.ReplyList;
             for (var i = rl.length - 1; i >= 0; i--) {
-                var r = new Reply(rl[i]);
-                r.madeByMe = self.isReplyAuthor(r);
+                var r = new Reply(rl[i], cid);
                 q.replies.push(r);
             }
             console.log("Loaded question: " + qid);
@@ -68,7 +73,7 @@ ko.utils.extend(ViewQuestionModel.prototype, {
             });
         }
     },
-    afterRenderCallback: function() { 
+    onPageLoad: function() { 
 		console.log("view question render callback");
         MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
         $('#questionView').hide(); 
