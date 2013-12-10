@@ -1,11 +1,15 @@
-<li class="reply clearfix">
-  <div data-bind="template: { name: 'voting/column', data: new Vote()}"></div>     
-  <div class="col-xs-7">
+<tr class="reply clearfix">
+   <td data-bind="with: author" style="width: 130px;text-align: center;">
+      <img class="img-circle" style="width: 64px; height: 64px;" 
+           data-bind="attr: { src: avatar }" alt="User Pic">
+   </td>
+  <td data-bind="template: { name: 'voting/column', data: vote()}"></td>     
+  <td>
        <span data-bind="text: author().username">unknown user</span> responded:
        <p data-bind="text: timestamp"></p>
        <p id="question-body" data-bind="html: body"></p>
-   </div>
-   <div class="col-xs-2" data-bind="visible: madeByCurrentUser">
+   </td>
+   <td class="col-xs-2" data-bind="visible: madeByCurrentUser">
       <a data-bind="click: " href="#">edit</a>
-   </div>
-</li>
+   </td>
+</tr>

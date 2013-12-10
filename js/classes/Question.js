@@ -26,7 +26,7 @@ var Question = function(data, currentUserID) {
             this.body(new bbcode.Parser().toHTML(data.body));
 
         this.title(data.title);
-        this.vote(new Vote(this, data.score));
+        this.vote(new Vote(this, false, data.score));
         this.tags(data.tags);
         this.timestamp(data.timestamp);
     };

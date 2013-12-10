@@ -1,10 +1,12 @@
 
-var Vote = function(question, initValue) {
+var Vote = function(owner, replyVote, initValue) {
     var self = this;
-
+    self.replyVote = replyVote;
     self.voteCast = 0;
-    self.question = question;
+    self.owner = owner;
     self.score = ko.observable(initValue);
+
+    self.voteType = (replyVote) ? 'reply_id':'question_id';
 
     self.fromScore = ko.computed(function() {
         var x = self.score();
@@ -30,15 +32,17 @@ var Vote = function(question, initValue) {
     self.submitVote = function(v) {
         self.voteCast = v;
 
-        var data = {
-          question_id: self.question.id(),
-          value: v
+        var data = { 
+            value: v 
         };
 
-        secureAjaxJSON('http://130.240.5.168:5000/vote/q/', 'POST', data).done(
-          function(response) {
+        var voteType = (replyVote) ? 'reply_id':'question_id';
+        data[voteType] = self.owner.id();
+
+        var endpoint = voteType[0];(replyVote) ? 'reply_id':'question_id'
+        BackendAPI.vote(endpoint, function(response) {
             self.score(response.score);
-            console.log("YOUR VOTE HAS BEEN CAST.");
-          }); 
+            console.log("YOUR VOTE HAS BEEN CAST: " + response.score);
+        }); 
     }
 }

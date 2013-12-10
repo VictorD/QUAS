@@ -84,27 +84,27 @@ body {
 
 #nav-filter-menu, #author-options-menu {
    color: #444;
-   text-transform: uppercase;
+   text-transform: capitalize;
 }
 
 #nav-filter-menu:hover {
     cursor:pointer;
     color: #888;
 }
-#author-options-menu:hover {
-   background-color: #ccc;
+#author-options-menu a:hover {
    cursor:pointer;
+   text-decoration: underline;
 }
 
-#author-options-menu {
-    border: 1px solid #aaa;
-    border-left: none;
-    border-bottom: none;
+#author-options {
+   padding: 20px;
 }
 
 .filterStuff {
+       border-bottom: 1px solid #aaa;
 	float: left;
-    display:none;
+   width: 100%;
+   display:none;
 }
 
 .filterStuff:hover {
@@ -224,10 +224,15 @@ body {
    margin: 5px 10px;
 }
 
-.question-block .question-body {
+.question-block {
    float: left;
    width: 70%;
    margin: 0 10px;
+}
+
+#question-body {
+   display:block;
+   padding-top: 20px;
 }
 
 .question-block .question-tags {
@@ -255,11 +260,15 @@ body {
 #questionView { display: none; }
 
 .currentQuestion {
-    border: 1px solid #aaa;
-    border-left: none;
+    padding-bottom: 30px;
 }
+
+h4.title {
+   border-bottom: 1px solid #aaa;
+}
+
 #questionView .currentQuestion {
-    background: #b9ecff;
+
     margin-bottom: 5px;
     padding: 10px;
 }
@@ -272,13 +281,18 @@ body {
 }
 
 #questionTagList a {
-  color: #eee;
+  color: #999;
 }
 
 #questionTagList li {
   display: inline;
   margin-right: 10px;
 }
+
+#questionTagList li a:hover {
+  color: #222;
+}
+
 
 /* --------------------------------- Replies --------------------------------- */
 
@@ -297,8 +311,8 @@ body {
 }
 
 .replyList .reply {
-    margin: 10px 0 0 0;
-    padding: 10px 10px 0 10px;
+    margin: 20px 0 0 0;
+    padding: 0;
 }
 
 .add-reply { 

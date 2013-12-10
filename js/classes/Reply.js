@@ -1,15 +1,17 @@
 var Reply = function(data, currentUserID) {
-   this.author     = ko.observable();
-   this.id         = ko.observable();
-   this.body       = ko.observable();
-   this.timestamp  = ko.observable();
-   this.madeByCurrentUser = ko.observable(false);
+   var self = this;
+   self.author     = ko.observable();
+   self.id         = ko.observable();
+   self.body       = ko.observable();
+   self.timestamp  = ko.observable();
+   self.vote      = ko.observable();
+   self.madeByCurrentUser = ko.observable(false);
 
    if (data)
-      this.update(data);
+      self.update(data);
 
-   if (this.author() && currentUserID > 0) {
-      this.madeByCurrentUser(this.author().id == currentUserID);
+   if (self.author() && currentUserID > 0) {
+      self.madeByCurrentUser(self.author().id == currentUserID);
    }
 };
 
@@ -18,7 +20,8 @@ Reply.prototype.update = function(data) {
    this.id(data.id);
    if (data.body)
      this.body(new bbcode.Parser().toHTML(data.body));
-
+   
+   this.vote(new Vote(this, true, data.score));
    this.timestamp(data.timestamp);
 };
 
