@@ -11,11 +11,18 @@
         });
     };
 
+    function postAjaxSecure(endpoint, callback, options) {
+        console.log(options);
+        secureAjaxJSON(makeURL(endpoint), 'POST', options).success(function(data) {
+            callback(data);
+        });
+    };
+
     function deleteAjax(endpoint, callback, options) {
       secureAjaxJSON(makeURL(endpoint), 'DELETE', options).success(function(data) {
          callback(data);
       });
-    }
+    };
     
     function getAjax(endpoint, callback, options) {
         $.getJSON(makeURL(endpoint), options).success(function(data) {
@@ -31,8 +38,9 @@
         getCurrentUser: function(callback) {
             getAjaxSecure('u/me', callback);
         },     
-
-
+        vote: function(voteType, callback, options) {
+            postAjaxSecure('vote/' + voteType, callback, options);
+        },
         /* QUESTIONS */   
         getQuestion: function(id, callback) {
             getAjax('questions/' + id, callback);

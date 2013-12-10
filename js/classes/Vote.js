@@ -30,19 +30,22 @@ var Vote = function(owner, replyVote, initValue) {
     }
     
     self.submitVote = function(v) {
-        self.voteCast = v;
+        self.voteCast = v; 
 
-        var data = { 
+        var options = { 
             value: v 
         };
 
         var voteType = (replyVote) ? 'reply_id':'question_id';
-        data[voteType] = self.owner.id();
+        options[voteType] = self.owner.id();
 
-        var endpoint = voteType[0];(replyVote) ? 'reply_id':'question_id'
+        var endpoint = voteType[0];
+
+        console.log(options);
+
         BackendAPI.vote(endpoint, function(response) {
             self.score(response.score);
             console.log("YOUR VOTE HAS BEEN CAST: " + response.score);
-        }); 
+        }, options); 
     }
 }
