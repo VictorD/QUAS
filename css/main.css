@@ -224,12 +224,6 @@ body {
    margin: 5px 10px;
 }
 
-.question-block {
-   float: left;
-   width: 70%;
-   margin: 0 10px;
-}
-
 #question-body {
    display:block;
    padding-top: 20px;

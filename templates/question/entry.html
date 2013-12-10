@@ -3,23 +3,16 @@
            <span data-bind="text: username">AuthorNameHere</span>
            <br/>
            <img class="img-circle" style="width: 64px; height: 64px;" data-bind="attr: { src: avatar }" alt="User Pic">
-           
-           
         </td>
         <td style="width: 150px;text-align: center;">
             <span class="badge" data-bind="css: vote().fromScore, text: vote().score"></span>
         </td>
-        <td>
-            <ul>
-               <li class="question-header">
-                <strong data-bind="text: timestamp">AuthorNameHere</strong>
-               </li>
-               <li class="question-body">
-                  <h4 data-bind="text: title"></h4>
-               </li>
-            </ul>
-         </td>
-         <td style="width: 100px;text-align: right;">
+        <td><h4 data-bind="text: title"></h4></td>
+        <td style="width: 250px;"><strong data-bind="text: timestamp"></strong></td>
+
+
+      
+        <td style="width: 100px;text-align: right;">
             <ul data-bind="foreach: { data: tags, as: 't' }">
                 <li data-bind="text: t"></li>
             </ul>

@@ -37,7 +37,10 @@
         },
         getCurrentUser: function(callback) {
             getAjaxSecure('u/me', callback);
-        },     
+        },
+        getUser: function(id, callback) {
+            getAjaxSecure('u/' + id, callback);
+        },
         vote: function(voteType, callback, options) {
             postAjaxSecure('vote/' + voteType, callback, options);
         },
