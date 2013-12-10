@@ -2,6 +2,9 @@
 var ProfileModel = function(parent) {
 	var self = this;	
 	self.parent = parent;
+	
+	self.profileID = ko.observable();
+	
 
   self.submitProfile = function(){
 	  self.profile().commit();
@@ -13,6 +16,7 @@ var ProfileModel = function(parent) {
     };
 
     self.editMode(false);
+	// låt stå
     secureAjaxJSON(parent.backendURL + '/u/'+ parent.user().id() +'/', 'PUT', data).done(function(response) {
       console.log("Updated profile");
     }); 
@@ -21,10 +25,23 @@ var ProfileModel = function(parent) {
 	self.questions = ko.observableArray();
     self.profile = ko.observable();
     self.onPageLoad = function() { 
+	
+		var State = History.getState();
+			var pid = getParameterByName('pid', State.hash);
+			console.log(State);
+			if (pid) {
+				self.profileID(pid);
+				
+			} else {
+				self.profileID(parent.user().id());
+				self.profile(parent.user());
+			}
+	
+	
         $('#profileView').hide(); 
         $('#profileView').fadeIn(500);//effect('slide', {'direction':'left', 'mode':'show'}, 400); 
 		    //alert(parent.user.email);
-		    self.profile(parent.user());
+		
 	
       if (self.profile()) {
    		ko.computed(function() {
@@ -42,7 +59,7 @@ var ProfileModel = function(parent) {
             self.questions([]);
             data = data.QuestionList;
             for (var i = data.length - 1; i >= 0; i--) {
-			console.log(i);
+			
 			
               self.questions.push(new Question(data[i]));
             };
@@ -56,7 +73,7 @@ var ProfileModel = function(parent) {
 //	if edit==True: profile/edit, else profile/view
 	self.editMode = ko.observable(false);
 	self.profileView = ko.computed(function(){
-		console.log("Profile view");
+		
 		
 		return self.editMode() ? 'profile/edit' : 'profile/view';
 	});
