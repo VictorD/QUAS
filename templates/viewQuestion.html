@@ -42,7 +42,7 @@
     <h4 class="title"><span data-bind="text: replies().length"></span> Answers</h4>
     <div class="col-xs-12">
       <table>
-      <tbody class="replyList" data-bind="template: { name: 'reply/view', foreach: replies, afterRender:$parent.afterRenderUpdate }"></tbody>
+      <tbody class="replyList" data-bind="template: { name: 'reply/view', foreach: replies, afterRender: afterRenderUpdate }"></tbody>
       </table>
     </div>
     <div class="add-reply" data-bind="visible: $root.loggedIn(), with: new Reply()">

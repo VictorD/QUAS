@@ -54,11 +54,9 @@
         getQuestions: function(callback, filterOptions) {
             getAjax('questions', callback, filterOptions);
         },
-
-
         /* SEARCH */
         search: function(callback, searchData) {
-            getAjax('search', callback, { search: searchData });
+            getAjax('search', callback, searchData);
         }
     };
     

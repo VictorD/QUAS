@@ -35,4 +35,8 @@ var AskQuestionModel = function(parent) {
       ); 
 	}
    }
+
+   self.onPageLoad = function() {
+      // Do nothing yet
+   }
 };

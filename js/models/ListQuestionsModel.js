@@ -27,7 +27,7 @@ var ListQuestionsModel = function(parent) {
             self.qfilter.filterData(tags);
         }
         
-        console.log("view question render callback");1
+        console.log("list questions render callback");
         $('#questionList').hide(); 
         $('#questionList').fadeIn(1200);
     }

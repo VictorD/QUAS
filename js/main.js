@@ -1,10 +1,24 @@
+
+
 function changePage(pageName, hash) {
    console.log("Changing page: " + pageName);
    hash = hash || "";
    History.pushState({pageName: pageName}, null, "/" + hash);
-}
+};
+
+function afterRenderUpdate() {
+      console.log("Scan for latex code");
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+};
+
 
 $(function() {
+   MathJax.Hub.Config({
+      tex2jax: {
+      inlineMath: [ ['[latex]', '[/latex]'], ['$','$'], ['\\(','\\)'] ]
+      }
+   });
+
     $.support.cors = true;
     infuser.defaults.templateUrl = "templates";
 

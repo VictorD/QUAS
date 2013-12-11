@@ -1,133 +1,35 @@
 <html>
-<head>
- <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
-<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
-<script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.js"></script>
-<script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
-<script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js"></script>
-<script src="js/pager.js"></script>
-<script src="js/models.js"></script>
-<title>QUAS - Your LTU knowledge database !</title>
-</head>
-<body id="main">
-<div class="navbar navbar-inverse">
-	<div class="container">
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" href="#">QUAS</a>
-		</div>
-		<div class="navbar-collapse collapse">
-         <ul class="nav navbar-nav">
-			  <li><a data-bind="page-href: 'listQuestions'">Questions</a></li>
-			  <li><a data-bind="page-href: 'addQuestion'">Write Question</a></li>
-			  <li><a href="#">My Profile</a></li>
-			</ul>
-			<form action="http://130.240.5.168:5000/u/login" method="get" class="navbar-form navbar-right">
-				<button type="submit" class="btn btn-primary">Student Login</button>
-			</form>
-		</div>
-	</div>
-</div>
-
-<div class="container">
-	<div class="row">
-      <div class="col-xs-10  text-center">
-         <img src="img/logo.png" width="359px" height="220px"/>
-      </div>
-	</div>
-	<div class="row">
-		<div class="col-xs-10">
-			<form id="search" class="form-horizontal" role="form" method="POST" target="#">
-				<div class="form-group">
-						<div class="col-xs-7 col-sm-offset-2">
-							<input id="search-bar" type="text" class="form-control"/>
-						</div>
-						<div class="col-xs-1">
-							<input id="submit-button" type="submit" value="Search" class="btn btn-primary"/>
-						</div>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
-<div class="container">
-   <div class="row">
-      <div class="col-xs-12 col-lg-6 col-lg-offset-1">
-         <div data-bind="
-            page: {
-               id: 'listQuestions',
-               role:'start',
-               loader: spinnerLoader,
-               sourceOnShow: 'list.html',
-                  with: new ListQuestionsModel()
-            }">
-            List of questions here
-         </div>
-
-         <div data-bind="page: {
-            id: 'addQuestion',
-            loader: spinnerLoader,
-            sourceOnShow: 'edit.html'}">
-         </div>
-          <div data-bind="page: {
-            id: 'editQuestion',
-            loader: spinnerLoader,
-            sourceOnShow: 'edit.html'}">
-         </div>
-      </div>
-      <div class="col-xs-12 col-lg-5">   
-         <div data-bind="page: {
-            id: 'view',
-            params: ['question_id'],
-            loader: spinnerLoader,
-            sourceOnShow: 'view.html'}">
-            View a question here
-         </div>   
-      </div>
-   </div>
-</div>
-
-<div id="footer">
-</div>
-</div>
-<script type="text/javascript">
-   $(document).ready(function() {
-      $.ajax({
-        type: 'GET',
-        url: "http://130.240.5.168:5000/u/",
-        xhrFields: {
-            withCredentials: true
-         },
-        success: function( data ) { alert(data); }
-      });
-   });
-  
-
-	function spinnerLoader(page, element) {
-		var loader = {};
-		var txt = $('<img class="loader" src="img/loader.gif"/>');
-		loader.load = function () {
-			$(element).empty();
-			$(element).append(txt);
-		};
-		loader.unload = function () {
-			txt.remove();
-		};
-		return loader;
-	}
-
-	var IndexViewModel = function() {
-	};
-	
-	var viewModel = new IndexViewModel();
-	pager.Href.hash = '#!/';
-	pager.extendWithPage(viewModel);
-	ko.applyBindings(viewModel);
-	pager.start();
-</script>	
+<head><title>Knockout Example</title>
+<script src="js/libs/knockout-3.0.0.debug.js"></script></head>
+<body>
+<p>First name: <input data-bind="value: firstName" /></p>
+<p>Last name: <input data-bind="value: lastName" /></p>
+<h2>Hello, <span data-bind="text: fullName"> </span>!</h2>
+<pre><code>
+var ViewModel = function(first, last) {
+    this.firstName = ko.observable(first);
+    this.lastName = ko.observable(last);
+ 
+    this.fullName = ko.computed(function() {
+        // Knockout tracks dependencies automatically. It knows that fullName depends on firstName and lastName, because these get called when evaluating fullName.
+        return this.firstName() + " " + this.lastName();
+    }, this);
+};
+ 
+ko.applyBindings(new ViewModel("QUAS,", " best application world")); // This makes Knockout get to work
+</code></pre>
 </body>
+<script>
+var ViewModel = function(first, last) {
+    this.firstName = ko.observable(first);
+    this.lastName = ko.observable(last);
+ 
+    this.fullName = ko.computed(function() {
+        // Knockout tracks dependencies automatically. It knows that fullName depends on firstName and lastName, because these get called when evaluating fullName.
+        return this.firstName() + " " + this.lastName();
+    }, this);
+};
+ 
+ko.applyBindings(new ViewModel("Peter", "Parnes")); // This makes Knockout get to work
+</script
 </html>
